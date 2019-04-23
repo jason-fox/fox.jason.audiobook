@@ -1,2 +1,4 @@
-build_dita*.xml linguist-language=Ant Build System
-run-splash.xml linguist-language=Ant Build System
+build_dita2audiobook.xml linguist-language=Ant Build System
+resource/antlib.xml linguist-language=Ant Build System
+sample/* linguist-vendored
+test/* linguist-vendored
