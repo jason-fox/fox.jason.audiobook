@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  This file is part of the DITA-OT Audiobook Plug-in project.
+  See the accompanying LICENSE file for applicable licenses.
+-->
+<project xmlns:dita="http://dita-ot.sourceforge.net" name="fox.jason.audiobook">
+
+
+  <target name="dita2ssml" depends="ssml.init, build-init, preprocess, ssml.render"/>
+
+  <target name="dita2mp3" depends="watson.init, ffmpeg.init, ssml.init, build-init, preprocess, mp3.render"/>
+
+  <target name="dita2audiobook" depends="ffmpeg.init, ssml.init, build-init, preprocess, audiobook.render"/>
+
+
+  <!--
+    Setting up SSML processing. Sets up ANT variable overrides.
+  -->
+  <target name="ssml.init">
+    <property name="preprocess.copy-image.skip" value="true"/>
+    <property name="out.ext" value="ssml"/>
+  </target>
+
+  <!--
+    Generate SSML files containing associated dublin core metadata
+  -->
+  <target name="ssml.render">
+    <pipeline message="Convert DITA topics to SSML files" taskname="xslt">
+      <xslt basedir="${dita.temp.dir}"
+        extension="ssml"
+        destdir="${output.dir}"
+        reloadstylesheet="${dita.ssml.reloadstylesheet}"
+        classpathref="dost.class.path"
+        style="${dita.plugin.fox.jason.audiobook.dir}/xsl/dita2ssml.xsl"
+        filenameparameter="FILENAME"
+        filedirparameter="FILEDIR">
+        <ditafileset format="dita" processingRole="normal"/>
+        <xmlcatalog refid="dita.catalog"/>
+        <param expression="${args.input}" name="SOURCE"/>
+        <param name="BASEDIR" expression="${dita.dir}"/>
+        <param name="OUTPUTDIR" expression="${dita.output.dir}"/>
+        <param name="defaultLanguage" expression="${default.language}"/>
+      </xslt>
+    </pipeline>
+  </target>
+
+  <!--
+    Setting up SSML to speech MP3 processing. 
+
+    Currently using IBM Watson for processing to WAV then converting
+    to MP3. Ensure that Watson is available.
+  -->
+  <target name="watson.init">
+    <property file="${dita.plugin.fox.jason.audiobook.dir}/cfg/watson.properties"/>
+
+     <dita-ot-fail id="AUDI002F">
+      <condition>
+        <or>
+          <equals arg1="${watson.url}" arg2="XXX"/>
+          <equals arg1="${watson.apikey}" arg2="XXX"/>
+        </or>
+      </condition>
+    </dita-ot-fail>
+  </target>
+
+
+  <!--
+    Generate WAV files from SSML then transform WAV to MP3
+    Create an id3v2 tag holding the appropriate metadata and track info
+    and add it to each of the MP3 files
+  -->
+   <target name="mp3.render" depends="ssml.render">
+
+    <property name="topic-list.txt" value="${dita.output.dir}/list.txt"/>
+
+    <xslt in="${dita.temp.dir}${file.separator}${user.input.file}" out="${topic-list.txt}"
+      style="${dita.plugin.fox.jason.audiobook.dir}/xsl/create-topic-list.xsl">
+      <xmlcatalog refid="dita.catalog"/>
+    </xslt>
+    <ssml-to-mp3 dir="${dita.output.dir}" file="${topic-list.txt}"/>
+   </target>
+
+
+  <!--
+    Ensure that ffmpeg is available.
+  -->
+  <target name="ffmpeg.init">
+    <typedef file="${dita.plugin.fox.jason.audiobook.dir}/resource/antlib.xml"/>
+
+    <!-- For Unix run the FFmpeg executable-->
+    <exec taskname="ffmpeg" executable="ffmpeg" osfamily="unix" failonerror="false" resultproperty="ffmpeg.result" outputproperty="ffmpeg.out" >
+      <arg value="-version"/>
+    </exec>
+    <!-- For Windows run FFmpeg from a DOS command -->
+    <exec taskname="ffmpeg" dir="${dita.dir}/bin" executable="cmd" osfamily="windows" failonerror="false" resultproperty="ffmpeg.result" outputproperty="ffmpeg.out">
+      <arg value="/C"/>
+      <arg value="ffmpeg -version"/>
+    </exec>
+    <echo level="verbose" message="${line.separator}${ffmpeg.out}" taskname="ffmpeg"/>
+
+    <dita-ot-fail id="AUDI001F">
+      <condition>
+        <not>
+          <equals arg1="${ffmpeg.result}" arg2="0"/>
+        </not>
+      </condition>
+    </dita-ot-fail>
+  </target>
+
+
+  <!-- 
+      Process each MP3 file in turn and read the id3v2 tag for 
+      timings and chapter names.
+
+      Then create chapters.txt and combine all MP3 files. The
+      overall metadata anc chapter info can be re-added into
+      an audiobook m4b file (along with a cover image)
+  -->
+  <target name="audiobook.render" depends="ssml.render, mp3.render">
+    <property name="audiobook.duration" value="0"/>
+
+    <tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="chapter.temp.file" suffix=".txt"/>
+    <echo file="${chapter.temp.file}" message=";FFMETADATA1"/>
+
+    <tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="metadata.temp.file" suffix=".txt"/>
+    <xslt in="${dita.temp.dir}${file.separator}${user.input.file}" out="${metadata.temp.file}"
+      style="${dita.plugin.fox.jason.audiobook.dir}/xsl/ditamap-id3v2tag.xsl">
+      <xmlcatalog refid="dita.catalog"/>
+    </xslt>
+
+    <create-chapters dir="${dita.output.dir}" file="${topic-list.txt}"/>
+    <merge-audiobook chapters="${chapter.temp.file}" file="${topic-list.txt}"  dir="${dita.output.dir}" metadata="${metadata.temp.file}"/>
+   </target>
+
+</project>

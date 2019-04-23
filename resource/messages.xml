@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  This file is part of the DITA-OT Unit Test Plug-in project.
+  See the accompanying LICENSE file for applicable licenses.
+-->
+<messages xmlns:dita="http://dita-ot.sourceforge.net">
+  <message id="AUDI001F" type="FATAL">
+    <reason>ffmpeg not found.</reason>
+    <response>Check that the ffmpeg tool is installed and on the path</response>
+  </message>
+  <message id="AUDI002F" type="FATAL">
+    <reason>Watson credentials not set.</reason>
+    <response>Update the watson.properties file to hold your URL and API Key</response>
+  </message>
+  <message id="AUDI003I" type="INFO">
+    <reason>%1</reason>
+    <response/>
+  </message>
+</messages>

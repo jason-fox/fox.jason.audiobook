@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	This file is part of the DITA-OT Audiobook Plug-in project.
+	See the accompanying LICENSE file for applicable licenses.
+-->
+<plugin id="fox.jason.audiobook">
+
+  <require plugin="org.dita.html5"/>
+  <transtype name="ssml" desc="Speech Synthesis Markup Language"/>
+  <transtype name="mp3" desc="Create MP3 player audio tracks"/>
+  <transtype name="audiobook" desc="A single Audiobook"/>
+  <feature extension="ant.import" file="build_dita2audiobook.xml"/>
+  <feature extension="dita.xsl.messages" file="resource/messages.xml"/>
+</plugin>
