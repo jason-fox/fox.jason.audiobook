@@ -79,7 +79,7 @@ Copy the credentials to authenticate to your service instance:
     **Text to Speech** service instance to go to the **Text to Speech** service dashboard page.
 2.  On the Manage page, click Show to view your credentials.
 3.  Copy the `API Key` and `URL` values.
-4. Within the plug-in alter the file `cfg/watson.properties` to hold your `API Key` and `URL`.
+4. Within the plug-in alter the file `cfg/configuration.properties` to hold your `API Key` and `URL`.
 
 ###  Text-to-Speech using Microsoft Azure
 
@@ -99,11 +99,8 @@ You can sign up for a free Microsoft account at the Microsoft account portal. To
 After you sign in to Try Cognitive Services, your free trial begins. The displayed webpage lists all the Azure Cognitive Services services for which you currently have trial subscriptions. Two subscription keys are listed beside Speech Services. You can use either key in your applications.
 
 Copy the credentials to authenticate to your service instance:
-1.  From the [IBM Cloud dashboard](https://cloud.ibm.com/dashboard/apps) External link icon, click on your
-    **Text to Speech** service instance to go to the **Text to Speech** service dashboard page.
-2.  On the Manage page, click Show to view your credentials.
-3.  Copy the `API Key` and `URL` values.
-4. Within the plug-in alter the file `cfg/watson.properties` to hold your `API Key` and `URL`.
+1.  Copy either of the `API Key` and `Endpoint` values.
+2.  Within the plug-in alter the file `cfg/configuration.properties` to hold your `API Key` and `URL`.
 
 # Usage
 
