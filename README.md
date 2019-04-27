@@ -66,13 +66,37 @@ Upgrading to a paid version will be necessary when transforming larger documents
 The IBM Text to Speech service processes text and natural language to generate synthesized audio output complete
 with appropriate cadence and intonation. It is available in several voices:
 
-[Getting Started](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-gettingStarted)
+Introduction: [Getting Started](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-gettingStarted)
 
 Create an instance of the service:
 1.  Go to the [Text to Speech](https://cloud.ibm.com/catalog/services/text-to-speech) External link icon page 
     in the IBM Cloud Catalog.
 2.  Sign up for a free IBM Cloud account or log in.
 3.  Click Create.
+
+Copy the credentials to authenticate to your service instance:
+1.  From the [IBM Cloud dashboard](https://cloud.ibm.com/dashboard/apps) External link icon, click on your
+    **Text to Speech** service instance to go to the **Text to Speech** service dashboard page.
+2.  On the Manage page, click Show to view your credentials.
+3.  Copy the `API Key` and `URL` values.
+4. Within the plug-in alter the file `cfg/watson.properties` to hold your `API Key` and `URL`.
+
+###  Text-to-Speech using Microsoft Azure
+
+The Speech Services allow you to convert text into synthesized speech and get a list of supported voices for a region using a set of REST APIs. Each available endpoint is associated with a region. A subscription key for the endpoint/region you plan to use is required.
+
+Introduction: [Getting Started](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started)
+
+Create an instance of the service:
+1.  Go to Try [Cognitive Services](https://azure.microsoft.com/try/cognitive-services/)
+2.  Select the Speech APIs tab.
+3.  Under Speech Services, select the Get API Key button.
+4.  Agree to the terms and select your locale from the drop-down menu.
+5.  Sign in by using your Microsoft, Facebook, LinkedIn, or GitHub account.
+
+You can sign up for a free Microsoft account at the Microsoft account portal. To get started, click Sign in with Microsoft and then, when asked to sign in, click Create one. Follow the steps to create and verify your new Microsoft account.
+
+After you sign in to Try Cognitive Services, your free trial begins. The displayed webpage lists all the Azure Cognitive Services services for which you currently have trial subscriptions. Two subscription keys are listed beside Speech Services. You can use either key in your applications.
 
 Copy the credentials to authenticate to your service instance:
 1.  From the [IBM Cloud dashboard](https://cloud.ibm.com/dashboard/apps) External link icon, click on your
@@ -118,10 +142,10 @@ Once the command has run, an `*.m4b` file will be created in the output director
 
 ### Parameter Reference
 
--   `audiobook.service` - Decides which translation service to use:
+-   `ssml.service` - Decides which translation service to use:
     -  `dummy` - Avoids accessing a Speech-to-Text service, uses a dummy MP3 file for all outputs
     -  `watson` - Connects to the IBM Cloud Speech-to-Text service
-    -  `microsoft` - Connects to the Microsoft Speech-to-Text service
+    -  `bing` - Connects to the Microsoft Speech-to-Text service
 -   `audiobook.cover.art.add` - Specifies whether  or not cover art  is to be added to an album (default `yes`)
 -   `audiobook.cover.art.image` - Specifies the cover art to be used for an album, the default will use
     the image plug-in alter the file `cfg/coverart.png` 
