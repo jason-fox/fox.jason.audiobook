@@ -8,6 +8,12 @@
     xmlns:rx="http://www.renderx.com/XSL/Extensions"
     version="2.0">
 
+    <!-- 
+    	Available voices on the IBM Cloud
+		
+		see https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-voices 
+	-->
+
 	
 	<!-- Voices speaking in English -->
 	<xsl:attribute-set name="__voice__en">
@@ -33,7 +39,7 @@
 		<xsl:attribute name="voice">en-GB_KateVoice</xsl:attribute>
 	</xsl:attribute-set-->
 
-	<!-- Voices speaking in French -->
+	<!-- Voice speaking in French -->
 	<xsl:attribute-set name="__voice__fr">
 		<xsl:attribute name="voice">fr-FR_ReneeVoice</xsl:attribute>
 	</xsl:attribute-set>
@@ -65,7 +71,7 @@
 	</xsl:attribute-set>
 
 
-	<!-- Voices speaking in Portuguese -->
+	<!-- Voice speaking in Portuguese -->
 	<xsl:attribute-set name="__voice__pt">
 		<xsl:attribute name="voice">pt-BR_IsabelaVoice</xsl:attribute>
 	</xsl:attribute-set>

@@ -3,22 +3,37 @@
   This file is part of the DITA-OT Audiobook Plug-in project.
   See the accompanying LICENSE file for applicable licenses.
 -->
-<project xmlns:dita="http://dita-ot.sourceforge.net" name="fox.jason.audiobook">
+<project xmlns:dita="http://dita-ot.sourceforge.net" name="fox.jason.audiobook" xmlns:if="ant:if" >
 
 
-  <target name="dita2ssml" depends="ssml.init, build-init, preprocess, ssml.render"/>
+  <target name="dita2ssml" depends="build-init, ssml.init, preprocess, ssml.render"/>
 
-  <target name="dita2mp3" depends="watson.init, ffmpeg.init, ssml.init, build-init, preprocess, mp3.render"/>
+  <target name="dita2mp3" depends="build-init, ssml.init, text-to-speech.init, ffmpeg.init, preprocess, mp3.render"/>
 
-  <target name="dita2audiobook" depends="ffmpeg.init, ssml.init, build-init, preprocess, audiobook.render"/>
+  <target name="dita2audiobook" depends="build-init, ssml.init, ffmpeg.init, preprocess, audiobook.render"/>
 
 
   <!--
     Setting up SSML processing. Sets up ANT variable overrides.
   -->
   <target name="ssml.init">
+    <typedef file="${dita.plugin.fox.jason.audiobook.dir}/resource/antlib.xml"/>
     <property name="preprocess.copy-image.skip" value="true"/>
     <property name="out.ext" value="ssml"/>
+
+    <property file="${dita.plugin.fox.jason.audiobook.dir}/cfg/configuration.properties"/>
+    <property name="ssml.service" value="${audiobook.default}"/>
+
+    <condition property="audiobook.bing">
+      <equals arg1="${ssml.service}" arg2="bing"/>
+    </condition>
+    <condition property="audiobook.watson">
+      <equals arg1="${ssml.service}" arg2="watson"/>
+    </condition>
+    <condition property="audiobook.dummy">
+      <equals arg1="${ssml.service}" arg2="dummy"/>
+    </condition>
+
   </target>
 
   <!--
@@ -50,17 +65,24 @@
     Currently using IBM Watson for processing to WAV then converting
     to MP3. Ensure that Watson is available.
   -->
-  <target name="watson.init">
-    <property file="${dita.plugin.fox.jason.audiobook.dir}/cfg/watson.properties"/>
+  <target name="text-to-speech.init">
+    
 
-     <dita-ot-fail id="AUDI002F">
+
+
+    <dita-ot-fail id="AUDI002F" if:set="audiobook.watson">
       <condition>
-        <or>
-          <equals arg1="${watson.url}" arg2="XXX"/>
           <equals arg1="${watson.apikey}" arg2="XXX"/>
-        </or>
       </condition>
     </dita-ot-fail>
+
+     <dita-ot-fail id="AUDI003F" if:set="bing">
+      <condition>
+          <equals arg1="${bing.apikey}" arg2="XXX"/>
+      </condition>
+    </dita-ot-fail>
+
+    <bing-authorization if:set="audiobook.bing" />
   </target>
 
 
@@ -72,6 +94,7 @@
    <target name="mp3.render" depends="ssml.render">
 
     <property name="topic-list.txt" value="${dita.output.dir}/list.txt"/>
+    <bing-authorization if:set="audiobook.bing" />
 
     <xslt in="${dita.temp.dir}${file.separator}${user.input.file}" out="${topic-list.txt}"
       style="${dita.plugin.fox.jason.audiobook.dir}/xsl/create-topic-list.xsl">
@@ -85,7 +108,7 @@
     Ensure that ffmpeg is available.
   -->
   <target name="ffmpeg.init">
-    <typedef file="${dita.plugin.fox.jason.audiobook.dir}/resource/antlib.xml"/>
+    
 
     <!-- For Unix run the FFmpeg executable-->
     <exec taskname="ffmpeg" executable="ffmpeg" osfamily="unix" failonerror="false" resultproperty="ffmpeg.result" outputproperty="ffmpeg.out" >

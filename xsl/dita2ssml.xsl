@@ -18,6 +18,9 @@
   
   <xsl:output method="xml" encoding="UTF-8" indent="no" omit-xml-declaration="no" />
 
+  <!--
+    Add meta data such as title, author and copyright
+  -->
   <xsl:template name="chapterHead">
     <xsl:apply-templates select="." mode="chapterHead"/>
   </xsl:template>
@@ -47,7 +50,9 @@
     <xsl:call-template name="chapter-setup"/>
   </xsl:template>
 
-
+  <!--
+    Mark up the whole topic as a <speak> element
+  -->
   <xsl:template name="chapter-setup">
     <xsl:element name="speak">
         <xsl:attribute name="version">
@@ -66,6 +71,9 @@
     </xsl:element>
   </xsl:template>
 
+  <!--
+    For title elements add a <mark> and consider the title as a separate paragraph
+  -->
   <xsl:template match="*[contains(@class, ' topic/topic ')]/*[contains(@class, ' topic/title ')]">
     <mark>
       <xsl:attribute name="name"><xsl:apply-templates select="." mode="return-aria-label-id"/></xsl:attribute>
@@ -75,6 +83,11 @@
     </p>
   </xsl:template>
 
+  <!--
+    If a paragraph is spoken in a foreign language add the xml:lang parameter.
+    Paragraphs should be encapsulated with <p> tags to ensure the pace of the
+    spoken words is correct.
+  -->
   <xsl:template match="*[contains(@class, ' topic/p ')]" name="topic.p">
     <p>
       <xsl:if test="@xml:lang">
@@ -86,6 +99,10 @@
     </p>
   </xsl:template>
 
+  <!--
+    If a phrase is spoken in a foreign language add the xml:lang parameter
+    to the word. Similarly add emphasis to words highlighted in bold
+  -->
   <xsl:template match="*[contains(@class, ' topic/ph ')]" name="topic.ph">
     <xsl:choose>
       <xsl:when test="contains(@class,' hi-d/b ')">
@@ -107,11 +124,17 @@
     </xsl:choose>
   </xsl:template>
 
+  <!--
+    For each list item add a short pause after it is spoken.
+  -->
   <xsl:template match="*[contains(@class, ' topic/li ')]" name="topic.li">
     <xsl:apply-templates/>
     <break/>
   </xsl:template>
 
+  <!--
+    Ignore all codeblocks, images, tables and prolog as these are never spoken
+  -->
   <xsl:template match="*[contains(@class,' pr-d/codeblock ')]"/>
   <xsl:template match="*[contains(@class,' topic/prolog ')]"/>
   <xsl:template match="*[contains(@class,' topic/table ')]"/>

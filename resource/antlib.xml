@@ -78,11 +78,8 @@ for (i = 0; i < tracks.length; ++i) {
 			<local name="mp3.basename"/>
 			<local name="ssml.srcfile"/>
 
-			<local name="watson.voice"/>
-			<local name="watson.ssml"/>
-			<local name="watson.result"/>
-			<local name="watson.out"/>
-
+			<local name="audiobook.voice"/>
+			
 			<local name="ffmpeg.wav.result"/>
 			<local name="ffmpeg.wav.out"/>
 			<local name="ffmpeg.meta.result"/>
@@ -90,77 +87,42 @@ for (i = 0; i < tracks.length; ++i) {
 
 			<local name="meta.temp.file"/>
 			<local name="mp3.temp.file"/>
-			<local name="ssml.temp.file"/>
 			<local name="voice.temp.file"/>
-			<local name="watson.temp.file"/>
+			
 
-			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="voice.temp.file" suffix=".txt"/>
-			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="meta.temp.file" suffix=".meta"/>
-			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="ssml.temp.file" suffix=".ssml"/>
-			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="watson.temp.file" suffix=".wav"/>
-			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="mp3.temp.file" suffix=".mp3"/>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="voice.temp.file" suffix=".txt"/>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="meta.temp.file" suffix=".meta"/>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="mp3.temp.file" suffix=".mp3"/>
 
 			<property name="mp3.out.file" value="@{dir}/@{src}"/>
 			<dirname property="mp3.dir" file="${mp3.out.file}"/>
 			<basename property="mp3.basename" file="${mp3.out.file}"  suffix=".mp3"/>
-			<property name="ssml.srcfile" value="${mp3.dir}${file.separator}${mp3.basename}.ssml"/>
+			<property name="ssml.srcfile" 
+				value="${mp3.dir}${file.separator}${mp3.basename}.ssml"/>
 
 			<!-- Obtain the Voice to use with the transform -->
 			<xslt in="${ssml.srcfile}" out="${voice.temp.file}" style="${dita.plugin.fox.jason.audiobook.dir}/xsl/select-voice.xsl">
 			    <xmlcatalog refid="dita.catalog"/>
+			    <param expression="${ssml.service}" name="SERVICE"/>
 			 </xslt>
-			<loadfile property="watson.voice" srcFile="${voice.temp.file}"/>
+			<loadfile property="audiobook.voice" srcFile="${voice.temp.file}"/>
 
-			
 			<!-- Obtain the meta data to use with the transform -->
 			<xslt in="${ssml.srcfile}" out="${meta.temp.file}" style="${dita.plugin.fox.jason.audiobook.dir}/xsl/create-id3v2tag.xsl">
 			    <xmlcatalog refid="dita.catalog"/>
-			    <param expression="${watson.voice}" name="VOICE"/>
-        	<param expression="@{track}" name="TRACK" />
+			    <param expression="${audiobook.voice}" name="VOICE"/>
+        		<param expression="@{track}" name="TRACK" />
 			</xslt>
 
-			<!-- Obtain the stripped down SSML to use with the transform -->
-			<xslt in="${ssml.srcfile}" out="${ssml.temp.file}" style="${dita.plugin.fox.jason.audiobook.dir}/xsl/strip-ssml.xsl">
-			    <xmlcatalog refid="dita.catalog"/>
-			</xslt>
-
-			<!-- Escape quote marks before sending to webservice -->
-			<replace file="${ssml.temp.file}" token="&quot;" value="/&quot;"/>
-			<loadfile property="watson.ssml" srcFile="${ssml.temp.file}"/>
-
-
-			<!-- run Text to speech -->
-			<exec if:set="run.watson" taskname="watson" executable="curl" osfamily="unix" resultproperty="watson.result" outputproperty="watson.out" >
-				<arg value="-X"/>
-				<arg value="POST"/>
-				<arg value="-u"/>
-				<arg value="&quot;apikey:${watson.apikey}&quot;"/>
-				<arg value="-H"/>
-				<arg value="&quot;Content-Type: application/json&quot;"/>
-				<arg value="-H"/>
-				<arg value="&quot;Accept: audio/wav&quot;"/>
-				<arg value="--data"/>
-				<arg value="'{&quot;text&quot;: &quot;${watson.ssml}&quot; }'"/>
-				<arg value="--output"/>
-				<arg value="${watson.temp.file}"/>
-				<arg value="${watson.url}"/>
-		    </exec>
-
-		    <echo if:set="run.watson" level="verbose" message="${line.separator}${watson.out}" taskname="watson"/>
-			
-			<!-- covert WAV to MP3 -->
-			
-			<exec if:set="run.watson" taskname="wav-to-mp3" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.wav.result" outputproperty="ffmpeg.wav.out" >
-				<arg value="-i"/>
-				<arg value="${watson.temp.file}"/>
-				<arg value="-acodec"/>
-				<arg value="libmp3lame"/>
-				<arg value="${mp3.temp.file}"/>
-			</exec>
-
-			<!-- Use dummy file if not running watson -->
-			<copy unless:set="run.watson"  file="${dita.plugin.fox.jason.audiobook.dir}/resource/nickel.mp3" tofile="${mp3.temp.file}"/>
-
+			<!-- Create an MP3 Output file -->
+			<dummy-text-to-speech if:set="audiobook.dummy" out="${mp3.temp.file}"/> 
+			<watson-text-to-speech if:set="audiobook.watson" file="${ssml.srcfile}" 
+				out="${mp3.temp.file}" voice="${audiobook.voice}"/>
+			<bing-text-to-speech if:set="audiobook.bing" file="${ssml.srcfile}" 
+				out="${mp3.temp.file}" voice="${audiobook.voice}"/> 
 
 			<!-- add meta data to MP3 -->
 			<exec taskname="add-meta" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.meta.result" outputproperty="ffmpeg.meta.out" >
@@ -178,6 +140,158 @@ for (i = 0; i < tracks.length; ++i) {
 
 			<!-- tidy up -->
 			<delete file="${ssml.srcfile}"/>
+
+		</sequential>
+	</macrodef>
+
+	<!--
+		Dummy Transform of an individual SSML file to an MP3 Speech File
+		Just copies over a dummy file for now.
+
+		@param out  - The location of the files to process
+	-->
+	<macrodef name="dummy-text-to-speech">
+		<attribute name="out"/>
+		<sequential>
+			<!-- Use dummy file if not running a real text-speech service -->
+			<copy file="${dita.plugin.fox.jason.audiobook.dir}/resource/nickel.mp3" tofile="@{out}"/>
+		</sequential>
+	</macrodef>
+
+	<!--
+		Ensure that the Bing Speech-to-Text service is authorized
+	-->
+	<macrodef name="bing-authorization">
+		<sequential>
+			<local name="bing.result"/>
+			<local name="bing.out"/>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="bing.auth.temp.file" suffix=".txt"/>
+
+
+			<exec taskname="bing-auth" executable="curl" osfamily="unix" 
+				resultproperty="bing.result" outputproperty="bing.out" >
+				<arg value="-X"/>
+				<arg value="POST"/>
+			
+				<arg value="-H"/>
+				<arg value="Ocp-Apim-Subscription-Key: ${bing.apikey}"/>
+				<arg value="-H"/>
+				<arg value="Content-type: application/x-www-form-urlencoded"/>
+				<arg value="-H"/>
+				<arg value="Content-length: 0"/>
+				<arg value="--output"/>
+				<arg value="${bing.auth.temp.file}"/>
+				<arg value="${bing.authentication.url}"/>
+		    </exec>
+		    <echo taskname="bing-auth" level="verbose" message="${line.separator}${bing.out}"/>
+		    <loadfile property="bing.bearer.token" srcFile="${bing.auth.temp.file}"/>
+		</sequential>
+	</macrodef>
+
+	<!--
+		Bing Transform of an individual SSML file to an MP3 Speech File
+
+		@param file - The input file to process
+		@param out  - The name of the output MP3 file
+		@param out  - The voice to use when running the service
+	-->
+	<macrodef name="bing-text-to-speech">
+		<attribute name="file"/>
+		<attribute name="out"/>
+		<attribute name="voice"/>
+		<sequential>
+			<local name="ssml.temp.file"/>
+			<local name="bing.ssml"/>
+			<local name="bing.result"/>
+			<local name="bing.out"/>
+
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="ssml.temp.file" suffix=".ssml"/>
+
+			<!-- Obtain the stripped down SSML to use with the transform -->
+			<xslt in="@{file}" out="${ssml.temp.file}" 
+				style="${dita.plugin.fox.jason.audiobook.dir}/xsl/bing-ssml.xsl">
+			    <xmlcatalog refid="dita.catalog"/>
+			    <param expression="${audiobook.voice}" name="VOICE"/>
+        		<param expression="@{track}" name="TRACK" />
+			</xslt>
+			<loadfile property="bing.ssml" srcFile="${ssml.temp.file}"/>
+
+			<!-- run Text to speech -->
+			<exec taskname="bing-ssml" executable="curl" osfamily="unix" 
+				resultproperty="bing.result" outputproperty="bing.out" >
+				<arg value="-X"/>
+				<arg value="POST"/>
+				<arg value="-H"/>
+				<arg value="X-Microsoft-OutputFormat: ${bing.output.format}"/>
+				<arg value="-H"/>
+				<arg value="Content-Type: application/ssml+xml"/>
+				<arg value="-H"/>
+				<arg value="Authorization: Bearer: ${bing.bearer.token}"/>
+				<arg value="--http1.1"/>
+				<arg value="--data"/>
+				<arg value="${bing.ssml}"/>
+				<arg value="--output"/>
+				<arg value="@{out}"/>
+				<arg value="${bing.text-to-speech.url}"/>
+		    </exec>
+		    <echo taskname="bing-ssml" level="verbose" message="${line.separator}${bing.out}"/>
+		</sequential>
+	</macrodef>
+
+	<!--
+		Watson Transform of an individual SSML file to an MP3 Speech File
+
+		@param file - The input file to process
+		@param out  - The name of the output MP3 file
+		@param out  - The voice to use when running the service
+	-->
+	<macrodef name="watson-text-to-speech">
+		<attribute name="file"/>
+		<attribute name="out"/>
+		<attribute name="voice"/>
+		<sequential>
+			<local name="ssml.temp.file"/>
+			<local name="watson.ssml"/>
+			<local name="watson.result"/>
+			<local name="watson.out"/>
+
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="ssml.temp.file" suffix=".ssml"/>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="watson.temp.file" suffix=".wav"/>
+
+			<!-- Obtain the stripped down SSML to use with the transform -->
+			<xslt in="@{file}" out="${ssml.temp.file}" 
+				style="${dita.plugin.fox.jason.audiobook.dir}/xsl/watson-ssml.xsl">
+			    <xmlcatalog refid="dita.catalog"/>
+			</xslt>
+
+			<!-- Escape quote marks before sending to webservice -->
+			<replace file="${ssml.temp.file}" token="&quot;" value="/&quot;"/>
+			<loadfile property="watson.ssml" srcFile="${ssml.temp.file}"/>
+
+
+			<!-- run Text to speech -->
+			<exec taskname="watson-ssml" executable="curl" osfamily="unix" 
+				resultproperty="watson.result" outputproperty="watson.out" >
+				<arg value="-X"/>
+				<arg value="POST"/>
+				<arg value="-u"/>
+				<arg value="&quot;apikey:${watson.apikey}&quot;"/>
+				<arg value="-H"/>
+				<arg value="&quot;Content-Type: application/json&quot;"/>
+				<arg value="-H"/>
+				<arg value="&quot;Accept: audio/mp3&quot;"/>
+				<arg value="--data"/>
+				<arg value="'{&quot;text&quot;: &quot;${watson.ssml}&quot; }'"/>
+				<arg value="--output"/>
+				<arg value="@{out}"/>
+				<arg value="${watson.url}?@{voice}"/>
+		    </exec>
+
+		    <echo  taskname="watson-ssml" level="verbose" message="${line.separator}${watson.out}"/>
 
 		</sequential>
 	</macrodef>

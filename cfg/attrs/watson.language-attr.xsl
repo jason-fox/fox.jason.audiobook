@@ -8,7 +8,11 @@
     xmlns:rx="http://www.renderx.com/XSL/Extensions"
     version="2.0">
 
-	<!-- language attribute sets -->
+	<!-- 
+		language attribute sets 
+	
+		see https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-voices 
+	-->
 
 	<xsl:attribute-set name="__language__pt-BR_IsabelaVoice">
 		<xsl:attribute name="language">Brazilian Portuguese</xsl:attribute>

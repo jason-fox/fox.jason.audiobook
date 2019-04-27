@@ -6,6 +6,11 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     version="2.0">
 
+  <!--
+    Remove the outermost <speak> element to reduce the size of the
+    payload to the text-to-speech server
+  -->
+
 	<xsl:output omit-xml-declaration="yes" indent="no"  method="xml"/>
 	<!--xsl:strip-space elements="*"/-->
 

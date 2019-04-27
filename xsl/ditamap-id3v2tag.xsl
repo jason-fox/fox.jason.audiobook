@@ -13,8 +13,14 @@
 </xsl:text>
 	</xsl:variable>
 
+	<!--
+		Avoid excess processing
+	-->
 	<xsl:template match="text()"/>
 
+	<!--
+		Add standard tags based on the ditamap
+	-->
 	<xsl:template match="/">
 		<xsl:text>;FFMETADATA1</xsl:text>
 		<xsl:value-of select="$newline"/>

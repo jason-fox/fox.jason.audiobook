@@ -10,9 +10,13 @@
   </message>
   <message id="AUDI002F" type="FATAL">
     <reason>Watson credentials not set.</reason>
-    <response>Update the watson.properties file to hold your URL and API Key</response>
+    <response>Update the configuration.properties file to hold your URL and API Key</response>
   </message>
-  <message id="AUDI003I" type="INFO">
+   <message id="AUDI003F" type="FATAL">
+    <reason>Azure credentials not set.</reason>
+    <response>Update the configuration.properties file to hold your URL and API Key</response>
+  </message>
+  <message id="AUDI004I" type="INFO">
     <reason>%1</reason>
     <response/>
   </message>
