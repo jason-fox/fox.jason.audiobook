@@ -89,7 +89,6 @@ for (i = 0; i < tracks.length; ++i) {
 			<local name="mp3.temp.file"/>
 			<local name="voice.temp.file"/>
 			
-
 			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
 				property="voice.temp.file" suffix=".txt"/>
 			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
@@ -112,9 +111,9 @@ for (i = 0; i < tracks.length; ++i) {
 
 			<!-- Obtain the meta data to use with the transform -->
 			<xslt in="${ssml.srcfile}" out="${meta.temp.file}" style="${dita.plugin.fox.jason.audiobook.dir}/xsl/create-id3v2tag.xsl">
-			    <xmlcatalog refid="dita.catalog"/>
 			    <param expression="${audiobook.voice}" name="VOICE"/>
-        		<param expression="@{track}" name="TRACK" />
+        	<param expression="@{track}" name="TRACK" />
+			    <xmlcatalog refid="dita.catalog"/>
 			</xslt>
 
 			<!-- Create an MP3 Output file -->
@@ -168,7 +167,6 @@ for (i = 0; i < tracks.length; ++i) {
 			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
 				property="bing.auth.temp.file" suffix=".txt"/>
 
-
 			<exec taskname="bing-auth" executable="curl" osfamily="unix" 
 				resultproperty="bing.result" outputproperty="bing.out" >
 				<arg value="-X"/>
@@ -183,9 +181,9 @@ for (i = 0; i < tracks.length; ++i) {
 				<arg value="--output"/>
 				<arg value="${bing.auth.temp.file}"/>
 				<arg value="${bing.authentication.url}"/>
-		    </exec>
-		    <echo taskname="bing-auth" level="verbose" message="${line.separator}${bing.out}"/>
-		    <loadfile property="bing.bearer.token" srcFile="${bing.auth.temp.file}"/>
+			</exec>
+			<echo taskname="bing-auth" level="verbose" message="${line.separator}${bing.out}"/>
+			<loadfile property="bing.bearer.token" srcFile="${bing.auth.temp.file}"/>
 		</sequential>
 	</macrodef>
 
@@ -272,7 +270,6 @@ for (i = 0; i < tracks.length; ++i) {
 			<replace file="${ssml.temp.file}" token="&quot;" value="/&quot;"/>
 			<loadfile property="watson.ssml" srcFile="${ssml.temp.file}"/>
 
-
 			<!-- run Text to speech -->
 			<exec taskname="watson-ssml" executable="curl" osfamily="unix" 
 				resultproperty="watson.result" outputproperty="watson.out" >
@@ -290,9 +287,7 @@ for (i = 0; i < tracks.length; ++i) {
 				<arg value="@{out}"/>
 				<arg value="${watson.url}?@{voice}"/>
 		    </exec>
-
-		    <echo  taskname="watson-ssml" level="verbose" message="${line.separator}${watson.out}"/>
-
+		    <echo taskname="watson-ssml" level="verbose" message="${line.separator}${watson.out}"/>
 		</sequential>
 	</macrodef>
 
@@ -393,10 +388,9 @@ project.setProperty("audiobook.duration", Number(oldDuration) + duration) ;
 		<attribute name="metadata"/>
 		<attribute name="chapters"/>
 		<sequential>
-
-			<!-- Merge all MP3 Files -->
 			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="m4a.meta.temp.file" suffix=".m4a"/>
 
+			<!-- Merge all MP3 Files -->
       <exec taskname="merge-mp3" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.merge.result" outputproperty="ffmpeg.merge.out" failOnError="false" >
 				<arg value="-f"/>
 				<arg value="concat"/>
@@ -429,13 +423,10 @@ project.setProperty("audiobook.duration", Number(oldDuration) + duration) ;
 				<arg value="2"/>
 				<arg value="-codec"/>
 				<arg value="copy"/>
+				<arg value="-y"/>
 				<arg value="@{dir}/audiobook.m4b"/>
 			</exec>
 			<echo level="verbose" message="${line.separator}${ffmpeg.merge-meta.out}" taskname="add-chapters"/>
-
-
 		</sequential>
 	</macrodef>
-
-
 </antlib>

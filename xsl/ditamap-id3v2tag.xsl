@@ -35,6 +35,14 @@
 			<xsl:value-of select="bookmap/bookmeta/author"/>
 			<xsl:value-of select="$newline"/>
 		</xsl:if>
+		<xsl:if test="bookmap/bookmeta/shortdesc">
+			<xsl:text>description=</xsl:text>
+			<xsl:value-of select="normalize-space(bookmap/bookmeta/shortdesc)"/>
+			<xsl:value-of select="$newline"/>
+			<xsl:text>comment=</xsl:text>
+			<xsl:value-of select="normalize-space(bookmap/bookmeta/shortdesc)"/>
+			<xsl:value-of select="$newline"/>
+		</xsl:if>
 		<xsl:if test="bookmap/bookmeta/publisherinformation">
 			<xsl:text>publisher=</xsl:text>
 			<xsl:value-of select="bookmap/bookmeta/publisherinformation/organization"/>

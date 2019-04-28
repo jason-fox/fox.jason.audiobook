@@ -4,22 +4,23 @@
 	See the accompanying LICENSE file for applicable licenses.
 -->
 <plugin id="fox.jason.audiobook">
-
-  <require plugin="org.dita.html5"/>
-  <transtype name="ssml" desc="Speech Synthesis Markup Language"/>
-  <transtype name="mp3" desc="Create MP3 player audio tracks"/>
-  <transtype name="audiobook" desc="A single Audiobook"/>
-  <feature extension="ant.import" file="build_dita2audiobook.xml"/>
-  <feature extension="dita.xsl.messages" file="resource/messages.xml"/>
-
-  <param name="ssml.service" desc="Specifies the text-to-speech processor." type="enum">
-  	 <val>bing</val>
-     <val default="true">watson</val>
-     <val>dummy</val>
-  </param>
-  <param name="audiobook.cover.art.add" desc="Specifies whether  or not cover art  is to be added to an album." type="enum">
+  <transtype name="ssml" desc="Speech Synthesis Markup Language">
+    <param name="ssml.service" desc="Specifies the text-to-speech processor." type="enum">
+      <val>bing</val>
+      <val default="true">watson</val>
+      <val>dummy</val>
+    </param>
+  </transtype>
+  <transtype name="mp3" extends="ssml" desc="Create MP3 player audio tracks"/>
+  <transtype name="audiobook"  extends="mp3" desc="A single Audiobook">
+    <param name="audiobook.cover.art.add" desc="Specifies whether  or not cover art  is to be added to an album." type="enum">
       <val default="true">yes</val>
       <val>no</val>
     </param>
     <param name="audiobook.cover.art.image" desc="Specifies the cover art to be used for an album." type="string"/>
+  </transtype>
+
+  <feature extension="ant.import" file="build_dita2audiobook.xml"/>
+  <feature extension="dita.xsl.messages" file="resource/messages.xml"/>
+
 </plugin>
