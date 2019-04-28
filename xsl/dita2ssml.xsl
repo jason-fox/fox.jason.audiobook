@@ -104,19 +104,79 @@
     to the word. Similarly add emphasis to words highlighted in bold
   -->
   <xsl:template match="*[contains(@class, ' topic/ph ')]" name="topic.ph">
+
+    <xsl:variable name="lang">
+      <xsl:value-of select="@xml:lang"/>
+    </xsl:variable>
+
+    <xsl:variable name="element">
+      <xsl:choose>
+        <xsl:when test="contains(@class,' hi-d/b ')">
+          <xsl:text>emphasis</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'emphasis')">
+          <xsl:text>emphasis</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'voice')">
+          <xsl:text>voice</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'say-as')">
+          <xsl:text>say-as</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'phoneme')">
+          <xsl:text>phoneme</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'sub')">
+          <xsl:text>sub</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'lang')">
+          <xsl:text>lang</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'break')">
+          <xsl:text>break</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'prosidy')">
+          <xsl:text>prosidy</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'audio')">
+          <xsl:text>audio</xsl:text>
+        </xsl:when>
+        <xsl:when test="@xml:lang">
+          <xsl:text>w</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'voice-transformation')">
+          <xsl:text>voice-transformation</xsl:text>
+        </xsl:when>
+        <xsl:when test="starts-with(@props, 'express-as')">
+          <xsl:text>express-as</xsl:text>
+        </xsl:when>
+        <xsl:otherwise/>
+      </xsl:choose>
+    </xsl:variable>
+
     <xsl:choose>
-      <xsl:when test="contains(@class,' hi-d/b ')">
-        <emphasis>
+      <xsl:when test="not($element='')">
+        <xsl:element name="{$element}">
+          <xsl:analyze-string select="@props" regex="[a-z]*\([^\)]*\)">
+            <xsl:matching-substring>
+              <xsl:variable name="var">
+                <xsl:value-of select="."/>
+              </xsl:variable>
+              <xsl:variable name="attr">
+                <xsl:value-of select="substring-before($var, '(')"/>
+              </xsl:variable>
+              <xsl:attribute name="{$attr}">
+                <xsl:value-of select="substring-before(substring-after($var, '('),')')"/>
+              </xsl:attribute>
+            </xsl:matching-substring>
+          </xsl:analyze-string>
+          <xsl:if test="not($lang='')">
+            <xsl:attribute name="xml:lang">
+              <xsl:value-of select="$lang"/>
+            </xsl:attribute>
+          </xsl:if>
           <xsl:apply-templates/>
-        </emphasis>
-      </xsl:when>
-      <xsl:when test="@xml:lang">
-        <w>
-          <xsl:attribute name="xml:lang">
-            <xsl:value-of select="@xml:lang"/>
-          </xsl:attribute>
-          <xsl:apply-templates/>
-        </w>
+        </xsl:element>
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates/>
