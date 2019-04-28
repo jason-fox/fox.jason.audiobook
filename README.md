@@ -132,7 +132,7 @@ Once the command has run, a `list.txt` and a series of `*.ssml` files will be av
 To run, use the `mp3` transform.
 
 ```console
-PATH_TO_DITA_OT/bin/dita -f mp3  -o out -i PATH_TO_DITAMAP
+PATH_TO_DITA_OT/bin/dita -f mp3  -o out -i PATH_TO_DITAMAP --ssml.service=[bing|watson]
 ```
 
 Once the command has run, a `list.txt` and a series of `*.mp3` files will be available in the output directory.
@@ -142,7 +142,7 @@ Once the command has run, a `list.txt` and a series of `*.mp3` files will be ava
 To run, use the `audiobook` transform.
 
 ```console
-PATH_TO_DITA_OT/bin/dita -f audiobook  -o out -i PATH_TO_DITAMAP
+PATH_TO_DITA_OT/bin/dita -f audiobook  -o out -i PATH_TO_DITAMAP --ssml.service=[bing|watson]
 ```
 
 Once the command has run, an `*.m4b` file will be created in the output directory.
