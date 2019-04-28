@@ -30,38 +30,51 @@
 		<xsl:value-of select="bookmap/booktitle/mainbooktitle"/>
 		<xsl:value-of select="bookmap/title"/>
 		<xsl:value-of select="$newline"/>
-		<xsl:if test="bookmap/bookmeta/author">
-			<xsl:text>artist=</xsl:text>
-			<xsl:value-of select="bookmap/bookmeta/author"/>
-			<xsl:value-of select="$newline"/>
-		</xsl:if>
-		<xsl:if test="bookmap/bookmeta/shortdesc">
-			<xsl:text>description=</xsl:text>
-			<xsl:value-of select="normalize-space(bookmap/bookmeta/shortdesc)"/>
-			<xsl:value-of select="$newline"/>
-			<xsl:text>comment=</xsl:text>
-			<xsl:value-of select="normalize-space(bookmap/bookmeta/shortdesc)"/>
-			<xsl:value-of select="$newline"/>
-		</xsl:if>
-		<xsl:if test="bookmap/bookmeta/publisherinformation">
-			<xsl:text>publisher=</xsl:text>
-			<xsl:value-of select="bookmap/bookmeta/publisherinformation/organization"/>
-			<xsl:value-of select="$newline"/>
-		</xsl:if>
-		<xsl:if test="bookmap/bookmeta/bookrights">
-			<xsl:text>copyright=</xsl:text>
-		    <xsl:text>&#xA9; </xsl:text>
-			<xsl:value-of select="bookmap/bookmeta/bookrights/copyrfirst/year"/>
-			<xsl:if test="bookmap/bookmeta/bookrights/copyrlast/year">
-				 <xsl:text>-</xsl:text>
-				<xsl:value-of select="bookmap/bookmeta/bookrights/copyrlast/year"/>
-			</xsl:if>
-			<xsl:text> </xsl:text>
-			<xsl:value-of select="bookmap/bookmeta/bookrights/bookowner/person"/>
-			<xsl:value-of select="bookmap/bookmeta/bookrights/bookowner/organization"/>  
+		<!-- additional tags based on the bookmeta -->
+		<xsl:apply-templates select="bookmap/bookmeta"/>
+	</xsl:template>
+
+	<!-- author maps to id3v2 artist tag -->
+	<xsl:template match="author">
+		<xsl:text>artist=</xsl:text>
+		<xsl:value-of select="."/>
+		<xsl:value-of select="$newline"/>
+	</xsl:template>
+
+	<!-- shortdesc maps to id3v2 description and comment tag -->
+	<xsl:template match="shortdesc">
+		<xsl:text>description=</xsl:text>
+		<xsl:value-of select="normalize-space(.)"/>
+		<xsl:value-of select="$newline"/>
+		<xsl:text>comment=</xsl:text>
+		<xsl:value-of select="normalize-space(.)"/>
+		<xsl:value-of select="$newline"/>
+	</xsl:template>
+
+	<!-- publisherinformation maps to id3v2 publisher tag -->
+	<xsl:template match="publisherinformation">
+		<xsl:text>publisher=</xsl:text>
+		<xsl:value-of select="organization"/>
+		<xsl:value-of select="$newline"/>
+		<xsl:if test="published/completed/year">
+			<xsl:text>year=</xsl:text>
+			<xsl:value-of select="published/completed/year"/>
 			<xsl:value-of select="$newline"/>
 		</xsl:if>
 	</xsl:template>
+
+	<!-- bookrights maps to id3v2 copyright tag -->
+	<xsl:template match="bookrights">
+		<xsl:text>copyright=</xsl:text>
+		<xsl:text>&#xA9; </xsl:text>
+		<xsl:value-of select="copyrfirst/year"/>
+		<xsl:if test="copyrlast/year">
+			 <xsl:text>-</xsl:text>
+			<xsl:value-of select="copyrlast/year"/>
+		</xsl:if>
+		<xsl:text> </xsl:text>
+		<xsl:value-of select="bookowner/person"/>
+		<xsl:value-of select="bookowner/organization"/>  
+		<xsl:value-of select="$newline"/>
+	</xsl:template>
 </xsl:stylesheet>
-
-
