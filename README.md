@@ -215,7 +215,7 @@ attribute. These optional attributes are illustrated within the entries for thei
 
 -   `ordinal` - This value will speak the ordinal value for the given digit within the enclosed tag.
 
-#### Example (This will say _second first_):
+#### Example (This will say _"second first"_):
 
 ```xml
 <ph props="say-as interpret-as(ordinal)">2</ph>
@@ -280,8 +280,8 @@ will be synthesized as a decimal only, with no pronunciation of currency type.
 <ph props="say-as interpret-as(vxml:currency)">USD45.329</ph>
 ```
 
--   `vxml:phone` - This value will speak a phone number with both digits and punctuation, similar to the number value
-    used with format=`telephone`.
+-   `vxml:phone` - This value will speak a phone number with both digits and punctuation, similar to the `number` value
+    used with `format(telephone)`.
 
 ```xml
 <ph props="say-as interpret-as(vxml:phone)">555-555-5555</ph>
@@ -296,13 +296,13 @@ attributes:
     International Phonetic Alphabet, and `ibm` for the SPR representation.
 
 -   `ph` - This attribute specifies the pronunciation. It is a required attribute. This example shows how a
-    pronunciation for `tomato` is specified using the IPA phonology, where the symbols are given using Unicode:
+    pronunciation for _"tomato"_ is specified using the IPA phonology, where the symbols are given using Unicode:
 
 ```xml
 <ph props="phoneme alphabet(ipa) ph(t&#x259;mei&#x27E;ou&#x325;)">tomato</ph>
 ```
 
-This example shows how a pronunciation for `tomato` is specified using the SPR phonology:
+This example shows how a pronunciation for _"tomato"_ is specified using the SPR phonology:
 
 ```xml
 <ph props="phoneme alphabet(ibm) ph(.0tx.1me.0fo)">tomato</ph>
@@ -330,7 +330,7 @@ defined an error will result. The optional attributes are:
 Examples:
 
 ```xml
-<ph props="voice age(60)">Sixty year-old's voice .</ph>
+<ph props="voice age(60)">Sixty year-old's voice.</ph>
 <ph props="voice gender(female)">This is a female voice.</ph>
 <ph props="voice name(Allison)">Use the IBM TTS voice named Allison.</ph>
 <ph props="voice name(Allison, Andrew, Tyler)">Use the first available IBM TTS voice named in the given list.</ph>
