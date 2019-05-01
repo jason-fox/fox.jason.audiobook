@@ -267,7 +267,8 @@ for (i = 0; i < tracks.length; ++i) {
 			</xslt>
 
 			<!-- Escape quote marks before sending to webservice -->
-			<replace file="${ssml.temp.file}" token="&quot;" value="/&quot;"/>
+			<replace file="${ssml.temp.file}" token="&quot;" value="\&quot;"/>
+			<replace file="${ssml.temp.file}" token="&apos;" value=""/>
 			<loadfile property="watson.ssml" srcFile="${ssml.temp.file}"/>
 
 			<!-- run Text to speech -->
@@ -276,16 +277,16 @@ for (i = 0; i < tracks.length; ++i) {
 				<arg value="-X"/>
 				<arg value="POST"/>
 				<arg value="-u"/>
-				<arg value="&quot;apikey:${watson.apikey}&quot;"/>
+				<arg value="apikey:${watson.apikey}"/>
 				<arg value="-H"/>
-				<arg value="&quot;Content-Type: application/json&quot;"/>
+				<arg value="Content-Type: application/json"/>
 				<arg value="-H"/>
-				<arg value="&quot;Accept: audio/mp3&quot;"/>
+				<arg value="Accept: audio/mp3"/>
 				<arg value="--data"/>
-				<arg value="'{&quot;text&quot;: &quot;${watson.ssml}&quot; }'"/>
+				<arg value="{&quot;text&quot;: &quot;${watson.ssml}&quot;}"/>
 				<arg value="--output"/>
 				<arg value="@{out}"/>
-				<arg value="${watson.url}?@{voice}"/>
+				<arg value="${watson.text-to-speech.url}?voice=@{voice}"/>
 		    </exec>
 		    <echo taskname="watson-ssml" level="verbose" message="${line.separator}${watson.out}"/>
 		</sequential>
