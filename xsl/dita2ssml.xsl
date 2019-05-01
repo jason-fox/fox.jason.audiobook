@@ -200,4 +200,9 @@
   <xsl:template match="*[contains(@class,' topic/table ')]"/>
   <xsl:template match="*[contains(@class,' topic/simpletable ')]"/>
 
+  <xsl:template match="text()">
+    <xsl:value-of select="."/>
+    <xsl:text> </xsl:text>
+  </xsl:template>
+
 </xsl:stylesheet>
