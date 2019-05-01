@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  This file is part of the DITA-OT Audiobook Plug-in project.
+  See the accompanying LICENSE file for applicable licenses.
+-->
+<antlib xmlns:if="ant:if" xmlns:unless="ant:unless">
+
+	<!--
+		Iterator function to run a given macro against a set of files
+
+		@param file - A file holding the location of the mp3 files
+		@param dir  - The location of the files to process
+		@param macro - A macro to run.
+
+	-->
+	<scriptdef language="javascript" name="iterate">
+		<attribute name="dir"/>
+		<attribute name="file"/>
+		<attribute name="macro"/>
+<![CDATA[
+
+
+var dir = attributes.get("dir");
+var file = attributes.get("file");
+var macro = attributes.get("macro");
+
+var tracklist = org.apache.tools.ant.util.FileUtils.readFully(
+				new java.io.FileReader(file));
+var tracks = tracklist.split('\n');
+
+for (i = 0; i < tracks.length; ++i) {   
+	task = project.createTask(macro);
+	if (tracks[i] !== "") {
+
+		track = tracks[i].substring(5);
+        try {
+        	task.setDynamicAttribute("src", track);
+        	task.setDynamicAttribute("dir", dir);
+        	task.setDynamicAttribute("track", i + 1);
+            task.execute();
+        } catch(err) {
+            task.log( "Execution error: " + err.message );
+        }
+	}
+}
+
+]]>
+	</scriptdef>
+
+	<!--
+		Transform all SSML files in a directory to MP3
+
+		@param dir  - The location of the files to process
+		@param topiclist - A list of filenames
+	-->
+	<macrodef name="ssml-to-mp3">
+		<attribute name="dir"/>
+		<attribute name="file"/>
+		<sequential>
+			<iterate macro="transform-to-audio" dir="@{dir}" file="@{file}" />
+		</sequential>
+	</macrodef>
+
+	<!--
+		Transform an individual SSML file to an MP3 Speech File
+
+		@param dir  - The location of the files to process
+		@param src - A file to transform
+	-->
+	<macrodef name="transform-to-audio">
+		<attribute name="src"/>
+		<attribute name="dir"/>
+		<attribute name="track"/>
+		<sequential>
+
+			<local name="mp3.out.file" />
+			<local name="mp3.dir" />
+			<local name="mp3.basename"/>
+			<local name="ssml.srcfile"/>
+
+			<local name="audiobook.voice"/>
+			
+			<local name="ffmpeg.wav.result"/>
+			<local name="ffmpeg.wav.out"/>
+			<local name="ffmpeg.meta.result"/>
+			<local name="ffmpeg.meta.out"/>
+
+			<local name="meta.temp.file"/>
+			<local name="mp3.temp.file"/>
+			<local name="voice.temp.file"/>
+			
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="voice.temp.file" suffix=".txt"/>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="meta.temp.file" suffix=".meta"/>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="mp3.temp.file" suffix=".mp3"/>
+
+			<property name="mp3.out.file" value="@{dir}/@{src}"/>
+			<dirname property="mp3.dir" file="${mp3.out.file}"/>
+			<basename property="mp3.basename" file="${mp3.out.file}"  suffix=".mp3"/>
+			<property name="ssml.srcfile" 
+				value="${mp3.dir}${file.separator}${mp3.basename}.ssml"/>
+
+			<!-- Obtain the Voice to use with the transform -->
+			<xslt in="${ssml.srcfile}" out="${voice.temp.file}" style="${dita.plugin.fox.jason.audiobook.dir}/xsl/select-voice.xsl">
+			    <xmlcatalog refid="dita.catalog"/>
+			    <param expression="${ssml.service}" name="SERVICE"/>
+			    <param expression="${ssml.gender}" name="GENDER"/>
+			 </xslt>
+			<loadfile property="audiobook.voice" srcFile="${voice.temp.file}"/>
+
+
+			<!-- Obtain the meta data to use with the transform -->
+			<xslt in="${ssml.srcfile}" out="${meta.temp.file}" style="${dita.plugin.fox.jason.audiobook.dir}/xsl/create-id3v2tag.xsl">
+			    <param expression="${audiobook.voice}" name="VOICE"/>
+        		<param expression="@{track}" name="TRACK" />
+			    <xmlcatalog refid="dita.catalog"/>
+			</xslt>
+
+			<!-- Create an MP3 Output file -->
+			<dummy-text-to-speech if:set="audiobook.dummy" out="${mp3.temp.file}"/> 
+			<watson-text-to-speech if:set="audiobook.watson" file="${ssml.srcfile}" 
+				out="${mp3.temp.file}" voice="${audiobook.voice}"/>
+			<bing-text-to-speech if:set="audiobook.bing" file="${ssml.srcfile}" 
+				out="${mp3.temp.file}" voice="${audiobook.voice}"/> 
+
+			<!-- add meta data to MP3 -->
+			<exec taskname="add-meta" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.meta.result" outputproperty="ffmpeg.meta.out" >
+				<arg value="-i"/>
+				<arg value="${mp3.temp.file}"/>
+				<arg value="-i"/>
+				<arg value="${meta.temp.file}"/>
+				<arg value="-map_metadata"/>
+				<arg value="1"/>
+				<arg value="-codec"/>
+				<arg value="copy"/>
+				<arg value="${mp3.out.file}"/>
+				<arg value="-y"/>
+			</exec>
+
+			<!-- tidy up -->
+			<delete file="${ssml.srcfile}"/>
+
+		</sequential>
+	</macrodef>
+
+	<!--
+		Dummy Transform of an individual SSML file to an MP3 Speech File
+		Just copies over a dummy file for now.
+
+		@param out  - The location of the files to process
+	-->
+	<macrodef name="dummy-text-to-speech">
+		<attribute name="out"/>
+		<sequential>
+			<!-- Use dummy file if not running a real text-speech service -->
+			<copy file="${dita.plugin.fox.jason.audiobook.dir}/resource/nickel.mp3" tofile="@{out}"/>
+		</sequential>
+	</macrodef>
+
+	<!--
+		Ensure that the Bing Speech-to-Text service is authorized
+	-->
+	<macrodef name="bing-authorization">
+		<sequential>
+			<local name="bing.result"/>
+			<local name="bing.out"/>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="bing.auth.temp.file" suffix=".txt"/>
+
+			<exec taskname="bing-auth" executable="curl" osfamily="unix" 
+				resultproperty="bing.result" outputproperty="bing.out" >
+				<arg value="-X"/>
+				<arg value="POST"/>
+			
+				<arg value="-H"/>
+				<arg value="Ocp-Apim-Subscription-Key: ${bing.apikey}"/>
+				<arg value="-H"/>
+				<arg value="Content-type: application/x-www-form-urlencoded"/>
+				<arg value="-H"/>
+				<arg value="Content-length: 0"/>
+				<arg value="--output"/>
+				<arg value="${bing.auth.temp.file}"/>
+				<arg value="${bing.authentication.url}"/>
+			</exec>
+			<echo taskname="bing-auth" level="verbose" message="${line.separator}${bing.out}"/>
+			<loadfile property="bing.bearer.token" srcFile="${bing.auth.temp.file}"/>
+		</sequential>
+	</macrodef>
+
+	<!--
+		Bing Transform of an individual SSML file to an MP3 Speech File
+
+		@param file - The input file to process
+		@param out  - The name of the output MP3 file
+		@param out  - The voice to use when running the service
+	-->
+	<macrodef name="bing-text-to-speech">
+		<attribute name="file"/>
+		<attribute name="out"/>
+		<attribute name="voice"/>
+		<sequential>
+			<local name="ssml.temp.file"/>
+			<local name="bing.ssml"/>
+			<local name="bing.result"/>
+			<local name="bing.out"/>
+
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="ssml.temp.file" suffix=".ssml"/>
+
+			<!-- Obtain the stripped down SSML to use with the transform -->
+			<xslt in="@{file}" out="${ssml.temp.file}" 
+				style="${dita.plugin.fox.jason.audiobook.dir}/xsl/bing-ssml.xsl">
+			    <xmlcatalog refid="dita.catalog"/>
+			    <param expression="${audiobook.voice}" name="VOICE"/>
+        		<param expression="@{track}" name="TRACK" />
+			</xslt>
+			<loadfile property="bing.ssml" srcFile="${ssml.temp.file}"/>
+
+			<!-- run Text to speech -->
+			<exec taskname="bing-ssml" executable="curl" osfamily="unix" 
+				resultproperty="bing.result" outputproperty="bing.out" >
+				<arg value="-X"/>
+				<arg value="POST"/>
+				<arg value="-H"/>
+				<arg value="X-Microsoft-OutputFormat: ${bing.output.format}"/>
+				<arg value="-H"/>
+				<arg value="Content-Type: application/ssml+xml"/>
+				<arg value="-H"/>
+				<arg value="Authorization: Bearer: ${bing.bearer.token}"/>
+				<arg value="--http1.1"/>
+				<arg value="--data"/>
+				<arg value="${bing.ssml}"/>
+				<arg value="--output"/>
+				<arg value="@{out}"/>
+				<arg value="${bing.text-to-speech.url}"/>
+		    </exec>
+		    <echo taskname="bing-ssml" level="verbose" message="${line.separator}${bing.out}"/>
+		</sequential>
+	</macrodef>
+
+	<!--
+		Watson Transform of an individual SSML file to an MP3 Speech File
+
+		@param file - The input file to process
+		@param out  - The name of the output MP3 file
+		@param out  - The voice to use when running the service
+	-->
+	<macrodef name="watson-text-to-speech">
+		<attribute name="file"/>
+		<attribute name="out"/>
+		<attribute name="voice"/>
+		<sequential>
+			<local name="ssml.temp.file"/>
+			<local name="watson.ssml"/>
+			<local name="watson.result"/>
+			<local name="watson.out"/>
+
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="ssml.temp.file" suffix=".ssml"/>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="watson.temp.file" suffix=".wav"/>
+
+			<!-- Obtain the stripped down SSML to use with the transform -->
+			<xslt in="@{file}" out="${ssml.temp.file}" 
+				style="${dita.plugin.fox.jason.audiobook.dir}/xsl/watson-ssml.xsl">
+			    <xmlcatalog refid="dita.catalog"/>
+			</xslt>
+
+			<!-- Escape quote marks before sending to webservice -->
+			<replace file="${ssml.temp.file}" token="&quot;" value="\&quot;"/>
+			<replace file="${ssml.temp.file}" token="&apos;" value=""/>
+			<loadfile property="watson.ssml" srcFile="${ssml.temp.file}"/>
+
+			<!-- run Text to speech -->
+			<exec taskname="watson-ssml" executable="curl" osfamily="unix" 
+				resultproperty="watson.result" outputproperty="watson.out" >
+				<arg value="-X"/>
+				<arg value="POST"/>
+				<arg value="-u"/>
+				<arg value="apikey:${watson.apikey}"/>
+				<arg value="-H"/>
+				<arg value="Content-Type: application/json"/>
+				<arg value="-H"/>
+				<arg value="Accept: audio/mp3"/>
+				<arg value="--data"/>
+				<arg value="{&quot;text&quot;: &quot;${watson.ssml}&quot;}"/>
+				<arg value="--output"/>
+				<arg value="@{out}"/>
+				<arg value="${watson.text-to-speech.url}?voice=@{voice}"/>
+		    </exec>
+		    <echo taskname="watson-ssml" level="verbose" message="${line.separator}${watson.out}"/>
+		</sequential>
+	</macrodef>
+
+	<!--
+		Read metadata from all MP3 files and create a chapter file
+
+		@param dir  - The location of the files to process
+		@param file - A list of MP3 milenames
+	-->
+	<macrodef name="create-chapters">
+		<attribute name="dir"/>
+		<attribute name="file"/>
+		<sequential>
+			<iterate macro="read-audio-file" dir="@{dir}" file="@{file}" />
+		</sequential>
+	</macrodef>
+
+	<!--
+		Read metadata from a single MP3 files and add a chapter entry
+
+		@param dir  - The location of the files to process
+		@param track - The current track number
+		@param file - A list of MP3 milenames
+	-->
+	<macrodef name="read-audio-file">
+		<attribute name="src"/>
+		<attribute name="dir"/>
+		<attribute name="track"/>
+		<sequential>
+			<local name="ffmpeg.meta.result"/>
+			<local name="ffmpeg.meta.out"/>
+			<local name="mp3.meta.temp.file"/>
+
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="mp3.meta.temp.file" suffix=".meta"/>
+
+			<!-- 
+				read the meta data to obtain chapter running time 
+				and chapter title
+			-->
+			<exec taskname="read-meta" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.meta.result" outputproperty="ffmpeg.meta.out" failOnError="false" >
+				<arg value="-i"/>
+				<arg value="@{dir}/@{src}"/>
+				<arg value="-f"/>
+				<arg value="ffmetadata"/>
+				<arg value="${mp3.meta.temp.file}"/>
+			</exec>
+
+			<!-- Create a Chapter entry -->
+			<script language="javascript">
+			<![CDATA[
+var chapter = project.getProperty("chapter.temp.file");
+var input = project.getProperty("ffmpeg.meta.out").split('\n');
+var oldDuration = project.getProperty("audiobook.duration") ;
+var timeString;
+var titleString;
+
+for (i = 0; i < input.length; ++i) { 
+	line = input[i].trim();
+	start = line.indexOf(':');
+	if (line.startsWith('Duration')){
+		timeString = line.substring(start + 2, start + 13);
+	} else if (line.startsWith('title')){
+		titleString = line.substring(start+ 2);
+	}
+}
+
+var datetime = new Date('1970-01-01T' + timeString + 'Z');
+var duration = datetime.getTime();
+
+var output = '\n[CHAPTER]\nTIMEBASE=1/1000\nSTART=' + 
+	Number(oldDuration) + '\nEND=' + (Number(oldDuration) + duration) +
+	'\ntitle=' + titleString + '\n#chapter duration ' + timeString
+
+var task = project.createTask('echo');
+  task.setFile(new java.io.File(chapter));
+  task.setMessage(output);
+  task.setAppend(true);
+  task.perform();
+
+project.setProperty("audiobook.duration", Number(oldDuration) + duration) ;	    
+		    ]]>
+			</script>
+		</sequential>
+	</macrodef>
+
+
+	<!--
+		Combine all MP3 files and create an Audiobook with chapters
+
+		@param dir  - The location of the files to process
+		@param file - A list of MP3 milenames
+		@param metadata - The metadata to add to the audiobook
+		@param chapters - The chapters data
+	-->
+	<macrodef name="merge-audiobook">
+		<attribute name="dir"/>
+		<attribute name="file"/>
+		<attribute name="metadata"/>
+		<attribute name="chapters"/>
+		<sequential>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="m4a.meta.temp.file" suffix=".m4a"/>
+
+			<!-- Merge all MP3 Files -->
+      <exec taskname="merge-mp3" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.merge.result" outputproperty="ffmpeg.merge.out" failOnError="false" >
+				<arg value="-f"/>
+				<arg value="concat"/>
+				<arg value="-safe"/>
+				<arg value="0"/>
+				<arg value="-i"/>
+				<arg value="@{file}"/>
+				<arg value="-vn"/>
+				<arg value="-y"/>
+				<arg value="-b:a"/>
+				<arg value="64k"/>
+				<arg value="-acodec"/>
+				<arg value="aac"/>
+				<arg value="-ac"/>
+				<arg value="2"/>
+				<arg value="${m4a.meta.temp.file}"/>
+			</exec>
+
+			<!-- Add Chapter info and metadata -->
+			<exec taskname="add-chapters" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.merge-meta.result" outputproperty="ffmpeg.merge-meta.out" failOnError="false" >
+				<arg value="-i"/>
+				<arg value="${m4a.meta.temp.file}"/>
+				<arg value="-i"/>
+				<arg value="@{metadata}"/>
+				<arg value="-i"/>
+				<arg value="@{chapters}"/>
+				<arg value="-map_metadata"/>
+				<arg value="1"/>
+				<arg value="-map_chapters"/>
+				<arg value="2"/>
+				<arg value="-codec"/>
+				<arg value="copy"/>
+				<arg value="-y"/>
+				<arg value="@{dir}/audiobook.m4b"/>
+			</exec>
+			<echo level="verbose" message="${line.separator}${ffmpeg.merge-meta.out}" taskname="add-chapters"/>
+		</sequential>
+	</macrodef>
+</antlib>
