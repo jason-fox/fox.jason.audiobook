@@ -6,6 +6,37 @@
 
 This DITA-OT plug-in transforms DITA to speech in the form of an audiobook.
 
+### DITA Topic
+
+```xml
+<task id="replacecover" xml:lang="en-us">
+  <title>Replace the cover of your system.</title>
+  <shortdesc>The cover needs to be put back on to reduce problems from dust.</shortdesc>
+  <taskbody>
+    <steps>
+      <step>
+        <cmd>Retrieve the computer's cover from its safe place. Put it back on.</cmd>
+      </step>
+      <step>
+        <cmd>Retrieve the screws from the safe place. Put them back in.</cmd>
+      </step>
+      <step>
+        <cmd>Put away your screwdriver before you lose it.</cmd>
+      </step>
+    </steps>
+  </taskbody>
+</task>
+```
+
+### MP3 Output File
+
+<audio controls>
+  <source src="https://jason-fox.github.io/fox.jason.audiobook/replacecover.mp3" type="audio/mpeg">
+  <a href="https://jason-fox.github.io/fox.jason.audiobook/replacecover.mp3">
+    <img src="https://jason-fox.github.io/fox.jason.audiobook/mp3.png"/>
+  </a>
+</audio>
+
 # Table of Contents
 
 -   [Install](#install)
