@@ -67,6 +67,8 @@
     <condition property="audiobook.dummy">
       <equals arg1="${ssml.service}" arg2="dummy"/>
     </condition>
+
+    <property name="ssml.gender" value="male"/>
     
     <dita-ot-fail id="AUDI002F" if:set="audiobook.watson">
       <condition>

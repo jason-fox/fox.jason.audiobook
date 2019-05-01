@@ -10,7 +10,13 @@
       <val default="true">watson</val>
       <val>dummy</val>
     </param>
+    <param name="ssml.gender" desc="Prefered Voice Gender" type="enum">
+      <val>female</val>
+      <val default="true">male</val>
+    </param>
   </transtype>
+
+  
   <transtype name="mp3" extends="ssml" desc="Create MP3 player audio tracks"/>
   <transtype name="audiobook"  extends="mp3" desc="A single Audiobook">
     <param name="audiobook.cover.art.add" desc="Specifies whether  or not cover art  is to be added to an album." type="enum">

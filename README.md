@@ -7,39 +7,42 @@ This DITA-OT plug-in transforms DITA to speech in the form of an audiobook.
 
 # Table of Contents
 
-- [Install](#install)
-  * [Installing DITA-OT](#installing-dita-ot)
-  * [Installing the Plug-in](#installing-the-plug-in)
-  * [Installing the FFMpeg tool](#installing-the-ffmpeg-tool)
-  * [Signing up for a Text-to-Speech Service](#signing-up-for-a-text-to-speech-service)
-    + [Text-to-Speech using IBM Cloud Services](#text-to-speech-using-ibm-cloud-services)
-    + [Text-to-Speech using Microsoft Azure](#text-to-speech-using-microsoft-azure)
-- [Usage](#usage)
-  * [Invocation from the Command line](#invocation-from-the-command-line)
-    + [Obtaining a series of SSML Files](#obtaining-a-series-of-ssml-files)
-    + [Obtaining a series of MP3 Files](#obtaining-a-series-of-mp3-files)
-    + [Creating an audiobook](#creating-an-audiobook)
-    + [Parameter Reference](#parameter-reference)
-  * [Marking up SSML tags.](#marking-up-ssml-tags)
-- [Contribute](#contribute)
-- [License](#license)
+-   [Install](#install)
+    -   [Installing DITA-OT](#installing-dita-ot)
+    -   [Installing the Plug-in](#installing-the-plug-in)
+    -   [Installing the FFMpeg tool](#installing-the-ffmpeg-tool)
+    -   [Signing up for a Text-to-Speech Service](#signing-up-for-a-text-to-speech-service)
+        -   [Text-to-Speech using IBM Cloud Services](#text-to-speech-using-ibm-cloud-services)
+        -   [Text-to-Speech using Microsoft Azure](#text-to-speech-using-microsoft-azure)
+-   [Usage](#usage)
+    -   [Invocation from the Command line](#invocation-from-the-command-line)
+        -   [Obtaining a series of SSML Files](#obtaining-a-series-of-ssml-files)
+        -   [Obtaining a series of MP3 Files](#obtaining-a-series-of-mp3-files)
+        -   [Creating an audiobook](#creating-an-audiobook)
+        -   [Parameter Reference](#parameter-reference)
+    -   [Selecting a voice to use](#selecting-a-voice-to-use)
+    -   [Marking up SSML tags.](#marking-up-ssml-tags)
+-   [Contribute](#contribute)
+-   [License](#license)
 
 # Install
 
-The audiobook plug-in has been tested against [DITA-OT 3.x](http://www.dita-ot.org/download). It is recommended that you upgrade to the latest version.
+The audiobook plug-in has been tested against [DITA-OT 3.x](http://www.dita-ot.org/download). It is recommended that you
+upgrade to the latest version.
 
 ## Installing DITA-OT
 
 The DITA-OT Audiobook transform is a plug-in for the DITA Open Toolkit.
 
-- Full installation instructions for downloading DITA-OT can be found
-  [here](https://www.dita-ot.org/3.3/topics/installing-client.html).
+-   Full installation instructions for downloading DITA-OT can be found
+    [here](https://www.dita-ot.org/3.3/topics/installing-client.html).
 
-    1.  Download the `dita-ot-3.3.zip` package from the project website at [dita-ot.org/download](https://www.dita-ot.org/download)
+    1.  Download the `dita-ot-3.3.zip` package from the project website at
+        [dita-ot.org/download](https://www.dita-ot.org/download)
     2.  Extract the contents of the package to the directory where you want to install DITA-OT.
     3.  **Optional**: Add the absolute path for the `bin` directory to the _PATH_ system variable.
 
-  This defines the necessary environment variable to run the `dita` command from the command line.
+    This defines the necessary environment variable to run the `dita` command from the command line.
 
 ```console
 curl -LO https://github.com/dita-ot/dita-ot/releases/download/3.3/dita-ot-3.3.zip
@@ -49,7 +52,7 @@ rm dita-ot-3.3.zip
 
 ## Installing the Plug-in
 
-- Run the plug-in installation command:
+-   Run the plug-in installation command:
 
 ```console
 dita -install https://github.com/jason-fox/fox.jason.audiobook/archive/master.zip
@@ -59,63 +62,72 @@ The `dita` command line tool requires no additional configuration.
 
 ## Installing the FFMpeg tool
 
-FFmpeg is a free software project consisting of a software suite of libraries and programs for handling video,
-audio, and other multimedia files and streams. FFmpeg is published under the GNU Lesser General Public License 2.1+
-or GNU General Public License 2+ (depending on which options are enabled).
+FFmpeg is a free software project consisting of a software suite of libraries and programs for handling video, audio,
+and other multimedia files and streams. FFmpeg is published under the GNU Lesser General Public License 2.1+ or GNU
+General Public License 2+ (depending on which options are enabled).
 
 To download a copy follow the instructions on the [Download page](https://ffmpeg.org/download.html)
 
 ## Signing up for a Text-to-Speech Service
 
-Several publically available **text-to-speech** cloud services are available for use, they typically
-offer a _try-before-you-buy_ option and generally offer sample access to the service for without cost.
-Upgrading to a paid version will be necessary when transforming larger documents.
+Several publically available **text-to-speech** cloud services are available for use, they typically offer a
+_try-before-you-buy_ option and generally offer sample access to the service for without cost. Upgrading to a paid
+version will be necessary when transforming larger documents.
 
-###  Text-to-Speech using IBM Cloud Services
+### Text-to-Speech using IBM Cloud Services
 
-The IBM Text to Speech service processes text and natural language to generate synthesized audio output complete
-with appropriate cadence and intonation. It is available in several voices:
+The IBM Text to Speech service processes text and natural language to generate synthesized audio output complete with
+appropriate cadence and intonation. It is available in several voices:
 
 Introduction: [Getting Started](https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-gettingStarted)
 
 Create an instance of the service:
-1.  Go to the [Text to Speech](https://cloud.ibm.com/catalog/services/text-to-speech) External link icon page
-    in the IBM Cloud Catalog.
+
+1.  Go to the [Text to Speech](https://cloud.ibm.com/catalog/services/text-to-speech) External link icon page in the IBM
+    Cloud Catalog.
 2.  Sign up for a free IBM Cloud account or log in.
 3.  Click Create.
 
 Copy the credentials to authenticate to your service instance:
-1.  From the [IBM Cloud dashboard](https://cloud.ibm.com/dashboard/apps) External link icon, click on your
-    **Text to Speech** service instance to go to the **Text to Speech** service dashboard page.
+
+1.  From the [IBM Cloud dashboard](https://cloud.ibm.com/dashboard/apps) External link icon, click on your **Text to
+    Speech** service instance to go to the **Text to Speech** service dashboard page.
 2.  On the Manage page, click Show to view your credentials.
 3.  Copy the `API Key` and `URL` values.
-4. Within the plug-in alter the file `cfg/configuration.properties` to hold your `API Key` and `URL`.
+4.  Within the plug-in alter the file `cfg/configuration.properties` to hold your `API Key` and `URL`.
 
-###  Text-to-Speech using Microsoft Azure
+### Text-to-Speech using Microsoft Azure
 
-The Speech Services allow you to convert text into synthesized speech and get a list of supported voices for a region using a set of REST APIs. Each available endpoint is associated with a region. A subscription key for the endpoint/region you plan to use is required.
+The Speech Services allow you to convert text into synthesized speech and get a list of supported voices for a region
+using a set of REST APIs. Each available endpoint is associated with a region. A subscription key for the
+endpoint/region you plan to use is required.
 
 Introduction: [Getting Started](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started)
 
 Create an instance of the service:
+
 1.  Go to Try [Cognitive Services](https://azure.microsoft.com/try/cognitive-services/)
 2.  Select the Speech APIs tab.
 3.  Under Speech Services, select the Get API Key button.
 4.  Agree to the terms and select your locale from the drop-down menu.
 5.  Sign in by using your Microsoft, Facebook, LinkedIn, or GitHub account.
 
-You can sign up for a free Microsoft account at the Microsoft account portal. To get started, click Sign in with Microsoft and then, when asked to sign in, click Create one. Follow the steps to create and verify your new Microsoft account.
+You can sign up for a free Microsoft account at the Microsoft account portal. To get started, click Sign in with
+Microsoft and then, when asked to sign in, click Create one. Follow the steps to create and verify your new Microsoft
+account.
 
-After you sign in to Try Cognitive Services, your free trial begins. The displayed webpage lists all the Azure Cognitive Services services for which you currently have trial subscriptions. Two subscription keys are listed beside Speech Services. You can use either key in your applications.
+After you sign in to Try Cognitive Services, your free trial begins. The displayed webpage lists all the Azure Cognitive
+Services services for which you currently have trial subscriptions. Two subscription keys are listed beside Speech
+Services. You can use either key in your applications.
 
 Copy the credentials to authenticate to your service instance:
+
 1.  Copy either of the `API Key` and `Endpoint` values.
 2.  Within the plug-in alter the file `cfg/configuration.properties` to hold your `API Key` and `URL`.
 
 # Usage
 
 ## Invocation from the Command line
-
 
 ### Obtaining a series of SSML Files
 
@@ -150,18 +162,61 @@ Once the command has run, an `*.m4b` file will be created in the output director
 ### Parameter Reference
 
 -   `ssml.service` - Decides which translation service to use:
-    -  `dummy` - Avoids accessing a Speech-to-Text service, uses a dummy MP3 file for all outputs
-    -  `watson` - Connects to the IBM Cloud Speech-to-Text service
-    -  `bing` - Connects to the Microsoft Speech-to-Text service
--   `audiobook.cover.art.add` - Specifies whether  or not cover art  is to be added to an album (default `yes`)
--   `audiobook.cover.art.image` - Specifies the cover art to be used for an album, the default will use
-    the image plug-in alter the file `cfg/coverart.png`
+    -   `dummy` - Avoids accessing a Speech-to-Text service, uses a dummy MP3 file for all outputs
+    -   `watson` - Connects to the IBM Cloud Speech-to-Text service
+    -   `bing` - Connects to the Microsoft Speech-to-Text service
+-   `ssml.gender` - Prefered Voice Gender:
+    -   `male` - Use a male voice for text-to-speech where available.
+    -   `female` - Use a female voice for text-to-speech where available.
+-   `audiobook.cover.art.add` - Specifies whether or not cover art is to be added to an album (default `yes`)
+-   `audiobook.cover.art.image` - Specifies the cover art to be used for an album, the default will use the image
+    plug-in alter the file `cfg/coverart.png`
+
+## Selecting a voice to use
+
+When running the `mp3` or `audiobook` transforms, the **male voice** corresponding to the `xml:lang` attribute of the
+root topic will be chosen to render the speech. Use the `--ssml.gender=female` parameter to switch to a female voice. If
+no voice of the preferred gender can be found, the default will be used.
+
+A list of available voices can be found within following files:
+
+-   `cfg/attrs/bing.voice-attr.xsl`
+-   `cfg/attrs/bing.voice-attr.xsl` files.
+
+Each listing shows the default male and female voices for a language, plus any regional variants which are available:
+
+```xml
+<!-- Voices speaking in English -->
+<xsl:attribute-set name="__voice__en__male">
+    <xsl:attribute name="voice">en-US_MichaelVoice</xsl:attribute>
+</xsl:attribute-set>
+<xsl:attribute-set name="__voice__en__female">
+    <xsl:attribute name="voice">en-US_AllisonVoice</xsl:attribute>
+</xsl:attribute-set>
+<!-- Voices speaking in Regional English -->
+<xsl:attribute-set name="__voice__en-us__female">
+    <xsl:attribute name="voice">en-US_AllisonVoice</xsl:attribute>
+</xsl:attribute-set>
+<!--xsl:attribute-set name="__voice__en-us__female">
+    <xsl:attribute name="voice">en-US_LisaVoice</xsl:attribute>
+</xsl:attribute-set-->
+<xsl:attribute-set name="__voice__en-gb__female">
+    <xsl:attribute name="voice">en-GB_KateVoice</xsl:attribute>
+</xsl:attribute-set>
+```
+
+As you can see the `en-US_AllisonVoice` is currently the preferred female voice for all documents marked up as
+`xml:lang="en"` and `xml:lang="en-US"`.
+
+-   to alter the `en` preferences, replace the text within the `<xsl:attribute name="voice">` element with the preferred
+    voice.
+-   to alter the `en-us` preferences, comment out the existing selection and uncomment the new preferred voice.
 
 ## Marking up SSML tags.
 
 Some DITA tags such as `<p>` and `<b>` translate directly to SSML, however there is rich vocabulary of audio effects
-which are missing from the vanilla DITA specification. These can be accommodated using the `props` attribute added to `<ph>`
-tag. Examples are given below. The listing is mainly based on the
+which are missing from the vanilla DITA specification. These can be accommodated using the `props` attribute added to
+`<ph>` tag. Examples are given below. The listing is mainly based on the
 [IBM Text to Speech Programming Guide](https://www.ibm.com/support/knowledgecenter/SSMQSV_6.1.1/com.ibm.voicetools.ssml.doc/tts_ssml.pdf),
 however the DITA plug-in is not service specific so some additional tags can be used. Obviously common substitutions
 should be replaced with `<keyword>` elements for consistency of reuse.
@@ -272,7 +327,7 @@ Super Bowl <ph props="say-as interpret-as(cardinal)">XXXIX</ph>
 
 If there are more than two decimal places in the number within the enclosed tag, the amount will be synthesized as a
 decimal number followed by the currency indicator. If the three character currency indicator is not present, the number
-will be synthesized as a decimal only, with no pronunciation of currency type. 
+will be synthesized as a decimal only, with no pronunciation of currency type.
 
 #### Example (This will say _"forty-five point three two nine US dollars"_):
 
@@ -388,7 +443,8 @@ attribute is given an error results.
 Here is a description of the optional attributes:
 
 -   `pitch` - This attribute modifies the baseline pitch for the text enclosed within the tag. Accepted values are
-    either:, a number followed by the Hz designation, a relative change, `x-low`, `low`, `medium`, `high`, `x-high`, `default`
+    either:, a number followed by the Hz designation, a relative change, `x-low`, `low`, `medium`, `high`, `x-high`,
+    `default`
 
 -   `range` This attribute modifies the pitch range for the text enclosed within the tag. Accepted values for this
     attribute are the same as the accepted values for `pitch`.
@@ -425,8 +481,8 @@ Examples:
 
 ### `<audio>` Element
 
-This tag inserts recorded elements into the generated audio. The only attribute is `src` and is required. This
-attribute specifies the location of the file to be inserted.
+This tag inserts recorded elements into the generated audio. The only attribute is `src` and is required. This attribute
+specifies the location of the file to be inserted.
 
 ```xml
 <ph props="audio src(http://www.myfiles.com/files/beep.wav)"/>

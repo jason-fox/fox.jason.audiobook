@@ -106,13 +106,15 @@ for (i = 0; i < tracks.length; ++i) {
 			<xslt in="${ssml.srcfile}" out="${voice.temp.file}" style="${dita.plugin.fox.jason.audiobook.dir}/xsl/select-voice.xsl">
 			    <xmlcatalog refid="dita.catalog"/>
 			    <param expression="${ssml.service}" name="SERVICE"/>
+			    <param expression="${ssml.gender}" name="GENDER"/>
 			 </xslt>
 			<loadfile property="audiobook.voice" srcFile="${voice.temp.file}"/>
+
 
 			<!-- Obtain the meta data to use with the transform -->
 			<xslt in="${ssml.srcfile}" out="${meta.temp.file}" style="${dita.plugin.fox.jason.audiobook.dir}/xsl/create-id3v2tag.xsl">
 			    <param expression="${audiobook.voice}" name="VOICE"/>
-        	<param expression="@{track}" name="TRACK" />
+        		<param expression="@{track}" name="TRACK" />
 			    <xmlcatalog refid="dita.catalog"/>
 			</xslt>
 

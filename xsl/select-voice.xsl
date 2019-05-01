@@ -11,6 +11,7 @@
 
   <!-- Input parameter (with defaults) -->
   <xsl:param name="SERVICE" select="'watson'"/>
+  <xsl:param name="GENDER" select="'male'"/>
 	
   <xsl:output omit-xml-declaration="yes" indent="no"  method="text"/>
 	<xsl:strip-space elements="*"/>
@@ -24,20 +25,83 @@
       <xsl:apply-templates select="document($path)//xsl:attribute-set[@name = $attrSet]"/>
   </xsl:template>
 
-	<xsl:template match="meta" mode="meta-only">
-		<xsl:if test="@name='DC.language'">
+   <xsl:template name="getVoice">
+      <xsl:param name="lang"/>
+      <xsl:param name="gender"/>
       <xsl:choose>
         <xsl:when test="$SERVICE='bing'">
           <xsl:call-template name="processVoiceReflection">
-            <xsl:with-param name="attrSet" select="concat('__voice__', @content)"/>
+            <xsl:with-param name="attrSet" select="concat('__voice__', $lang, '__', $gender)"/>
             <xsl:with-param name="path" select="'../cfg/attrs/bing.voice-attr.xsl'"/>
           </xsl:call-template>
         </xsl:when>
         <xsl:otherwise>
           <xsl:call-template name="processVoiceReflection">
-            <xsl:with-param name="attrSet" select="concat('__voice__', @content)"/>
+            <xsl:with-param name="attrSet" select="concat('__voice__', $lang, '__', $gender)"/>
             <xsl:with-param name="path" select="'../cfg/attrs/watson.voice-attr.xsl'"/>
           </xsl:call-template>
+        </xsl:otherwise>
+      </xsl:choose>
+  </xsl:template>
+
+	<xsl:template match="meta[@name='DC.language']" mode="meta-only">
+		<xsl:variable name="full-male">
+      <xsl:call-template name="getVoice">
+        <xsl:with-param name="lang" select="@content"/>
+        <xsl:with-param name="gender" select="'male'"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:variable name="short-male">
+        <xsl:call-template name="getVoice">
+          <xsl:with-param name="lang" select="substring(@content, 1, 2)"/>
+          <xsl:with-param name="gender" select="'male'"/>
+        </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:variable name="full-female">
+      <xsl:call-template name="getVoice">
+        <xsl:with-param name="lang" select="@content"/>
+        <xsl:with-param name="gender" select="'female'"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:variable name="short-female">
+        <xsl:call-template name="getVoice">
+          <xsl:with-param name="lang" select="substring(@content, 1, 2)"/>
+          <xsl:with-param name="gender" select="'female'"/>
+        </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:if test="$GENDER='male'">
+      <xsl:choose>
+        <xsl:when test="$full-male">
+          <xsl:value-of select="$full-male"/>
+        </xsl:when>
+        <xsl:when test="$short-male">
+          <xsl:value-of select="$short-male"/>
+        </xsl:when>
+        <xsl:when test="$full-female">
+          <xsl:value-of select="$full-female"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$short-female"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:if>
+    <xsl:if test="$GENDER='female'">
+      <xsl:choose>
+        <xsl:when test="$full-female">
+          <xsl:value-of select="$full-female"/>
+        </xsl:when>
+        <xsl:when test="$short-female">
+          <xsl:value-of select="$short-female"/>
+        </xsl:when>
+        <xsl:when test="$full-male">
+          <xsl:value-of select="$full-male"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$short-male"/>
         </xsl:otherwise>
       </xsl:choose>
     </xsl:if>
