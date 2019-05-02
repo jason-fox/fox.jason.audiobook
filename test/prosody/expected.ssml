@@ -17,23 +17,23 @@ The rate is specified in terms of words-per-minute. If the speaking rate is 50 w
 volume - This attribute modifies the volume for the contained text. The range for values is 0.0 to 100.0 or the relative values of : silent, x-soft, soft, medium, loud, x-loud, default
 Examples:
 
-  Modified pitch  
-  Modified pitch  
-  Modified pitch  
-  Modified pitch  
-  Modified pitch  
-  Modified pitch  
-  Modified pitch range 
-  Modified pitch range 
-  Modified pitch range 
-  Modified pitch range 
-  Modified pitch range 
-  Modified pitch range 
-  Modified speaking rate 
-  Modified speaking rate 
-  Modified speaking rate 
- Modified volume 
- Modified volume 
+ <prosidy pitch="150Hz"> Modified pitch  </prosidy>
+ <prosidy pitch="-20Hz"> Modified pitch  </prosidy>
+ <prosidy pitch="+20Hz"> Modified pitch  </prosidy>
+ <prosidy pitch="-12st"> Modified pitch  </prosidy>
+ <prosidy pitch="+12st"> Modified pitch  </prosidy>
+ <prosidy pitch="x-low"> Modified pitch  </prosidy>
+ <prosidy range="150Hz"> Modified pitch range </prosidy>
+ <prosidy range="-20Hz"> Modified pitch range </prosidy>
+ <prosidy range="+20Hz"> Modified pitch range </prosidy>
+ <prosidy range="-12st"> Modified pitch range </prosidy>
+ <prosidy range="+12st"> Modified pitch range </prosidy>
+ <prosidy range="x-high"> Modified pitch range </prosidy>
+ <prosidy rate="slow"> Modified speaking rate </prosidy>
+ <prosidy rate="+25"> Modified speaking rate </prosidy>
+ <prosidy rate="-25"> Modified speaking rate </prosidy>
+ <prosidy volume="88.9">Modified volume </prosidy>
+ <prosidy volume="loud">Modified volume </prosidy>
 
 
 
