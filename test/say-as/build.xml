@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." default="unit-test">
+	<import file="../bootstrap.xml"/>
+	<description>
+		Expect that a say-as tag is correctly rendered
+	</description>
+	<target name="unit-test">
+		<exec-transtype transtype="ssml"/>
+		<compare-output suffix=".ssml" result="out/topic.ssml"/>
+	</target>
+</project>

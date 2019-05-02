@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><speak xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis11/synthesis.xsd" xml:lang="en"><meta name="DC.type" content="topic"/><meta name="DC.language" content="en"/><meta name="rights" content="© 1994-2006 OASIS"/><meta name="DC.isPartOf" content="A book about one thing"/><meta name="DC.title" content="emphasis"/><meta name="DC.creator" content="Jane"/><meta name="DC.publisher" content="Example Publishers Austin, TX 1977"/><meta name="DC.format" content="SSML"/><meta name="DC.identifier" content="emphasis"/>
+   <mark name="emphasis"/><p>emphasis </p>
+ 
+   
+     <p>
+    	The  &lt;emphasis&gt;  element equests that the contained text be spoken with emphasis (also referred to as prominence or stress).
+
+	level: the optional level attribute indicates the strength of emphasis to be applied. Defined values are strong,  moderate, none and reduced. The default level is moderate. The meaning of strong and moderate emphasis is interpreted according to the language being spoken (languages indicate emphasis using a possible combination of pitch change, timing changes, loudness and other acoustic differences). The reduced level is effectively the opposite of emphasizing a word. For example, when the phrase "going to" is reduced it may be spoken as "gonna". The  none level is used to prevent the synthesis processor from emphasizing words that it might typically emphasize.
+	That is a  <emphasis> big  </emphasis> car!
+	That is a  <emphasis level="strong"> huge  </emphasis>bank account!
+	 </p>
+	 <p>
+		Emphasis can also be achieved using the  &lt;b&gt;  tag
+
+		That is a  <emphasis> big  </emphasis> car!
+		That is a  <emphasis level="strong"> huge  </emphasis>bank account!
+     </p>
+   
+ </speak>

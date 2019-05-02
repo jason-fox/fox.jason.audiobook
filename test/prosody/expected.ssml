@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><speak xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis11/synthesis.xsd" xml:lang="en"><meta name="DC.type" content="topic"/><meta name="DC.language" content="en"/><meta name="rights" content="© 1994-2006 OASIS"/><meta name="DC.isPartOf" content="A book about one thing"/><meta name="DC.title" content="prosody"/><meta name="DC.creator" content="Jane"/><meta name="DC.publisher" content="Example Publishers Austin, TX 1977"/><meta name="DC.format" content="SSML"/><meta name="DC.identifier" content="prosody"/>
+   <mark name="prosody"/><p>prosody </p>
+ 
+   
+     <p>
+   		This tag controls the pitch, range, speaking rate, and volume of the text. all attributes are optional, but if no attribute is given an error results.
+
+Here is a description of the optional attributes:
+
+pitch - This attribute modifies the baseline pitch for the text enclosed within the tag. Accepted values are either:, a number followed by the Hz designation, a relative change, x-low, low, medium, high, x-high,  default
+
+range This attribute modifies the pitch range for the text enclosed within the tag. Accepted values for this attribute are the same as the accepted values for pitch.
+
+rate - This attribute indicates a change in the speaking rate for contained text. Accepted values are: - a relative change - a positive number, x-slow, slow, medium, fast,  x-fast, default
+The rate is specified in terms of words-per-minute. If the speaking rate is 50 words per minute, then rate=50. If the setting is rate=+10, the speaking rate will be 10 words per minute faster than your current rate setting.
+
+volume - This attribute modifies the volume for the contained text. The range for values is 0.0 to 100.0 or the relative values of : silent, x-soft, soft, medium, loud, x-loud, default
+Examples:
+
+  Modified pitch  
+  Modified pitch  
+  Modified pitch  
+  Modified pitch  
+  Modified pitch  
+  Modified pitch  
+  Modified pitch range 
+  Modified pitch range 
+  Modified pitch range 
+  Modified pitch range 
+  Modified pitch range 
+  Modified pitch range 
+  Modified speaking rate 
+  Modified speaking rate 
+  Modified speaking rate 
+ Modified volume 
+ Modified volume 
+
+
+
+     </p>
+   
+ </speak>

@@ -2,6 +2,8 @@
 
 [![license](https://img.shields.io/github/license/jason-fox/fox.jason.audiobook.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 [![DITA-OT 3.3](https://img.shields.io/badge/DITA--OT-3.3-blue.svg)](http://www.dita-ot.org/3.3/) <br/>
+[![Build Status](https://travis-ci.org/jason-fox/fox.jason.audiobook.svg?branch=master)](https://travis-ci.org/jason-fox/fox.jason.audiobook)
+[![Coverage Status](https://coveralls.io/repos/github/jason-fox/fox.jason.audiobook/badge.svg?branch=master)](https://coveralls.io/github/jason-fox/fox.jason.audiobook?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/audiobookdita-ot/badge/?version=latest)](https://audiobookdita-ot.readthedocs.io/en/latest/?badge=latest)
 
 This DITA-OT plug-in transforms DITA to speech in the form of an audiobook.
