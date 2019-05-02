@@ -1,4 +1,2 @@
-build_dita2audiobook.xml linguist-detectable=true linguist-language="Ant Build System"
-resource/antlib.xml linguist-detectable=true linguist-language="Ant Build System"
 sample/* linguist-vendored
 test/* linguist-vendored
