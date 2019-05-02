@@ -136,7 +136,7 @@
           <xsl:text>break</xsl:text>
         </xsl:when>
         <xsl:when test="starts-with(@props, 'prosody')">
-          <xsl:text>prosidy</xsl:text>
+          <xsl:text>prosody</xsl:text>
         </xsl:when>
         <xsl:when test="starts-with(@props, 'audio')">
           <xsl:text>audio</xsl:text>
