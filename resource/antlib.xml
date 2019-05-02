@@ -155,7 +155,7 @@ for (i = 0; i < tracks.length; ++i) {
 		<attribute name="out"/>
 		<sequential>
 			<!-- Use dummy file if not running a real text-speech service -->
-			<copy file="${dita.plugin.fox.jason.audiobook.dir}/resource/nickel.mp3" tofile="@{out}"/>
+			<copy taskname="dummy-ssml" file="${dita.plugin.fox.jason.audiobook.dir}/resource/nickel.mp3" tofile="@{out}"/>
 		</sequential>
 	</macrodef>
 
