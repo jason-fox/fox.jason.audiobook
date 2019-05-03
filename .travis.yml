@@ -6,12 +6,6 @@ jdk:
 env:
   - DITA_OT=3.3
 
-before_install:
-  - sudo add-apt-repository ppa:mc3man/trusty-media -y
-  - sudo apt-get update
-  - sudo apt-get dist-upgrade
-  - sudo apt-get install ffmpeg
-
 install:
   - zip -r fox.jason.audiobook.zip . -x *.zip* *.git/* *temp/* *out/*
   - curl -LO https://github.com/dita-ot/dita-ot/releases/download/$DITA_OT/dita-ot-$DITA_OT.zip
@@ -19,6 +13,10 @@ install:
   - chmod +x dita-ot-$DITA_OT/bin/dita
   - dita-ot-$DITA_OT/bin/dita --install https://github.com/jason-fox/fox.jason.unit-test/archive/master.zip
   - dita-ot-$DITA_OT/bin/dita --install fox.jason.audiobook.zip
+  - sudo add-apt-repository ppa:mc3man/trusty-media -y
+  - sudo apt-get update
+  - sudo apt-get dist-upgrade
+  - sudo apt-get install ffmpeg
 
 before_script:
   - dita-ot-$DITA_OT/bin/dita --input dita-ot-$DITA_OT/plugins/fox.jason.audiobook -f xsl-instrument
