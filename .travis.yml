@@ -1,6 +1,5 @@
 language: java
 sudo: required
-dist: xenial
 
 jdk:
   - oraclejdk8
