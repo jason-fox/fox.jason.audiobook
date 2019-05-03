@@ -1,8 +1,14 @@
 language: java
+sudo: required
+dist: xenial
+
 jdk:
   - oraclejdk8
 env:
   - DITA_OT=3.3
+
+before_install:
+  - sudo apt-get install ffmpeg
 
 install:
   - zip -r fox.jason.audiobook.zip . -x *.zip* *.git/* *temp/* *out/*
