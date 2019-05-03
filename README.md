@@ -459,14 +459,14 @@ This tag inserts pauses into the spoken text. It has the following optional attr
     are `NNNs` for seconds or `NNNms` for milliseconds.
 
 ```xml
-Different sized <ph props="break strength(none)">pauses.</ph>
-Different sized <ph props="break strength(x-weak)">pauses.</ph>
-Different sized <ph props="break strength(weak)">pauses.</ph>
-Different sized <ph props="break strength(medium)">pauses.</ph>
-Different sized <ph props="break strength(strong)">pauses.</ph>
-Different sized <ph props="break strength(x-strong)">pauses.</ph>
-Different sized <ph props="break time(1s)">pauses.</ph>
-Different sized <ph props="break time(1000ms)">pauses.</ph>
+Different sized <ph props="break strength(none)"/> pauses.
+Different sized <ph props="break strength(x-weak)"/> pauses.
+Different sized <ph props="break strength(weak)"/> pauses.
+Different sized <ph props="break strength(medium)"/> pauses.
+Different sized <ph props="break strength(strong)"/> pauses.
+Different sized <ph props="break strength(x-strong)"/> pauses.
+Different sized <ph props="break time(1s)"/> pauses.
+Different sized <ph props="break time(1000ms)"/> pauses.
 ```
 
 ### `<prosody>` Element
