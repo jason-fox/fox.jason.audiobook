@@ -36,12 +36,23 @@ Once the command has run, an `*.m4b` file will be created in the output director
 
 -   `ssml.service` - Decides which translation service to use:
     -   `dummy` - Avoids accessing a Speech-to-Text service, uses a dummy MP3 file for all outputs
+    -   `custom` - Sends the SSML to an arbitrary URL using POST - use this to connect to proxies for Amazon
+        [Polly](https://docs.aws.amazon.com/polly/) or Google Cloud
+        [Text-to-Speech](https://cloud.google.com/text-to-speech/)
     -   `watson` - Connects to the IBM Cloud Speech-to-Text service
     -   `bing` - Connects to the Microsoft Speech-to-Text service
 -   `ssml.gender` - Prefered Voice Gender:
     -   `male` - Use a male voice for text-to-speech where available.
     -   `female` - Use a female voice for text-to-speech where available.
--   `audiobook.cover.art.add` - Specifies whether or not cover art is to be added to an album (default `yes`)
+-   `ssml.authentication.url` - URL for creating an OAuth token if needed for a service. Defaults to the value in
+    `configuration.properties`
+-   `ssml.output.format` - Output format override for a Speech-to-Text service. Defaults to the value in
+    `configuration.properties`
+-   `ssml.apikey` - API Key for the Speech-to-Text service. Defaults to the value in `configuration.properties`
+-   `ssml.url` - URL for a Speech-to-Text service. Defaults to the value in `configuration.properties`
+-   `mp3.cachefile` - Specifies the location of a cache file to be used. If the SSML file matches to a previously
+    generated mp3 file in the cache the mp3 file will be copied over and the Speech-to-Text service will not be called.
+-   `audiobook.cover.art.add` - Specifies whether or not cover art is to be added to an album (default `no`)
 -   `audiobook.cover.art.image` - Specifies the cover art to be used for an album, the default will use the image
     plug-in alter the file `cfg/coverart.png`
 
