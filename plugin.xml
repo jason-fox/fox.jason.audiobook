@@ -5,23 +5,32 @@
 -->
 <plugin id="fox.jason.audiobook">
   <transtype name="ssml" desc="Speech Synthesis Markup Language">
-    <param name="ssml.service" desc="Specifies the text-to-speech processor." type="enum">
-      <val>bing</val>
-      <val default="true">watson</val>
-      <val>dummy</val>
-    </param>
     <param name="ssml.gender" desc="Prefered Voice Gender" type="enum">
       <val>female</val>
       <val default="true">male</val>
     </param>
   </transtype>
 
-  
-  <transtype name="mp3" extends="ssml" desc="Create MP3 player audio tracks"/>
+  <transtype name="mp3" extends="ssml" desc="Create MP3 player audio tracks">
+    <param desc="Specifies the location a cache file to be used" name="mp3.cachefile" type="file"/>
+    <param name="ssml.service" desc="Specifies the text-to-speech processor." type="enum">
+      <val>bing</val>
+      <val>custom</val>
+      <val>dummy</val>
+      <val default="true">watson</val>
+    </param>
+
+    <param name="ssml.authentication.url" type="string"/>
+    <param name="ssml.output.format" type="string"/>
+    <param name="ssml.apikey" type="string"/>
+    <param name="ssml.url" type="string"/>
+    <param name="mp3.cachefile" type="file"/>
+
+  </transtype>
   <transtype name="audiobook"  extends="mp3" desc="A single Audiobook">
     <param name="audiobook.cover.art.add" desc="Specifies whether  or not cover art  is to be added to an album." type="enum">
-      <val default="true">yes</val>
-      <val>no</val>
+      <val>yes</val>
+      <val default="true">no</val>
     </param>
     <param name="audiobook.cover.art.image" desc="Specifies the cover art to be used for an album." type="string"/>
   </transtype>

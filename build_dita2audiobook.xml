@@ -9,28 +9,38 @@
     ANT targets to create SSML, MP3 and audiobook files
   -->
   <target name="dita2ssml" depends="build-init, ssml.init, preprocess, ssml.render"/>
-  <target name="dita2mp3" depends="build-init, audiobook.init, preprocess, mp3.render"/>
-  <target name="dita2audiobook" depends="build-init, audiobook.init, preprocess, audiobook.render"/>
+  <target name="dita2mp3" depends="build-init, audiobook.services.init, preprocess, mp3.render"/>
+  <target name="dita2audiobook" depends="build-init, audiobook.services.init, preprocess, audiobook.render"/>
 
 
-  <target name="audiobook.init" depends="ssml.init, text-to-speech.init, ffmpeg.init"/>
   <!--
     Setting up SSML processing. Sets up ANT variable overrides.
   -->
-  <target name="ssml.init">
+  <target name="audiobook.init">
     <typedef file="${dita.plugin.fox.jason.audiobook.dir}/resource/antlib.xml"/>
     <property name="preprocess.copy-image.skip" value="true"/>
     <property name="out.ext" value="ssml"/>
+  </target>
+
+
+  <target name="audiobook.services.init" depends="audiobook.init, text-to-speech.init, ffmpeg.init">
+    <property name="ssml.output.dir" value="${dita.temp.dir}/ssml"/> 
+  </target>
+  <!--
+    Setting up SSML processing. Sets up ANT variable overrides.
+  -->
+  <target name="ssml.init" depends="audiobook.init">
+    <property name="ssml.output.dir" value="${output.dir}"/> 
   </target>
 
   <!--
     Generate SSML files containing associated dublin core metadata
   -->
   <target name="ssml.render">
-    <pipeline message="Convert DITA topics to SSML files" taskname="xslt">
+    <pipeline message="Convert DITA topics to SSML files" taskname="gen-ssml">
       <xslt basedir="${dita.temp.dir}"
         extension="ssml"
-        destdir="${output.dir}"
+        destdir="${ssml.output.dir}"
         reloadstylesheet="${dita.ssml.reloadstylesheet}"
         classpathref="dost.class.path"
         style="${dita.plugin.fox.jason.audiobook.dir}/xsl/dita2ssml.xsl"
@@ -55,9 +65,33 @@
     Ensure that Watson/Bing is available.
   -->
   <target name="text-to-speech.init">
-    <property file="${dita.plugin.fox.jason.audiobook.dir}/cfg/configuration.properties"/>
-    <property name="ssml.service" value="${audiobook.default}"/>
 
+    <!-- Load Service URLs from command line -->
+    <property name="watson.text-to-speech.url" if:set="ssml.url" 
+      value="${ssml.url}"/>
+    <property name="watson.apikey" if:set="ssml.apikey"
+     value="${ssml.apikey}"/>
+
+    <property name="bing.apikey" if:set="ssml.apikey"
+       value="${ssml.apikey}"/>
+    <property name="bing.text-to-speech.url" if:set="ssml.url"
+      value="${ssml.url}"/>
+    <property name="bing.authentication.url" if:set="ssml.authentication.url"
+       value="${ssml.authentication.url}"/>
+    <property name="bing.output.format" if:set="ssml.output.format"
+       value="${ssml.output.format}"/>
+
+    <property name="custom.text-to-speech.url" if:set="ssml.url"
+      value="${ssml.url}"/>
+
+    <!-- Fallback - load Service URLs from properties file -->
+    <property file="${dita.plugin.fox.jason.audiobook.dir}/cfg/configuration.properties"/>
+
+    <!-- Set other ssml service defaults -->
+    <property name="ssml.service" value="watson"/>
+    <property name="ssml.gender" value="male"/>
+
+    <!-- Decide which service to use -->
     <condition property="audiobook.bing">
       <equals arg1="${ssml.service}" arg2="bing"/>
     </condition>
@@ -67,8 +101,10 @@
     <condition property="audiobook.dummy">
       <equals arg1="${ssml.service}" arg2="dummy"/>
     </condition>
+    <condition property="audiobook.custom">
+      <equals arg1="${ssml.service}" arg2="custom"/>
+    </condition>
 
-    <property name="ssml.gender" value="male"/>
     
     <dita-ot-fail id="AUDI002F" if:set="audiobook.watson">
       <condition>
@@ -93,12 +129,25 @@
   -->
    <target name="mp3.render" depends="ssml.render">
     <property name="topic-list.txt" value="${dita.output.dir}/list.txt"/>
-
+    <!-- create track list -->
     <xslt in="${dita.temp.dir}${file.separator}${user.input.file}" out="${topic-list.txt}"
-      style="${dita.plugin.fox.jason.audiobook.dir}/xsl/create-topic-list.xsl">
+      style="${dita.plugin.fox.jason.audiobook.dir}/xsl/create-topic-list.xsl" taskname="track-list">
       <xmlcatalog refid="dita.catalog"/>
     </xslt>
     <ssml-to-mp3 dir="${dita.output.dir}" file="${topic-list.txt}"/>
+    <!-- create SSML cache file -->
+    <property name="ssml.cachefile" value="${dita.output.dir}/cache.properties"/>
+    <delete file="${ssml.cachefile}" quiet="true" failonerror="false"/>
+    <copy taskname="gen-cache" todir="${dita.temp.dir}/cachefiles">
+      <fileset dir="${ssml.output.dir}">
+        <include name="**/*.ssml"/>
+        <modified update="true">
+            <param name="cache.cachefile" value="${ssml.cachefile}"/>
+            <param name="algorithm.algorithm" value="MD5"/>
+        </modified>
+      </fileset>
+    </copy>
+    <replace file="${ssml.cachefile}" token="${ssml.output.dir}/" value=""/>
    </target>
 
 
