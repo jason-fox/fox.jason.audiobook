@@ -135,6 +135,14 @@
       <xmlcatalog refid="dita.catalog"/>
     </xslt>
     <ssml-to-mp3 dir="${dita.output.dir}" file="${topic-list.txt}"/>
+
+
+    <dita-ot-fail id="AUDI004F">
+      <condition>
+        <isset property="ssml.failed"/>
+      </condition>
+    </dita-ot-fail>
+
     <!-- create SSML cache file -->
     <property name="ssml.cachefile" value="${dita.output.dir}/cache.properties"/>
     <delete file="${ssml.cachefile}" quiet="true" failonerror="false"/>

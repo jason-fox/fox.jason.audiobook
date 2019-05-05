@@ -27,6 +27,7 @@ var macro = attributes.get("macro");
 var tracklist = org.apache.tools.ant.util.FileUtils.readFully(
 				new java.io.FileReader(file));
 var tracks = tracklist.split('\n');
+var failed = false;
 
 for (i = 0; i < tracks.length; ++i) {   
 	task = project.createTask(macro);
@@ -40,9 +41,13 @@ for (i = 0; i < tracks.length; ++i) {
         	task.setDynamicAttribute("track", i + 1);
             task.execute();
         } catch(err) {
-            task.log( "Execution error: " + err.message );
+			failed = true;
         }
 	}
+}
+
+if (failed){
+	project.setProperty("ssml.failed", true);
 }
 
 ]]>
@@ -123,7 +128,7 @@ for (i = 0; i < tracks.length; ++i) {
 
 			<!-- Either run text-to-speech or retrieve file from cache -->
 			<copy-from-cache md5="${ssml.checksum}" out="${mp3.temp.file}" if:set="mp3.cache.exists"/>
-			<text-to-speech-service src="${ssml.srcfile}" out="${mp3.temp.file}"
+			<text-to-speech-service src="${ssml.srcfile}" out="${mp3.temp.file}" mp3="@{dest}" 
 				voice="${audiobook.voice}" unless:set="mp3.cache.exists"/>
 			 
 			<!-- add meta data to MP3 -->
@@ -147,15 +152,16 @@ for (i = 0; i < tracks.length; ++i) {
 		<attribute name="out"/>
 		<attribute name="src"/>
 		<attribute name="voice"/>
+		<attribute name="mp3"/>
 		<sequential>
 			<!-- Create an MP3 Output file -->
 			<dummy-text-to-speech if:set="audiobook.dummy" out="@{out}"/> 
 			<watson-text-to-speech if:set="audiobook.watson" file="@{src}" 
-				out="@{out}" voice="@{voice}"/>
+				out="@{out}" voice="@{voice}" mp3="@{mp3}"/>
 			<bing-text-to-speech if:set="audiobook.bing" file="@{src}" 
-				out="@{out}" voice="@{voice}"/>
+				out="@{out}" voice="@{voice}" mp3="@{mp3}"/>
 			<custom-text-to-speech if:set="audiobook.custom" file="@{src}" 
-				out="@{out}"/>
+				out="@{out}" mp3="@{mp3}" />
 		</sequential>
 	</macrodef>
 
@@ -224,7 +230,7 @@ var task = project.createTask("copy");
 				property="bing.auth.temp.file" suffix=".txt"/>
 
 			<exec taskname="bing-auth" executable="curl" osfamily="unix" 
-				resultproperty="bing.result" outputproperty="bing.out" >
+				resultproperty="bing.result" outputproperty="bing.out">
 				<arg value="-X"/>
 				<arg value="POST"/>
 			
@@ -236,10 +242,17 @@ var task = project.createTask("copy");
 				<arg value="Content-length: 0"/>
 				<arg value="--output"/>
 				<arg value="${bing.auth.temp.file}"/>
+				<arg value="-sS"/>
 				<arg value="${bing.authentication.url}"/>
 			</exec>
 			<echo taskname="auth-bing" level="verbose" message="${line.separator}${bing.out}"/>
 			<loadfile property="bing.bearer.token" srcFile="${bing.auth.temp.file}"/>
+
+			<dita-ot-fail id="AUDI003F">
+				<condition>
+					<contains string="${bing.bearer.token}" substring="error"/>
+				</condition>
+			</dita-ot-fail>
 		</sequential>
 	</macrodef>
 
@@ -254,11 +267,13 @@ var task = project.createTask("copy");
 		<attribute name="file"/>
 		<attribute name="out"/>
 		<attribute name="voice"/>
+		<attribute name="mp3"/>
 		<sequential>
 			<local name="ssml.temp.file"/>
 			<local name="bing.ssml"/>
 			<local name="bing.result"/>
 			<local name="bing.out"/>
+			<local name="bing.failed"/>
 
 			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
 				property="ssml.temp.file" suffix=".ssml"/>
@@ -274,7 +289,7 @@ var task = project.createTask("copy");
 
 			<!-- run Text to speech -->
 			<exec taskname="mp3-bing" executable="curl" osfamily="unix" 
-				resultproperty="bing.result" outputproperty="bing.out" >
+				 resultproperty="bing.result" outputproperty="bing.out" failOnError="false">
 				<arg value="-X"/>
 				<arg value="POST"/>
 				<arg value="-H"/>
@@ -283,6 +298,7 @@ var task = project.createTask("copy");
 				<arg value="Content-Type: application/ssml+xml"/>
 				<arg value="-H"/>
 				<arg value="Authorization: Bearer: ${bing.bearer.token}"/>
+				<arg value="-sS"/>
 				<arg value="--http1.1"/>
 				<arg value="--data"/>
 				<arg value="${bing.ssml}"/>
@@ -290,7 +306,19 @@ var task = project.createTask("copy");
 				<arg value="@{out}"/>
 				<arg value="${bing.text-to-speech.url}"/>
 		    </exec>
+
 		    <echo taskname="mp3-bing" level="verbose" message="${line.separator}${bing.out}"/>
+			<condition property="bing.failed">
+				<or>
+					<length file="@{out}" when="equal" length="0"/>
+					<not>
+						<equals arg1="${bing.result}" arg2="0"/>
+					</not>
+				</or>
+			</condition>
+
+		    <echo taskname="mp3-bing" if:set="bing.failed" level="error" message="Error transforming file: @{mp3}"/>
+		    <fail if:set="bing.failed"/>
 		</sequential>
 	</macrodef>
 
@@ -304,11 +332,13 @@ var task = project.createTask("copy");
 	<macrodef name="custom-text-to-speech">
 		<attribute name="file"/>
 		<attribute name="out"/>
+		<attribute name="mp3"/>
 		<sequential>
 			<local name="ssml.temp.file"/>
 			<local name="custom.ssml"/>
 			<local name="custom.result"/>
 			<local name="custom.out"/>
+			<local name="custom.failed"/>
 
 			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
 				property="ssml.temp.file" suffix=".ssml"/>
@@ -324,16 +354,30 @@ var task = project.createTask("copy");
 
 			<!-- run Text to speech -->
 			<exec taskname="mp3-custom" executable="curl" osfamily="unix" 
-				resultproperty="custom.result" outputproperty="custom.out" >
+				resultproperty="custom.result" outputproperty="custom.out" failOnError="false">
 				<arg value="-X"/>
 				<arg value="POST"/>
 				<arg value="--data"/>
 				<arg value="${custom.ssml}"/>
 				<arg value="--output"/>
 				<arg value="@{out}"/>
+				<arg value="-sS"/>
 				<arg value="${custom.text-to-speech.url}"/>
 		    </exec>
 		    <echo taskname="mp3-custom" level="verbose" message="${line.separator}${custom.out}"/>
+
+
+		    <condition property="custom.failed">
+				<or>
+					<length file="@{out}" when="equal" length="0"/>
+					<not>
+						<equals arg1="${custom.result}" arg2="0"/>
+					</not>
+				</or>
+			</condition>
+
+		    <echo taskname="mp3-custom" if:set="custom.failed" level="error" message="Error transforming file: @{mp3}"/>
+		    <fail if:set="custom.failed"/>
 		</sequential>
 	</macrodef>
 
@@ -348,11 +392,14 @@ var task = project.createTask("copy");
 		<attribute name="file"/>
 		<attribute name="out"/>
 		<attribute name="voice"/>
+		<attribute name="mp3"/>
 		<sequential>
 			<local name="ssml.temp.file"/>
 			<local name="watson.ssml"/>
 			<local name="watson.result"/>
 			<local name="watson.out"/>
+			<local name="watson.error"/>
+			<local name="watson.failed"/>
 
 			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
 				property="ssml.temp.file" suffix=".ssml"/>
@@ -370,7 +417,7 @@ var task = project.createTask("copy");
 
 			<!-- run Text to speech -->
 			<exec taskname="mp3-watson" executable="curl" osfamily="unix" 
-				resultproperty="watson.result" outputproperty="watson.out" >
+				resultproperty="watson.result" outputproperty="watson.out" failOnError="false">
 				<arg value="-X"/>
 				<arg value="POST"/>
 				<arg value="-u"/>
@@ -383,9 +430,23 @@ var task = project.createTask("copy");
 				<arg value="{&quot;text&quot;: &quot;${watson.ssml}&quot;}"/>
 				<arg value="--output"/>
 				<arg value="@{out}"/>
+				<arg value="-sS"/>
 				<arg value="${watson.text-to-speech.url}?voice=@{voice}"/>
 		    </exec>
 		    <echo taskname="mp3-watson" level="verbose" message="${line.separator}${watson.out}"/>
+
+		    <condition property="watson.failed">
+				<or>
+					<length file="@{out}" when="less" length="50"/>
+					<not>
+						<equals arg1="${watson.result}" arg2="0"/>
+					</not>
+				</or>
+			</condition>
+
+			<loadfile if:set="watson.failed" property="watson.error" srcFile="@{out}"/>
+		    <echo taskname="mp3-watson" if:set="watson.failed" level="error" message="Error transforming file: @{mp3} ${watson.error}"/>
+		    <fail if:set="watson.failed"/>
 		</sequential>
 	</macrodef>
 
@@ -489,7 +550,7 @@ project.setProperty("audiobook.duration", Number(oldDuration) + duration) ;
 			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="m4a.meta.temp.file" suffix=".m4a"/>
 
 			<!-- Merge all MP3 Files -->
-      <exec taskname="merge-mp3" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.merge.result" outputproperty="ffmpeg.merge.out" failOnError="false" >
+      		<exec taskname="merge-mp3" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.merge.result" outputproperty="ffmpeg.merge.out" failOnError="false" >
 				<arg value="-f"/>
 				<arg value="concat"/>
 				<arg value="-safe"/>

@@ -16,7 +16,12 @@
     <reason>Azure credentials not set.</reason>
     <response>Update the configuration.properties file to hold your URL and API Key</response>
   </message>
-  <message id="AUDI004I" type="INFO">
+  <message id="AUDI004F" type="FATAL">
+     <reason>Text to speech service failed.</reason>
+    <response>Check the logs and update the dita files</response>
+    <response/>
+  </message>
+  <message id="AUDI005I" type="INFO">
     <reason>%1</reason>
     <response/>
   </message>
