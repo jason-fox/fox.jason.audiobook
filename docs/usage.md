@@ -105,7 +105,7 @@ which are missing from the vanilla DITA specification. These can be accommodated
 however the DITA plug-in is not service specific so some additional tags can be used. Obviously common substitutions
 should be replaced with `<keyword>` elements for consistency of reuse.
 
-**Note**: Not all tags and attributes will be supported by every provider.
+> **Note**: Not all tags and attributes will be supported by every provider.
 
 <h3> <code>&lt;say-as&gt;</code> Element</h3>
 
