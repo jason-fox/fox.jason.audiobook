@@ -65,7 +65,7 @@ no voice of the preferred gender can be found, the default will be used.
 A list of available voices can be found within following files:
 
 -   `cfg/attrs/bing.voice-attr.xsl`
--   `cfg/attrs/bing.voice-attr.xsl` files.
+-   `cfg/attrs/watson.voice-attr.xsl` files.
 
 Each listing shows the default male and female voices for a language, plus any regional variants which are available:
 
