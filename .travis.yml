@@ -18,7 +18,6 @@ install:
   - sudo apt-get install ffmpeg
 
 before_script:
-  - ant -d -f dita-ot-$DITA_OT/plugins/fox.jason.audiobook/test/create-audiobook/build.xml
   - dita-ot-$DITA_OT/bin/dita --input dita-ot-$DITA_OT/plugins/fox.jason.audiobook -f xsl-instrument
 
 script:
