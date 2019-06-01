@@ -144,6 +144,46 @@ if (failed){
 				<arg value="${mp3.output.file}"/>
 				<arg value="-y"/>
 			</exec>
+			<!-- Add cover art if requested -->
+			<add-cover-art file="${mp3.output.file}" if:set="audiobook.cover"/>
+		</sequential>
+	</macrodef>
+
+
+	<macrodef name="add-cover-art">
+		<attribute name="file"/>
+		<sequential>
+			<local name="mp3.temp.file"/>
+			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" 
+				property="mp3.temp.file" suffix=".mp3"/>
+			<copy file="@{file}" tofile="${mp3.temp.file}"/>
+
+
+			<!-- add cover art meta data to MP3 -->
+			<exec taskname="mp3-cover" executable="ffmpeg" osfamily="unix">
+				<arg value="-i"/>
+				<arg value="${mp3.temp.file}"/>
+				<arg value="-i"/>
+				<arg value="${mp3.cover.art.image}"/>
+				<arg value="-map"/>
+				<arg value="0:0"/>
+				<arg value="-map"/>
+				<arg value="1:0"/>
+				<arg value="-c"/>
+				<arg value="copy"/>
+				<arg value="-id3v2_version"/>
+				<arg value="3"/>
+				<arg value="-metadata:s:v"/>
+				<arg value="title=&quot;Album cover&quot;"/>
+				<arg value="-metadata:s:v"/>
+				<arg value="comment=&quot;Cover (front)&quot;"/>
+				<arg value="${mp3.output.file}"/>
+				<arg value="-y"/>
+			</exec>
+
+<!--
+			ffmpeg -i in.mp3 -i test.png -map 0:0 -map 1:0 -c copy -id3v2_version 3 -metadata:s:v title="Album cover" -metadata:s:v comment="Cover (front)" out.mp3
+-->
 
 		</sequential>
 	</macrodef>

@@ -3,7 +3,7 @@
 	This file is part of the DITA-OT Audiobook Plug-in project.
 	See the accompanying LICENSE file for applicable licenses.
 -->
-<plugin id="fox.jason.audiobook">
+<plugin id="fox.jason.audiobook" version="1.1.0">
   <transtype name="ssml" desc="Speech Synthesis Markup Language">
     <param name="ssml.gender" desc="Prefered Voice Gender" type="enum">
       <val>female</val>
@@ -25,15 +25,15 @@
     <param name="ssml.apikey" type="string"/>
     <param name="ssml.url" type="string"/>
     <param name="mp3.cachefile" type="file"/>
-
-  </transtype>
-  <transtype name="audiobook"  extends="mp3" desc="A single Audiobook">
-    <param name="audiobook.cover.art.add" desc="Specifies whether  or not cover art  is to be added to an album." type="enum">
+     <param name="mp3.cover.art.add" desc="Specifies whether or not cover art is to be added to a file." type="enum">
       <val>yes</val>
       <val default="true">no</val>
     </param>
-    <param name="audiobook.cover.art.image" desc="Specifies the cover art to be used for an album." type="string"/>
+    <param name="mp3.cover.art.image" desc="Specifies the cover art to be used for a file." type="string"/>
+
   </transtype>
+  <transtype name="audiobook"  extends="mp3" desc="A single Audiobook"/>
+
 
   <feature extension="ant.import" file="build_dita2audiobook.xml"/>
   <feature extension="dita.xsl.messages" file="resource/messages.xml"/>

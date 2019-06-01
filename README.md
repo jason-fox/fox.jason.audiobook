@@ -213,14 +213,14 @@ Once the command has run, an `*.m4b` file will be created in the output director
 -   `ssml.url` - URL for a Speech-to-Text service. Defaults to the value in `configuration.properties`
 -   `mp3.cachefile` - Specifies the location of a cache file to be used. If the SSML file matches to a previously
     generated mp3 file in the cache the mp3 file will be copied over and the Speech-to-Text service will not be called.
--   `audiobook.cover.art.add` - Specifies whether or not cover art is to be added to an album (default `no`)
--   `audiobook.cover.art.image` - Specifies the cover art to be used for an album, the default will use the image
-    plug-in alter the file `cfg/coverart.png`
+-   `mp3.cover.art.add` - Specifies whether or not cover art is to be added to an album (default `no`)
+-   `mp3.cover.art.image` - Specifies the cover art to be used for an album, the default will use the image
+    plug-in alter the file `cfg/cover-art.png`
 
 ## Selecting a voice to use
 
-When running the `mp3` or `audiobook` transforms, the **male voice** corresponding to the `xml:lang` attribute of the
-root topic will be chosen to render the speech. Use the `--ssml.gender=female` parameter to switch to a female voice. If
+When running the `mp3` or `audiobook` transforms, the _male voice_ corresponding to the `xml:lang` attribute of the
+root topic will be chosen to render the speech. Use the `--ssml.gender=female` parameter to switch to the _female voice_. If
 no voice of the preferred gender can be found, the default will be used.
 
 A list of available voices can be found within following files:

@@ -90,6 +90,8 @@
     <!-- Set other ssml service defaults -->
     <property name="ssml.service" value="watson"/>
     <property name="ssml.gender" value="male"/>
+    <property name="mp3.cover.art.image" 
+      value="${dita.plugin.fox.jason.audiobook.dir}/resource/cover-art.png"/>
 
     <!-- Decide which service to use -->
     <condition property="audiobook.bing">
@@ -103,6 +105,10 @@
     </condition>
     <condition property="audiobook.custom">
       <equals arg1="${ssml.service}" arg2="custom"/>
+    </condition>
+
+    <condition property="pm3.cover">
+      <equals arg1="${mp3.cover.art.add}" arg2="yes"/>
     </condition>
 
     
