@@ -6,6 +6,6 @@
 	</description>
 	<target name="unit-test">
 		<exec-transtype transtype="audiobook"/>
-		<compare-output suffix=".m4a" result="out/audiobook.m4b"/>
+		<compare-output suffix=".m4b" result="out/audiobook.m4b"/>
 	</target>
 </project>
