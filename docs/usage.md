@@ -52,8 +52,8 @@ Once the command has run, an `*.m4b` file will be created in the output director
 -   `ssml.url` - URL for a Speech-to-Text service. Defaults to the value in `configuration.properties`
 -   `mp3.cachefile` - Specifies the location of a cache file to be used. If the SSML file matches to a previously
     generated mp3 file in the cache the mp3 file will be copied over and the Speech-to-Text service will not be called.
--   `audiobook.cover.art.add` - Specifies whether or not cover art is to be added to an album (default `no`)
--   `audiobook.cover.art.image` - Specifies the cover art to be used for an album, the default will use the image
+-   `mp3.cover.art.add` - Specifies whether or not cover art is to be added to an album (default `no`)
+-   `mp3.cover.art.image` - Specifies the cover art to be used for an album, the default will use the image
     plug-in alter the file `cfg/coverart.png`
 
 ## Selecting a voice to use
