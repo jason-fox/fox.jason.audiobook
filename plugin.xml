@@ -34,8 +34,8 @@
   </transtype>
   <transtype name="audiobook"  extends="mp3" desc="A single Audiobook"/>
 
-
+  <!-- Import the audiobook transform's ANT file -->
   <feature extension="ant.import" file="build_dita2audiobook.xml"/>
+  <!-- Ensure the plugin's error and logging messages are available -->
   <feature extension="dita.xsl.messages" file="resource/messages.xml"/>
-
 </plugin>
