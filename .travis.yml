@@ -13,7 +13,7 @@ install:
   - chmod +x dita-ot-$DITA_OT/bin/dita
   - dita-ot-$DITA_OT/bin/dita --install https://github.com/jason-fox/fox.jason.unit-test/archive/master.zip
   - dita-ot-$DITA_OT/bin/dita --install fox.jason.audiobook.zip
-  - sudo add-apt-repository ppa:mc3man/trusty-media -y
+  - sudo add-apt-repository ppa:mc3man/xerus-media -y
   - sudo apt-get update
   - sudo apt-get install ffmpeg
 
