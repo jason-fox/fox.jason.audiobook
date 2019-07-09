@@ -191,7 +191,7 @@ To run, use the `audiobook` transform.
 PATH_TO_DITA_OT/bin/dita -f audiobook  -o out -i PATH_TO_DITAMAP --ssml.service=[bing|watson]
 ```
 
-Once the command has run, an `*.m4b` file will be created in the output directory.
+Once the command has run, an `*.m4a` file will be created in the output directory.
 
 ### Parameter Reference
 
@@ -216,6 +216,9 @@ Once the command has run, an `*.m4b` file will be created in the output director
 -   `mp3.cover.art.add` - Specifies whether or not cover art is to be added to an album (default `no`)
 -   `mp3.cover.art.image` - Specifies the cover art to be used for an album, the default will use the image
     plug-in alter the file `cfg/cover-art.png`
+-   `audiobook.format` - mp4 Output Format (with or without DRM)
+    -   `m4a` - audio file created in the MPEG-4 format (default)
+    -   `m4b` - audio file created in the MPEG-4 format with DRM
 
 ## Selecting a voice to use
 

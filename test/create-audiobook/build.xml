@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- @disabled -->
 <project basedir="." default="unit-test">
 	<import file="../bootstrap.xml"/>
 	<description>
@@ -7,6 +6,6 @@
 	</description>
 	<target name="unit-test">
 		<exec-transtype transtype="audiobook"/>
-		<compare-output suffix=".m4b" result="out/audiobook.m4b"/>
+		<compare-output suffix=".m4a" result="out/document.m4a"/>
 	</target>
 </project>

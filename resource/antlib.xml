@@ -586,6 +586,7 @@ project.setProperty("audiobook.duration", Number(oldDuration) + duration) ;
 		<attribute name="file"/>
 		<attribute name="metadata"/>
 		<attribute name="chapters"/>
+		<attribute name="output"/>
 		<sequential>
 			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="m4a.meta.temp.file" suffix=".m4a"/>
 
@@ -607,6 +608,7 @@ project.setProperty("audiobook.duration", Number(oldDuration) + duration) ;
 				<arg value="2"/>
 				<arg value="${m4a.meta.temp.file}"/>
 			</exec>
+			<echo level="verbose" message="${line.separator}${ffmpeg.merge.out}" taskname="merge-mp3"/>
 
 			<!-- Add Chapter info and metadata -->
 			<exec taskname="add-chapters" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.merge-meta.result" outputproperty="ffmpeg.merge-meta.out" failOnError="false" >
@@ -623,7 +625,7 @@ project.setProperty("audiobook.duration", Number(oldDuration) + duration) ;
 				<arg value="-codec"/>
 				<arg value="copy"/>
 				<arg value="-y"/>
-				<arg value="@{dir}/audiobook.m4b"/>
+				<arg value="@{dir}/@{output}"/>
 			</exec>
 			<echo level="verbose" message="${line.separator}${ffmpeg.merge-meta.out}" taskname="add-chapters"/>
 		</sequential>

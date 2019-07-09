@@ -200,6 +200,8 @@
   -->
   <target name="audiobook.render" depends="ssml.render, mp3.render">
     <property name="audiobook.duration" value="0"/>
+    <property name="audiobook.format" value="m4a"/>
+    <basename file="${args.input}" property="audiobook.filename.root" suffix=".ditamap"/>
 
     <tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="chapter.temp.file" suffix=".txt"/>
     <echo file="${chapter.temp.file}" message=";FFMETADATA1"/>
@@ -211,7 +213,7 @@
     </xslt>
 
     <create-chapters dir="${dita.output.dir}" file="${topic-list.txt}"/>
-    <merge-audiobook chapters="${chapter.temp.file}" file="${topic-list.txt}"  dir="${dita.output.dir}" metadata="${metadata.temp.file}"/>
+    <merge-audiobook chapters="${chapter.temp.file}" file="${topic-list.txt}"  dir="${dita.output.dir}" metadata="${metadata.temp.file}" output="${audiobook.filename.root}.${audiobook.format}"/>
   </target>
 
 </project>
