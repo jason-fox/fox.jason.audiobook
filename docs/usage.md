@@ -55,6 +55,9 @@ Once the command has run, an `*.m4b` file will be created in the output director
 -   `mp3.cover.art.add` - Specifies whether or not cover art is to be added to an album (default `no`)
 -   `mp3.cover.art.image` - Specifies the cover art to be used for an album, the default will use the image
     plug-in alter the file `cfg/coverart.png`
+-   `audiobook.format` - mp4 output format (with or without DRM)
+    -   `m4a` - audio file created in the MPEG-4 format (default)
+    -   `m4b` - audio file created in the MPEG-4 format with DRM
 
 ## Selecting a voice to use
 
