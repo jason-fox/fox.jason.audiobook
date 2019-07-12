@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!--ant-->
 <!--
-  This file is part of the DITA-OT Audiobook Plug-in project.
-  See the accompanying LICENSE file for applicable licenses.
+	This file is part of the DITA-OT Audiobook Plug-in project.
+	See the accompanying LICENSE file for applicable licenses.
 -->
 <antlib xmlns:if="ant:if" xmlns:unless="ant:unless">
 
@@ -13,44 +13,10 @@
 		@param macro - A macro to run.
 
 	-->
-	<scriptdef language="javascript" name="iterate">
+	<scriptdef language="javascript" name="iterate" src="${dita.plugin.fox.jason.audiobook.dir}/resource/iterate-tracklist.js">
 		<attribute name="dir"/>
 		<attribute name="file"/>
 		<attribute name="macro"/>
-<![CDATA[
-
-
-var dir = attributes.get("dir");
-var file = attributes.get("file");
-var macro = attributes.get("macro");
-
-var tracklist = org.apache.tools.ant.util.FileUtils.readFully(
-				new java.io.FileReader(file));
-var tracks = tracklist.split('\n');
-var failed = false;
-
-for (i = 0; i < tracks.length; ++i) {   
-	task = project.createTask(macro);
-	if (tracks[i] !== "") {
-
-		track = tracks[i].substring(5);
-        try {
-        	task.setDynamicAttribute("src", track.slice(0, -3) + 'ssml');
-        	task.setDynamicAttribute("dest", track);
-        	task.setDynamicAttribute("dir", dir);
-        	task.setDynamicAttribute("track", i + 1);
-            task.execute();
-        } catch(err) {
-			failed = true;
-        }
-	}
-}
-
-if (failed){
-	project.setProperty("ssml.failed", true);
-}
-
-]]>
 	</scriptdef>
 
 	<!--
@@ -107,18 +73,18 @@ if (failed){
 
 			<!-- Obtain the Voice to use with the transform -->
 			<xslt taskname="get-voice" in="${ssml.srcfile}" out="${voice.temp.file}" style="${dita.plugin.fox.jason.audiobook.dir}/xsl/select-voice.xsl">
-			    <xmlcatalog refid="dita.catalog"/>
-			    <param expression="${ssml.service}" name="SERVICE"/>
-			    <param expression="${ssml.gender}" name="GENDER"/>
+					<xmlcatalog refid="dita.catalog"/>
+					<param expression="${ssml.service}" name="SERVICE"/>
+					<param expression="${ssml.gender}" name="GENDER"/>
 			 </xslt>
 			<loadfile property="audiobook.voice" srcFile="${voice.temp.file}"/>
 
 
 			<!-- Obtain the meta data to use with the transform -->
 			<xslt taskname="get-meta" in="${ssml.srcfile}" out="${meta.temp.file}" style="${dita.plugin.fox.jason.audiobook.dir}/xsl/create-id3v2tag.xsl">
-			    <param expression="${audiobook.voice}" name="VOICE"/>
-        		<param expression="@{track}" name="TRACK" />
-			    <xmlcatalog refid="dita.catalog"/>
+					<param expression="${audiobook.voice}" name="VOICE"/>
+						<param expression="@{track}" name="TRACK" />
+					<xmlcatalog refid="dita.catalog"/>
 			</xslt>
 
 			<checksum file="${ssml.srcfile}" property="ssml.checksum" if:set="mp3.cachefile"/>
@@ -226,35 +192,9 @@ if (failed){
 		@param src  - The location of the files to process
 		@param out  - The location of the files to process
 	-->
-	<scriptdef name="copy-from-cache" language="javascript">
+	<scriptdef name="copy-from-cache" language="javascript" src="${dita.plugin.fox.jason.audiobook.dir}/resource/copy-from-cache.js">
 		<attribute name="md5"/>
 		<attribute name="out"/>	
-<![CDATA[
-var cachefile = project.getProperty("mp3.cachefile");
-var md5 = attributes.get("md5");
-var out = attributes.get("out");
-var fileslist = org.apache.tools.ant.util.FileUtils.readFully(
-				new java.io.FileReader(cachefile));
-var lines = fileslist.split('\n');
-var line = null;
-
-for (i = 0; i < lines.length; ++i) { 
-	line = lines[i].trim();
-	if (line.endsWith(md5)){
-		break;
-	} 
-}
-
-var file = cachefile.substr(0, cachefile.lastIndexOf("/")) +
-	'/' + line.split('.').slice(0, -1).join('.') + '.mp3';
-
-var task = project.createTask("copy"); 
-	task.setFile(new java.io.File(file)); 
-	task.setTofile(new java.io.File(out));
-	task.setOverwrite(true);
-	task.setTaskName('mp3-cache-copy');
-	task.perform();
-]]>
 	</scriptdef>
 
 
@@ -321,9 +261,9 @@ var task = project.createTask("copy");
 			<!-- Obtain the stripped down SSML to use with the transform -->
 			<xslt in="@{file}" out="${ssml.temp.file}" taskname="ssml-bing"
 				style="${dita.plugin.fox.jason.audiobook.dir}/xsl/bing-ssml.xsl">
-			    <xmlcatalog refid="dita.catalog"/>
-			    <param expression="${audiobook.voice}" name="VOICE"/>
-        		<param expression="@{track}" name="TRACK" />
+					<xmlcatalog refid="dita.catalog"/>
+					<param expression="${audiobook.voice}" name="VOICE"/>
+						<param expression="@{track}" name="TRACK" />
 			</xslt>
 			<loadfile property="bing.ssml" srcFile="${ssml.temp.file}"/>
 
@@ -345,9 +285,9 @@ var task = project.createTask("copy");
 				<arg value="--output"/>
 				<arg value="@{out}"/>
 				<arg value="${bing.text-to-speech.url}"/>
-		    </exec>
+				</exec>
 
-		    <echo taskname="mp3-bing" level="verbose" message="${line.separator}${bing.out}"/>
+				<echo taskname="mp3-bing" level="verbose" message="${line.separator}${bing.out}"/>
 			<condition property="bing.failed">
 				<or>
 					<length file="@{out}" when="equal" length="0"/>
@@ -357,8 +297,8 @@ var task = project.createTask("copy");
 				</or>
 			</condition>
 
-		    <echo taskname="mp3-bing" if:set="bing.failed" level="error" message="Error transforming file: @{mp3}"/>
-		    <fail if:set="bing.failed"/>
+				<echo taskname="mp3-bing" if:set="bing.failed" level="error" message="Error transforming file: @{mp3}"/>
+				<fail if:set="bing.failed"/>
 		</sequential>
 	</macrodef>
 
@@ -386,9 +326,9 @@ var task = project.createTask("copy");
 			<!-- Obtain the stripped down SSML to use with the transform -->
 			<xslt in="@{file}" out="${ssml.temp.file}" taskname="ssml-custom"
 				style="${dita.plugin.fox.jason.audiobook.dir}/xsl/watson-ssml.xsl">
-			    <xmlcatalog refid="dita.catalog"/>
-			    <param expression="${audiobook.voice}" name="VOICE"/>
-        		<param expression="@{track}" name="TRACK" />
+					<xmlcatalog refid="dita.catalog"/>
+					<param expression="${audiobook.voice}" name="VOICE"/>
+						<param expression="@{track}" name="TRACK" />
 			</xslt>
 			<loadfile property="custom.ssml" srcFile="${ssml.temp.file}"/>
 
@@ -403,11 +343,11 @@ var task = project.createTask("copy");
 				<arg value="@{out}"/>
 				<arg value="-sS"/>
 				<arg value="${custom.text-to-speech.url}"/>
-		    </exec>
-		    <echo taskname="mp3-custom" level="verbose" message="${line.separator}${custom.out}"/>
+				</exec>
+				<echo taskname="mp3-custom" level="verbose" message="${line.separator}${custom.out}"/>
 
 
-		    <condition property="custom.failed">
+				<condition property="custom.failed">
 				<or>
 					<length file="@{out}" when="equal" length="0"/>
 					<not>
@@ -416,8 +356,8 @@ var task = project.createTask("copy");
 				</or>
 			</condition>
 
-		    <echo taskname="mp3-custom" if:set="custom.failed" level="error" message="Error transforming file: @{mp3}"/>
-		    <fail if:set="custom.failed"/>
+				<echo taskname="mp3-custom" if:set="custom.failed" level="error" message="Error transforming file: @{mp3}"/>
+				<fail if:set="custom.failed"/>
 		</sequential>
 	</macrodef>
 
@@ -447,7 +387,7 @@ var task = project.createTask("copy");
 			<!-- Obtain the stripped down SSML to use with the transform -->
 			<xslt in="@{file}" out="${ssml.temp.file}" taskname="ssml-watson"
 				style="${dita.plugin.fox.jason.audiobook.dir}/xsl/watson-ssml.xsl">
-			    <xmlcatalog refid="dita.catalog"/>
+					<xmlcatalog refid="dita.catalog"/>
 			</xslt>
 
 			<!-- Escape quote marks before sending to webservice -->
@@ -472,10 +412,10 @@ var task = project.createTask("copy");
 				<arg value="@{out}"/>
 				<arg value="-sS"/>
 				<arg value="${watson.text-to-speech.url}?voice=@{voice}"/>
-		    </exec>
-		    <echo taskname="mp3-watson" level="verbose" message="${line.separator}${watson.out}"/>
+				</exec>
+				<echo taskname="mp3-watson" level="verbose" message="${line.separator}${watson.out}"/>
 
-		    <condition property="watson.failed">
+				<condition property="watson.failed">
 				<or>
 					<length file="@{out}" when="less" length="50"/>
 					<not>
@@ -485,8 +425,8 @@ var task = project.createTask("copy");
 			</condition>
 
 			<loadfile if:set="watson.failed" property="watson.error" srcFile="@{out}"/>
-		    <echo taskname="mp3-watson" if:set="watson.failed" level="error" message="Error transforming file: @{mp3} ${watson.error}"/>
-		    <fail if:set="watson.failed"/>
+				<echo taskname="mp3-watson" if:set="watson.failed" level="error" message="Error transforming file: @{mp3} ${watson.error}"/>
+				<fail if:set="watson.failed"/>
 		</sequential>
 	</macrodef>
 
@@ -535,40 +475,7 @@ var task = project.createTask("copy");
 			</exec>
 
 			<!-- Create a Chapter entry -->
-			<script language="javascript">
-			<![CDATA[
-var chapter = project.getProperty("chapter.temp.file");
-var input = project.getProperty("ffmpeg.meta.out").split('\n');
-var oldDuration = project.getProperty("audiobook.duration") ;
-var timeString;
-var titleString;
-
-for (i = 0; i < input.length; ++i) { 
-	line = input[i].trim();
-	start = line.indexOf(':');
-	if (line.startsWith('Duration')){
-		timeString = line.substring(start + 2, start + 13);
-	} else if (line.startsWith('title')){
-		titleString = line.substring(start+ 2);
-	}
-}
-
-var datetime = new Date('1970-01-01T' + timeString + 'Z');
-var duration = datetime.getTime();
-
-var output = '\n[CHAPTER]\nTIMEBASE=1/1000\nSTART=' + 
-	Number(oldDuration) + '\nEND=' + (Number(oldDuration) + duration) +
-	'\ntitle=' + titleString + '\n#chapter duration ' + timeString
-
-var task = project.createTask('echo');
-  task.setFile(new java.io.File(chapter));
-  task.setMessage(output);
-  task.setAppend(true);
-  task.perform();
-
-project.setProperty("audiobook.duration", Number(oldDuration) + duration) ;	    
-		    ]]>
-			</script>
+			<script language="javascript" src="${dita.plugin.fox.jason.audiobook.dir}/resource/create-chapter-entry.js" />
 		</sequential>
 	</macrodef>
 
@@ -591,7 +498,7 @@ project.setProperty("audiobook.duration", Number(oldDuration) + duration) ;
 			<tempfile deleteonexit="true" destdir="${dita.temp.dir}" property="m4a.meta.temp.file" suffix=".m4a"/>
 
 			<!-- Merge all MP3 Files -->
-      		<exec taskname="merge-mp3" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.merge.result" outputproperty="ffmpeg.merge.out" failOnError="false" >
+					<exec taskname="merge-mp3" executable="ffmpeg" osfamily="unix" resultproperty="ffmpeg.merge.result" outputproperty="ffmpeg.merge.out" failOnError="false" >
 				<arg value="-f"/>
 				<arg value="concat"/>
 				<arg value="-safe"/>
