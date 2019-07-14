@@ -108,6 +108,8 @@ General Public License 2+ (depending on which options are enabled).
 
 To download a copy follow the instructions on the [Download page](https://ffmpeg.org/download.html)
 
+---
+
 ## Signing up for a Text-to-Speech Service
 
 Several publically available **text-to-speech** cloud services are available for use, they typically offer a
