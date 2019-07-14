@@ -66,6 +66,8 @@ upgrade to the latest version.
 
 ## Installing DITA-OT
 
+<a href="https://www.dita-ot.org"><img src="https://www.dita-ot.org/images/dita-ot-logo.svg" align="right" height="55"></a>
+
 The DITA-OT Audiobook transform is a plug-in for the DITA Open Toolkit.
 
 -   Full installation instructions for downloading DITA-OT can be found
@@ -94,7 +96,11 @@ dita -install https://github.com/jason-fox/fox.jason.audiobook/archive/master.zi
 
 The `dita` command line tool requires no additional configuration.
 
+---
+
 ## Installing the FFMpeg tool
+
+<a href="https://ffmpeg.org"><img src="https://tecadmin.net/wp-content/uploads/2013/11/ffmpeg-logo-370x250.png" align="right" height="80"></a>
 
 FFmpeg is a free software project consisting of a software suite of libraries and programs for handling video, audio,
 and other multimedia files and streams. FFmpeg is published under the GNU Lesser General Public License 2.1+ or GNU
