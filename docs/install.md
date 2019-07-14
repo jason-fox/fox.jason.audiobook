@@ -5,6 +5,8 @@ upgrade to the latest version.
 
 ## Installing DITA-OT
 
+<a href="https://www.dita-ot.org"><img src="https://www.dita-ot.org/images/dita-ot-logo.svg" align="right" width="55" height="55"></a>
+
 The DITA-OT Audiobook transform is a plug-in for the DITA Open Toolkit.
 
 -   Full installation instructions for downloading DITA-OT can be found
@@ -17,7 +19,7 @@ The DITA-OT Audiobook transform is a plug-in for the DITA Open Toolkit.
 
     This defines the necessary environment variable to run the `dita` command from the command line.
 
-```bash
+```console
 curl -LO https://github.com/dita-ot/dita-ot/releases/download/3.3/dita-ot-3.3.zip
 unzip -q dita-ot-3.3.zip
 rm dita-ot-3.3.zip
@@ -27,13 +29,15 @@ rm dita-ot-3.3.zip
 
 -   Run the plug-in installation command:
 
-```bash
+```console
 dita -install https://github.com/jason-fox/fox.jason.audiobook/archive/master.zip
 ```
 
 The `dita` command line tool requires no additional configuration.
 
 ## Installing the FFMpeg tool
+
+<a href="https://ffmpeg.org"><img src="https://tecadmin.net/wp-content/uploads/2013/11/ffmpeg-logo-370x250.png" align="right" height="80" width="118"></a>
 
 FFmpeg is a free software project consisting of a software suite of libraries and programs for handling video, audio,
 and other multimedia files and streams. FFmpeg is published under the GNU Lesser General Public License 2.1+ or GNU
@@ -47,7 +51,9 @@ Several publically available **text-to-speech** cloud services are available for
 _try-before-you-buy_ option and generally offer sample access to the service for without cost. Upgrading to a paid
 version will be necessary when transforming larger documents.
 
-### Text-to-Speech using IBM Cloud Services
+### IBM Cloud Services
+
+<a href="https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-gettingStarted"><img src="https://www.nasuni.com/wp-content/uploads/2017/06/ibm-cloud.png" align="right" width="119" height="85"></a>
 
 The IBM Text to Speech service processes text and natural language to generate synthesized audio output complete with
 appropriate cadence and intonation. It is available in several voices:
@@ -69,7 +75,10 @@ Copy the credentials to authenticate to your service instance:
 3.  Copy the `API Key` and `URL` values.
 4.  Within the plug-in alter the file `cfg/configuration.properties` to hold your `API Key` and `URL`.
 
-### Text-to-Speech using Microsoft Azure
+
+### Microsoft Azure
+
+<a href="https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started"><img src="https://www.confluent.io/wp-content/uploads/MS-Azure_logo_stacked_c-gray_rgb.png" align="right" width="160" height="85"></a>
 
 The Speech Services allow you to convert text into synthesized speech and get a list of supported voices for a region
 using a set of REST APIs. Each available endpoint is associated with a region. A subscription key for the
