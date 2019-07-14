@@ -46,8 +46,8 @@ This DITA-OT plug-in transforms DITA to speech in the form of an audiobook.
     -   [Installing the Plug-in](#installing-the-plug-in)
     -   [Installing the FFMpeg tool](#installing-the-ffmpeg-tool)
     -   [Signing up for a Text-to-Speech Service](#signing-up-for-a-text-to-speech-service)
-        -   [Text-to-Speech using IBM Cloud Services](#text-to-speech-using-ibm-cloud-services)
-        -   [Text-to-Speech using Microsoft Azure](#text-to-speech-using-microsoft-azure)
+        -   [IBM Cloud Services](#ibm-cloud-services)
+        -   [Microsoft Azure](#microsoft-azure)
 -   [Usage](#usage)
     -   [Invocation from the Command line](#invocation-from-the-command-line)
         -   [Obtaining a series of SSML Files](#obtaining-a-series-of-ssml-files)
@@ -108,7 +108,11 @@ Several publically available **text-to-speech** cloud services are available for
 _try-before-you-buy_ option and generally offer sample access to the service for without cost. Upgrading to a paid
 version will be necessary when transforming larger documents.
 
-### Text-to-Speech using IBM Cloud Services
+---
+
+### IBM Cloud Services
+
+<a href="https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-gettingStarted"><img src="https://www.nasuni.com/wp-content/uploads/2017/06/ibm-cloud.png" align="right" height="85"></a>
 
 The IBM Text to Speech service processes text and natural language to generate synthesized audio output complete with
 appropriate cadence and intonation. It is available in several voices:
@@ -130,7 +134,11 @@ Copy the credentials to authenticate to your service instance:
 3.  Copy the `API Key` and `URL` values.
 4.  Within the plug-in alter the file `cfg/configuration.properties` to hold your `API Key` and `URL`.
 
-### Text-to-Speech using Microsoft Azure
+---
+
+### Microsoft Azure
+
+<a href="https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started"><img src="https://www.confluent.io/wp-content/uploads/MS-Azure_logo_stacked_c-gray_rgb.png" align="right" height="85"></a>
 
 The Speech Services allow you to convert text into synthesized speech and get a list of supported voices for a region
 using a set of REST APIs. Each available endpoint is associated with a region. A subscription key for the
@@ -158,6 +166,8 @@ Copy the credentials to authenticate to your service instance:
 
 1.  Copy either of the `API Key` and `Endpoint` values.
 2.  Within the plug-in alter the file `cfg/configuration.properties` to hold your `API Key` and `URL`.
+
+---
 
 # Usage
 
