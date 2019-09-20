@@ -62,12 +62,12 @@ This [DITA-OT Plug-in](https://www.dita-ot.org/plugins) transforms DITA to speec
 
 </details>
 
-# Install
+## Install
 
 The audiobook plug-in has been tested against [DITA-OT 3.x](http://www.dita-ot.org/download). It is recommended that you
 upgrade to the latest version.
 
-## Installing DITA-OT
+### Installing DITA-OT
 
 <a href="https://www.dita-ot.org"><img src="https://www.dita-ot.org/images/dita-ot-logo.svg" align="right" height="55"></a>
 
@@ -89,7 +89,7 @@ unzip -q dita-ot-3.3.4.zip
 rm dita-ot-3.3.4.zip
 ```
 
-## Installing the Plug-in
+### Installing the Plug-in
 
 -   Run the plug-in installation command:
 
@@ -101,7 +101,7 @@ The `dita` command line tool requires no additional configuration.
 
 ---
 
-## Installing the FFMpeg tool
+### Installing the FFMpeg tool
 
 <a href="https://ffmpeg.org"><img src="https://tecadmin.net/wp-content/uploads/2013/11/ffmpeg-logo-370x250.png" align="right" height="80"></a>
 
@@ -113,7 +113,7 @@ To download a copy follow the instructions on the [Download page](https://ffmpeg
 
 ---
 
-## Signing up for a Text-to-Speech Service
+### Signing up for a Text-to-Speech Service
 
 Several publically available **text-to-speech** cloud services are available for use, they typically offer a
 _try-before-you-buy_ option and generally offer sample access to the service for without cost. Upgrading to a paid
@@ -121,7 +121,7 @@ version will be necessary when transforming larger documents.
 
 ---
 
-### IBM Cloud Services
+#### IBM Cloud Services
 
 <a href="https://cloud.ibm.com/docs/services/text-to-speech?topic=text-to-speech-gettingStarted"><img src="https://www.nasuni.com/wp-content/uploads/2017/06/ibm-cloud.png" align="right" height="85"></a>
 
@@ -147,7 +147,7 @@ Copy the credentials to authenticate to your service instance:
 
 ---
 
-### Microsoft Azure
+#### Microsoft Azure
 
 <a href="https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/get-started"><img src="https://www.confluent.io/wp-content/uploads/MS-Azure_logo_stacked_c-gray_rgb.png" align="right" height="85"></a>
 
@@ -180,11 +180,11 @@ Copy the credentials to authenticate to your service instance:
 
 ---
 
-# Usage
+## Usage
 
-## Invocation from the Command line
+### Invocation from the Command line
 
-### Obtaining a series of SSML Files
+#### Obtaining a series of SSML Files
 
 To run, use the `ssml` transform.
 
@@ -194,7 +194,7 @@ PATH_TO_DITA_OT/bin/dita -f ssml  -o out -i PATH_TO_DITAMAP
 
 Once the command has run, a `list.txt` and a series of `*.ssml` files will be available in the output directory.
 
-### Obtaining a series of MP3 Files
+#### Obtaining a series of MP3 Files
 
 To run, use the `mp3` transform.
 
@@ -204,7 +204,7 @@ PATH_TO_DITA_OT/bin/dita -f mp3  -o out -i PATH_TO_DITAMAP --ssml.service=[bing|
 
 Once the command has run, a `list.txt` and a series of `*.mp3` files will be available in the output directory.
 
-### Creating an audiobook
+#### Creating an audiobook
 
 To run, use the `audiobook` transform.
 
@@ -241,7 +241,7 @@ Once the command has run, an `*.m4a` file will be created in the output director
     -   `m4a` - audio file created in the MPEG-4 format (default)
     -   `m4b` - audio file created in the MPEG-4 format with DRM
 
-## Selecting a voice to use
+### Selecting a voice to use
 
 When running the `mp3` or `audiobook` transforms, the _male voice_ corresponding to the `xml:lang` attribute of the
 root topic will be chosen to render the speech. Use the `--ssml.gender=female` parameter to switch to the _female voice_. If
@@ -281,7 +281,7 @@ As you can see the `en-US_AllisonVoice` is currently the preferred female voice 
     voice.
 -   to alter the `en-us` preferences, comment out the existing selection and uncomment the new preferred voice.
 
-## Marking up SSML tags.
+### Marking up SSML tags.
 
 Some DITA tags such as `<p>` and `<b>` translate directly to SSML, however there is rich vocabulary of audio effects
 which are missing from the vanilla DITA specification. These can be accommodated using the `props` attribute added to
@@ -292,7 +292,7 @@ should be replaced with `<keyword>` elements for consistency of reuse.
 
 **Note**: Not all tags and attributes will be supported by every provider.
 
-### `<say-as>` Element
+#### `<say-as>` Element
 
 The `say-as` tag allows the author to indicate information on the type of text contained within the tag and to help
 specify the level of detail for rendering the text. The required attribute for this tag is `interpret-as` . There are
@@ -301,7 +301,7 @@ attribute. These optional attributes are illustrated within the entries for thei
 
 -   `letters`: This value spells out the characters in a given word within the enclosed tag.
 
-#### Example (This will spell out _"HELLO"_):
+##### Example (This will spell out _"HELLO"_):
 
 ```xml
 <ph props="say-as interpret-as(letters)">Hello</ph>
@@ -309,13 +309,15 @@ attribute. These optional attributes are illustrated within the entries for thei
 
 -   `digits`: This value spells out the digits in a given number within the enclosed tag.
 
-#### Example (This will spell out _"123456"_):
+##### Example (This will spell out _"123456"_):
 
 ```xml
 <ph props="say-as interpret-as(digits)">123456</ph>
 ```
 
 -   `vxml:digits`: This value performs the same function as the digits value.
+
+##### Example
 
 ```xml
 <ph props="say-as interpret-as(vxml:digits)">123456</ph>
@@ -325,7 +327,7 @@ attribute. These optional attributes are illustrated within the entries for thei
     attribute. The `format` attribute is required for use with the date value of `interpret-as`, but if `format` is not
     present, the engine will still attempt to pronounce the date.
 
-#### Example (This gives a list of dates in all the various formats: )
+##### Example (This gives a list of dates in all the various formats: )
 
 ```xml
 <ph props="say-as interpret-as(date) format(mdy)">12/17/2005</ph>
@@ -339,7 +341,7 @@ attribute. These optional attributes are illustrated within the entries for thei
 
 -   `ordinal` - This value will speak the ordinal value for the given digit within the enclosed tag.
 
-#### Example (This will say _"second first"_):
+##### Example (This will say _"second first"_):
 
 ```xml
 <ph props="say-as interpret-as(ordinal)">2</ph>
@@ -348,7 +350,7 @@ attribute. These optional attributes are illustrated within the entries for thei
 
 -   `cardinal` - This value will speak the cardinal number corresponding to the Roman numeral within the enclosed tag.
 
-#### Example (This will say _"Super Bowl thirty-nine"_):
+##### Example (This will say _"Super Bowl thirty-nine"_):
 
 ```xml
 Super Bowl <ph props="say-as interpret-as(cardinal)">XXXIX</ph>
@@ -358,6 +360,8 @@ Super Bowl <ph props="say-as interpret-as(cardinal)">XXXIX</ph>
     how the number is to be interpreted, you can enter one series of number and have it pronounced several different
     ways, as in the example. The example also includes two different ways of pronouncing a series of numbers as a
     telephone number. To have the series pronounced with the punctuation included, you must add the `detail` attribute.
+
+##### Examples
 
 ```xml
 <ph props="say-as interpret-as(number)">123456</ph>
@@ -369,6 +373,8 @@ Super Bowl <ph props="say-as interpret-as(cardinal)">XXXIX</ph>
 
 -   `vxml:boolean` - This value will speak `yes` or `no` depending on the value given within the enclosed tag.
 
+##### Examples
+
 ```xml
 <ph props="say-as interpret-as(vxml:boolean)">true</ph>
 <ph props="say-as interpret-as(vxml:boolean)">false</ph>
@@ -377,6 +383,8 @@ Super Bowl <ph props="say-as interpret-as(cardinal)">XXXIX</ph>
 -   `vxml:date` - This value works like the date value, except that the format is predefined as `YYYYMMDD`. When a value
     is not known, or you do not wish it to be displayed, a question mark is used to replace that value, as shown in the
     example.
+    
+##### Examples
 
 ```xml
 <ph props="say-as interpret-as(vxml:date)">20050720</ph>
@@ -388,7 +396,7 @@ Super Bowl <ph props="say-as interpret-as(cardinal)">XXXIX</ph>
     the `UUUmm.nn` format, where `UUU` is the three character currency indicator specified by ISO standard 4217, and
     `mm.nn` is the amount.
 
-#### Example (This will say _"forty-five dollars and thirty cents"_):
+##### Example (This will say _"forty-five dollars and thirty cents"_):
 
 ```xml
 <ph props="say-as interpret-as(vxml:currency)">USD45.30</ph>
@@ -398,7 +406,7 @@ If there are more than two decimal places in the number within the enclosed tag,
 decimal number followed by the currency indicator. If the three character currency indicator is not present, the number
 will be synthesized as a decimal only, with no pronunciation of currency type.
 
-#### Example (This will say _"forty-five point three two nine US dollars"_):
+##### Example (This will say _"forty-five point three two nine US dollars"_):
 
 ```xml
 <ph props="say-as interpret-as(vxml:currency)">USD45.329</ph>
@@ -411,7 +419,7 @@ will be synthesized as a decimal only, with no pronunciation of currency type.
 <ph props="say-as interpret-as(vxml:phone)">555-555-5555</ph>
 ```
 
-### `<phoneme>` Element
+#### `<phoneme>` Element
 
 The SSML phoneme tag enables users to provide a phonetic pronunciation for the enclosed text. This tag has two
 attributes:
@@ -421,6 +429,8 @@ attributes:
 
 -   `ph` - This attribute specifies the pronunciation. It is a required attribute. This example shows how a
     pronunciation for _"tomato"_ is specified using the IPA phonology, where the symbols are given using Unicode:
+
+##### Examples
 
 ```xml
 <ph props="phoneme alphabet(ipa) ph(t&#x259;mei&#x27E;ou&#x325;)">tomato</ph>
@@ -432,16 +442,18 @@ This example shows how a pronunciation for _"tomato"_ is specified using the SPR
 <ph props="phoneme alphabet(ibm) ph(.0tx.1me.0fo)">tomato</ph>
 ```
 
-### `<sub>` Element
+#### `<sub>` Element
 
 This tag is used to indicate that the text included in the alias attribute is to replace the text enclosed within the
 tag when speech is synthesized. The only attribute for this tag is the `alias` attribute, and it is required.
+
+##### Example
 
 ```xml
 <ph props="sub alias(International Business Machines)">IBM</ph>
 ```
 
-### `<voice>` Element
+#### `<voice>` Element
 
 This tag is used when a change in voice is required. Although all attributes listed are optional, without any attributes
 defined an error will result. The optional attributes are:
@@ -451,7 +463,7 @@ defined an error will result. The optional attributes are:
 -   `name` Accepted values are the installed voices’ names.
 -   `variant` Accepted values are positive integers.
 
-Examples:
+##### Examples
 
 ```xml
 <ph props="voice age(60)">Sixty year-old's voice.</ph>
@@ -460,7 +472,7 @@ Examples:
 <ph props="voice name(Allison, Andrew, Tyler)">Use the first available IBM TTS voice named in the given list.</ph>
 ```
 
-### `<emphasis>` Element
+#### `<emphasis>` Element
 
 The `<emphasis>` element equests that the contained text be spoken with emphasis (also referred to as prominence or
 stress).
@@ -471,6 +483,8 @@ stress).
     pitch change, timing changes, loudness and other acoustic differences). The `reduced` level is effectively the
     opposite of emphasizing a word. For example, when the phrase "going to" is reduced it may be spoken as "gonna". The
     `none` level is used to prevent the synthesis processor from emphasizing words that it might typically emphasize.
+
+##### Examples
 
 ```xml
 That is a <ph props="emphasis"> big </ph> car!
@@ -484,7 +498,7 @@ That is a <b> big </b> car!
 That is a <b props="level(strong)"> huge </b>bank account!
 ```
 
-### `<break>` Element
+#### `<break>` Element
 
 This tag inserts pauses into the spoken text. It has the following optional attributes:
 
@@ -492,6 +506,8 @@ This tag inserts pauses into the spoken text. It has the following optional attr
     `weak,` `medium,` `strong,` or `x-strong.`
 -   `time` - This attribute specifies the length of the pause in terms of seconds or milliseconds. The values formats
     are `NNNs` for seconds or `NNNms` for milliseconds.
+    
+##### Examples
 
 ```xml
 Different sized <ph props="break strength(none)"/> pauses.
@@ -504,7 +520,7 @@ Different sized <ph props="break time(1s)"/> pauses.
 Different sized <ph props="break time(1000ms)"/> pauses.
 ```
 
-### `<prosody>` Element
+#### `<prosody>` Element
 
 This tag controls the pitch, range, speaking rate, and volume of the text. all attributes are optional, but if no
 attribute is given an error results.
@@ -526,7 +542,7 @@ the setting is `rate=+10`, the speaking rate will be 10 words per minute faster 
 -   volume - This attribute modifies the volume for the contained text. The range for values is `0.0` to `100.0` or the
     relative values of : `silent`, `x-soft`, `soft`, `medium`, `loud`, `x-loud`, `default`
 
-Examples:
+##### Examples
 
 ```xml
 <ph props="prosody pitch(150Hz)"> Modified pitch </ph>
@@ -548,19 +564,21 @@ Examples:
 <ph props="prosody volume(loud)">Modified volume</ph>
 ```
 
-### `<audio>` Element
+#### `<audio>` Element
 
 This tag inserts recorded elements into the generated audio. The only attribute is `src` and is required. This attribute
 specifies the location of the file to be inserted.
+
+##### Example
 
 ```xml
 <ph props="audio src(http://www.myfiles.com/files/beep.wav)"/>
 ```
 
-# Contribute
+## Contribute
 
 PRs accepted.
 
-# License
+## License
 
 [Apache 2.0](LICENSE) © 2019 Jason Fox
