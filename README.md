@@ -39,7 +39,8 @@ This [DITA-OT Plug-in](https://www.dita-ot.org/plugins) transforms DITA to speec
   </a>
 </audio>
 
-# Table of Contents
+<details>
+<summary><strong>Table of Contents</strong></summary>
 
 -   [Install](#install)
     -   [Installing DITA-OT](#installing-dita-ot)
@@ -58,6 +59,8 @@ This [DITA-OT Plug-in](https://www.dita-ot.org/plugins) transforms DITA to speec
     -   [Marking up SSML tags.](#marking-up-ssml-tags)
 -   [Contribute](#contribute)
 -   [License](#license)
+
+</details>
 
 # Install
 
