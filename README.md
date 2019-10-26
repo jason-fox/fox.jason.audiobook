@@ -5,6 +5,8 @@
 [![Build Status](https://travis-ci.org/jason-fox/fox.jason.audiobook.svg?branch=master)](https://travis-ci.org/jason-fox/fox.jason.audiobook)
 [![Coverage Status](https://coveralls.io/repos/github/jason-fox/fox.jason.audiobook/badge.svg?branch=master)](https://coveralls.io/github/jason-fox/fox.jason.audiobook?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/audiobookdita-ot/badge/?version=latest)](https://audiobookdita-ot.readthedocs.io/en/latest/?badge=latest)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fox.jason.audiobook&metric=alert_status)](https://sonarcloud.io/dashboard?id=fox.jason.audiobook)
+
 
 This [DITA-OT Plug-in](https://www.dita-ot.org/plugins) transforms DITA to speech in the form of an audiobook.
 
@@ -383,7 +385,7 @@ Super Bowl <ph props="say-as interpret-as(cardinal)">XXXIX</ph>
 -   `vxml:date` - This value works like the date value, except that the format is predefined as `YYYYMMDD`. When a value
     is not known, or you do not wish it to be displayed, a question mark is used to replace that value, as shown in the
     example.
-    
+
 ##### Examples
 
 ```xml
@@ -506,7 +508,7 @@ This tag inserts pauses into the spoken text. It has the following optional attr
     `weak,` `medium,` `strong,` or `x-strong.`
 -   `time` - This attribute specifies the length of the pause in terms of seconds or milliseconds. The values formats
     are `NNNs` for seconds or `NNNms` for milliseconds.
-    
+
 ##### Examples
 
 ```xml
