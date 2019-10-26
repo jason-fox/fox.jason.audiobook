@@ -20,10 +20,10 @@ var tracklist = org.apache.tools.ant.util.FileUtils.readFully(
 var tracks = tracklist.split("\n");
 var failed = false;
 
-for (i = 0; i < tracks.length; ++i) {
-  task = project.createTask(macro);
+for (var i = 0; i < tracks.length; ++i) {
+  var task = project.createTask(macro);
   if (tracks[i] !== "") {
-    track = tracks[i].substring(5);
+    var track = tracks[i].substring(5);
     try {
       task.setDynamicAttribute("src", track.slice(0, -3) + "ssml");
       task.setDynamicAttribute("dest", track);

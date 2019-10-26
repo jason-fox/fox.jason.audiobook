@@ -17,7 +17,7 @@ var fileslist = org.apache.tools.ant.util.FileUtils.readFully(
 var lines = fileslist.split("\n");
 var line = null;
 
-for (i = 0; i < lines.length; ++i) {
+for (var i = 0; i < lines.length; ++i) {
   line = lines[i].trim();
   if (line.endsWith(md5)) {
     break;

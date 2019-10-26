@@ -11,9 +11,9 @@ var oldDuration = project.getProperty("audiobook.duration");
 var timeString;
 var titleString;
 
-for (i = 0; i < input.length; ++i) {
-  line = input[i].trim();
-  start = line.indexOf(":");
+for (var i = 0; i < input.length; ++i) {
+  var line = input[i].trim();
+  var start = line.indexOf(":");
   if (line.startsWith("Duration")) {
     timeString = line.substring(start + 2, start + 13);
   } else if (line.startsWith("title")) {
