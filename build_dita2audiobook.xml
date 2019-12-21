@@ -5,12 +5,7 @@
 -->
 <project xmlns:dita="http://dita-ot.sourceforge.net" name="fox.jason.audiobook" xmlns:if="ant:if" >
 
-  <!--
-    ANT targets to create SSML, MP3 and audiobook files
-  -->
-  <target name="dita2ssml" depends="build-init, ssml.init, preprocess, ssml.render"/>
-  <target name="dita2mp3" depends="build-init, audiobook.services.init, preprocess, mp3.render"/>
-  <target name="dita2audiobook" depends="build-init, audiobook.services.init, preprocess, audiobook.render"/>
+
 
 
   <!--
@@ -215,5 +210,12 @@
     <create-chapters dir="${dita.output.dir}" file="${topic-list.txt}"/>
     <merge-audiobook chapters="${chapter.temp.file}" file="${topic-list.txt}"  dir="${dita.output.dir}" metadata="${metadata.temp.file}" output="${audiobook.filename.root}.${audiobook.format}"/>
   </target>
+
+  <!--
+    ANT targets to create SSML, MP3 and audiobook files
+  -->
+  <target name="dita2ssml" depends="build-init, ssml.init, preprocess, ssml.render"/>
+  <target name="dita2mp3" depends="build-init, audiobook.services.init, preprocess, mp3.render"/>
+  <target name="dita2audiobook" depends="build-init, audiobook.services.init, preprocess, audiobook.render"/>
 
 </project>
