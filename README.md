@@ -41,6 +41,10 @@ This [DITA-OT Plug-in](https://www.dita-ot.org/plugins) transforms DITA to speec
   </a>
 </audio>
 
+:arrow_forward: [Video from DITA-OT Day 2019](https://youtu.be/icbLaNGdV8c)
+
+[![](https://jason-fox.github.io/fox.jason.audiobook/cloud-video.png)](https://youtu.be/icbLaNGdV8c)
+
 <details>
 <summary><strong>Table of Contents</strong></summary>
 
