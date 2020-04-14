@@ -5,6 +5,8 @@
 -->
 <antlib xmlns:if="ant:if" xmlns:unless="ant:unless">
 
+	<taskdef classname="fox.jason.audiobook.tasks.CreateChapterEntryTask" name="create-chapter-entry" onerror="ignore"/>
+
 	<!--
 		Iterator function to run a given macro against a set of files
 
@@ -13,11 +15,7 @@
 		@param macro - A macro to run.
 
 	-->
-	<scriptdef language="javascript" name="iterate" src="${dita.plugin.fox.jason.audiobook.dir}/resource/iterate-tracklist.js">
-		<attribute name="dir"/>
-		<attribute name="file"/>
-		<attribute name="macro"/>
-	</scriptdef>
+	<taskdef classname="fox.jason.audiobook.tasks.IterateTracklistTask" name="iterate" onerror="ignore"/>
 
 	<!--
 		Transform all SSML files in a directory to MP3
@@ -192,12 +190,7 @@
 		@param src  - The location of the files to process
 		@param out  - The location of the files to process
 	-->
-	<scriptdef name="copy-from-cache" language="javascript" src="${dita.plugin.fox.jason.audiobook.dir}/resource/copy-from-cache.js">
-		<attribute name="md5"/>
-		<attribute name="out"/>	
-	</scriptdef>
-
-
+	<taskdef classname="fox.jason.audiobook.tasks.CopyFromCacheTask"  name="copy-from-cache" />
 
 	<!--
 		Ensure that the Bing Speech-to-Text service is authorized
@@ -475,7 +468,7 @@
 			</exec>
 
 			<!-- Create a Chapter entry -->
-			<script language="javascript" src="${dita.plugin.fox.jason.audiobook.dir}/resource/create-chapter-entry.js" />
+			<create-chapter-entry/>
 		</sequential>
 	</macrodef>
 

@@ -5,14 +5,11 @@
 -->
 <project xmlns:dita="http://dita-ot.sourceforge.net" name="fox.jason.audiobook" xmlns:if="ant:if" >
 
-
-
-
   <!--
     Setting up SSML processing. Sets up ANT variable overrides.
   -->
   <target name="audiobook.init">
-    <typedef file="${dita.plugin.fox.jason.audiobook.dir}/resource/antlib.xml"/>
+    <taskdef resource="fox/jason/audiobook/antlib.xml"/>
     <property name="preprocess.copy-image.skip" value="true"/>
     <property name="out.ext" value="ssml"/>
   </target>
