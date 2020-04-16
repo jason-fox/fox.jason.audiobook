@@ -9,7 +9,6 @@ import java.io.IOException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.taskdefs.MacroInstance;
-import org.apache.tools.ant.types.FileSet;
 import org.apache.tools.ant.util.FileUtils;
 
 //
@@ -93,9 +92,7 @@ public class IterateTracklistTask extends Task {
     }
 
     try {
-      String tracklist = org.apache.tools.ant.util.FileUtils.readFully(
-        new java.io.FileReader(file)
-      );
+      String tracklist = FileUtils.readFully(new java.io.FileReader(file));
 
       boolean failed = false;
       int index = 1;

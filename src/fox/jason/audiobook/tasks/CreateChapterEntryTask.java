@@ -14,6 +14,9 @@ import org.apache.tools.ant.taskdefs.Echo;
 // Function to create a Chapter entry
 
 public class CreateChapterEntryTask extends Task {
+  private static final String DURATION = "audiobook.duration";
+  private static final String CHAPTER_FILE = "chapter.temp.file";
+  private static final String METADATA = "ffmpeg.meta.out";
 
   /**
    * Creates a new <code>CreateChapterEntryTask</code> instance.
@@ -29,11 +32,11 @@ public class CreateChapterEntryTask extends Task {
    */
   @Override
   public void execute() {
-    String chapter = getProject().getProperty("chapter.temp.file");
-    String[] inputs = getProject().getProperty("ffmpeg.meta.out").split("\n");
-    long oldDuration = getProject().getProperty("audiobook.duration") == null
+    String chapter = getProject().getProperty(CHAPTER_FILE);
+    String[] inputs = getProject().getProperty(METADATA).split("\n");
+    long oldDuration = getProject().getProperty(DURATION) == null
       ? 0
-      : Long.parseLong(getProject().getProperty("audiobook.duration"));
+      : Long.parseLong(getProject().getProperty(DURATION));
 
     String timeString = null;
     String titleString = null;
@@ -48,19 +51,19 @@ public class CreateChapterEntryTask extends Task {
       }
     }
 
-    SimpleDateFormat ISO8601DATEFORMAT = new SimpleDateFormat(
+    SimpleDateFormat iso8601DateFormat = new SimpleDateFormat(
       "yyyy-MM-dd'T'HH:mm:ssZ"
     );
 
     try {
-      Date datetime = ISO8601DATEFORMAT.parse("1970-01-01T" + timeString + "Z");
+      Date datetime = iso8601DateFormat.parse("1970-01-01T" + timeString + "Z");
       long duration = datetime.getTime();
 
       String output =
         "\n[CHAPTER]\nTIMEBASE=1/1000\nSTART=" +
-        String.valueOf(oldDuration) +
+        oldDuration +
         "\nEND=" +
-        String.valueOf(oldDuration + duration) +
+        (oldDuration + duration) +
         "\ntitle=" +
         titleString +
         "\n#chapter duration " +
@@ -73,10 +76,7 @@ public class CreateChapterEntryTask extends Task {
       task.perform();
 
       getProject()
-        .setProperty(
-          "audiobook.duration",
-          String.valueOf(oldDuration + duration)
-        );
+        .setProperty(DURATION, String.valueOf(oldDuration + duration));
     } catch (Exception e) {
       throw new BuildException(e);
     }

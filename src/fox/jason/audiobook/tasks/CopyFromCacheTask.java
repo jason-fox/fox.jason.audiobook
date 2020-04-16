@@ -72,28 +72,26 @@ public class CopyFromCacheTask extends Task {
     try {
       String cachefile = getProject().getProperty("mp3.cachefile");
       String fileslist = FileUtils.readFully(new java.io.FileReader(cachefile));
-      String[] parts = null;
 
       for (String line : fileslist.split("\n")) {
         line = line.trim();
         if (line.endsWith(md5)) {
-          parts = line.split(".");
+          String[] parts = line.split(".");
+          String file =
+            cachefile.substring(0, cachefile.lastIndexOf('/')) +
+            "/" +
+            String.join(".", Arrays.copyOf(parts, parts.length - 1)) +
+            ".mp3";
+
+          Copy task = (Copy) getProject().createTask("copy");
+          task.setTaskName("mp3-cache-copy");
+          task.setFile(new java.io.File(file));
+          task.setTofile(new java.io.File(out));
+          task.setOverwrite(true);
+          task.perform();
           break;
         }
       }
-
-      String file =
-        cachefile.substring(0, cachefile.lastIndexOf('/')) +
-        "/" +
-        String.join(".", Arrays.copyOf(parts, parts.length - 1)) +
-        ".mp3";
-
-      Copy task = (Copy) getProject().createTask("copy");
-      task.setFile(new java.io.File(file));
-      task.setTofile(new java.io.File(out));
-      task.setOverwrite(true);
-      task.setTaskName("mp3-cache-copy");
-      task.perform();
     } catch (IOException e) {
       throw new BuildException(e);
     }
