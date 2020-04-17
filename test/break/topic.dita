@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="break">
+  <title>break</title>
+ 
+  <body>
+    <p>
+    	This tag inserts pauses into the spoken text. It has the following optional attributes:
+
+		strength - This attribute specifies the length of a pause in terms of varying strength values: none, x-weak,  weak, medium, strong, or x-strong.
+		time - This attribute specifies the length of the pause in terms of seconds or milliseconds. The values formats are NNNs for seconds or NNNms for milliseconds.
+		Different sized <ph props="break strength(none)"/>pauses.
+		Different sized <ph props="break strength(x-weak)"/>pauses.
+		Different sized <ph props="break strength(weak)"/>pauses.
+		Different sized <ph props="break strength(medium)"/>pauses.
+		Different sized <ph props="break strength(strong)"/>pauses.
+		Different sized <ph props="break strength(x-strong)"/>pauses.
+		Different sized <ph props="break time(1s)"/>pauses.
+		Different sized <ph props="break time(1000ms)"/>pauses.
+    </p>
+  </body>
+</topic>

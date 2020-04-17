@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><speak xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis11/synthesis.xsd" xml:lang="en"><meta name="DC.type" content="topic"/><meta name="DC.language" content="en"/><meta name="rights" content="© 1994-2006 OASIS"/><meta name="DC.isPartOf" content="A book about one thing"/><meta name="DC.title" content="say-as"/><meta name="DC.creator" content="Jane"/><meta name="DC.publisher" content="Example Publishers Austin, TX 1977"/><meta name="DC.format" content="SSML"/><meta name="DC.identifier" content="say-as"/>
+   <mark name="say-as"/><p>say-as </p>
+   
+		 <p> 
+			Example (This will spell out "HELLO")
+			 <say-as as="letters">Hello </say-as>
+		 </p>
+		 <p>
+			digits: This value spells out the digits in a given number within the enclosed tag.
+			Example (This will spell out "123456")
+			 <say-as as="digits">123456 </say-as>
+			vxml:digits: This value performs the same function as the digits value.
+
+			 <say-as as="vxml:digits">123456 </say-as>
+		 </p>
+		 <p>
+			date This value will speak the date within the enclosed tag, using the format given in the associated format attribute. The format attribute is required for use with the date value of interpret-as, but if format is not present, the engine will still attempt to pronounce the date.
+			Example (This gives a list of dates in all the various formats)
+			 <say-as as="date" format="mdy">12/17/2005 </say-as>
+			 <say-as as="date" format="ymd">2005/12/17 </say-as>
+			 <say-as as="date" format="dmy">17/12/2005 </say-as>
+			 <say-as as="date" format="ydm">2005/17/12 </say-as>
+			 <say-as as="date" format="my">12/2005 </say-as>
+			 <say-as as="date" format="md">12/17 </say-as>
+			 <say-as as="date" format="ym">2005/12 </say-as>
+		 </p>
+		 <p>
+			ordinal - This value will speak the ordinal value for the given digit within the enclosed tag.
+			Example (This will say "second first")
+			 <say-as as="ordinal">2 </say-as>
+			 <say-as as="ordinal">1 </say-as>
+		 </p>
+		 <p>
+			cardinal - This value will speak the cardinal number corresponding to the Roman numeral within the enclosed tag.
+			Example (This will say "Super Bowl thirty-nine")
+			Super Bowl  <say-as as="cardinal">XXXIX </say-as>
+			number - This value is an alternative to using the values given above. Using the format attribute to determine how the number is to be interpreted, you can enter one series of number and have it pronounced several different ways, as in the example. The example also includes two different ways of pronouncing a series of numbers as a telephone number. To have the series pronounced with the punctuation included, you must add the detail attribute.
+			 <say-as as="number">123456 </say-as>
+			 <say-as as="number" format="ordinal">123456 </say-as>
+			 <say-as as="number" format="cardinal">123456 </say-as>
+			 <say-as as="number" format="telephone">555-555-5555 </say-as>
+			 <say-as as="number" format="telephone" detail="punctuation">555-555-5555 </say-as>
+		 </p>
+		 <p>
+			vxml:boolean - This value will speak yes or no depending on the value given within the enclosed tag.
+			 <say-as as="vxml:boolean">true </say-as>
+			 <say-as as="vxml:boolean">false </say-as>
+		 </p>
+		 <p>
+			vxml:date - This value works like the date value, except that the format is predefined as YYYYMMDD. When a value is not known, or you do not wish it to be displayed, a question mark is used to replace that value, as shown in the example.
+			 <say-as as="vxml:date">20050720 </say-as>
+			 <say-as as="vxml:date">????0720 </say-as>
+			 <say-as as="vxml:date">200507?? </say-as>
+		 </p>
+		 <p>
+			vxml:currency - This value is used to control the synthesis of monetary quantities. The string must be written in the UUUmm.nn format, where UUU is the three character currency indicator specified by ISO standard 4217, and  mm.nn is the amount.
+			Example (This will say "forty-five dollars and thirty cents"):
+			 <say-as as="vxml:currency">USD45.30 </say-as>
+			If there are more than two decimal places in the number within the enclosed tag, the amount will be synthesized as a decimal number followed by the currency indicator. If the three character currency indicator is not present, the number will be synthesized as a decimal only, with no pronunciation of currency type.
+			Example (This will say "forty-five point three two nine US dollars")
+			 <say-as as="vxml:currency">USD45.329 </say-as>
+		 </p>
+		 <p>
+			vxml:phone - This value will speak a phone number with both digits and punctuation, similar to the number value used with format(telephone).
+			 <say-as as="vxml:phone">555-555-5555 </say-as>
+		 </p>
+   
+ </speak>
