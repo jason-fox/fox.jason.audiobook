@@ -7,7 +7,6 @@
 [![Documentation Status](https://readthedocs.org/projects/audiobookdita-ot/badge/?version=latest)](https://audiobookdita-ot.readthedocs.io/en/latest/?badge=latest)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fox.jason.audiobook&metric=alert_status)](https://sonarcloud.io/dashboard?id=fox.jason.audiobook)
 
-
 This [DITA-OT Plug-in](https://www.dita-ot.org/plugins) transforms DITA to speech in the form of an audiobook.
 
 ### DITA Topic
@@ -241,16 +240,16 @@ Once the command has run, an `*.m4a` file will be created in the output director
 -   `mp3.cachefile` - Specifies the location of a cache file to be used. If the SSML file matches to a previously
     generated mp3 file in the cache the mp3 file will be copied over and the Speech-to-Text service will not be called.
 -   `mp3.cover.art.add` - Specifies whether or not cover art is to be added to an album (default `no`)
--   `mp3.cover.art.image` - Specifies the cover art to be used for an album, the default will use the image
-    plug-in alter the file `cfg/cover-art.png`
+-   `mp3.cover.art.image` - Specifies the cover art to be used for an album, the default will use the image plug-in
+    alter the file `cfg/cover-art.png`
 -   `audiobook.format` - mp4 Output Format (with or without DRM)
     -   `m4a` - audio file created in the MPEG-4 format (default)
     -   `m4b` - audio file created in the MPEG-4 format with DRM
 
 ### Selecting a voice to use
 
-When running the `mp3` or `audiobook` transforms, the _male voice_ corresponding to the `xml:lang` attribute of the
-root topic will be chosen to render the speech. Use the `--ssml.gender=female` parameter to switch to the _female voice_. If
+When running the `mp3` or `audiobook` transforms, the _male voice_ corresponding to the `xml:lang` attribute of the root
+topic will be chosen to render the speech. Use the `--ssml.gender=female` parameter to switch to the _female voice_. If
 no voice of the preferred gender can be found, the default will be used.
 
 A list of available voices can be found within following files:
@@ -588,4 +587,5 @@ PRs accepted.
 ## License
 
 [Apache 2.0](LICENSE) © 2019 - 2020 Jason Fox
- - 2020
+
+-   2020
