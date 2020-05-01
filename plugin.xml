@@ -15,19 +15,19 @@
   </transtype>
 
   <transtype name="mp3" extends="ssml" desc="Create MP3 player audio tracks">
-    <param desc="Specifies the location a cache file to be used" name="mp3.cachefile" type="file"/>
-    <param name="ssml.service" desc="Specifies the text-to-speech processor." type="enum">
+    <param desc="Specifies the location a cache file holding Text-to-Speech to be reused" name="mp3.cachefile" type="file"/>
+    <param name="ssml.service" desc="Specifies the Text-to-Speech cloud service." type="enum">
       <val>bing</val>
       <val>custom</val>
       <val>dummy</val>
       <val default="true">watson</val>
     </param>
 
-    <param name="ssml.authentication.url" type="string"/>
-    <param name="ssml.output.format" type="string"/>
-    <param name="ssml.apikey" type="string"/>
-    <param name="ssml.url" type="string"/>
-    <param name="mp3.cachefile" type="file"/>
+    <param name="ssml.authentication.url" type="string" desc="URL for creating an OAuth token if needed"/>
+    <param name="ssml.output.format" type="string" desc="Output format override for the cloud Speech-to-Text service"/>
+    <param name="ssml.apikey" type="string" desc="API key for a cloud Text-to-Speech service"/>
+    <param name="ssml.url" type="string" desc="URL for a cloud Text-to-Speech service"/>
+    <param name="mp3.cachefile" type="file" desc="Specifies the location a cache file holding Text-to-Speech to be reused"/>
     <param name="mp3.cover.art.add" desc="Specifies whether or not cover art is to be added to a file." type="enum">
       <val>yes</val>
       <val default="true">no</val>
