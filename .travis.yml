@@ -16,7 +16,7 @@ addons:
       secure: "EwC9eeK/55dalCVlm1zPU8DxghUtS5a6RTRq7NMTrHXHOv1xOwh+OzDbC3Eyt6FOhsjl0dA7z+P/g3PlI+I/TGB8ubt6m/r8R/hpuiNnT+Hf4kqHRLHbn5VDU+zk1tk8ng4dB1CkJ9OmIjMwZrjmApyO2tZ0KJAXsce532EbnBngsuhdg7KuzpjhgSljMR+rsZ+JlI1GKiEXPw7HG+9+t63Sx5Y5JCVLTu1bE2TKAy6fLYParREWo3mSyelYHkQ8n6Rj3hKt5HKOk+hG+DY9C1GMvjIi1c8ZQsCBN2KFd+hL3PQlIXE6/wMPtXf8g+/1xuhvhH/rnoipr4eX9UBg+m4ApbJpRPAeS9b+okaGHP4IVm6GHNIUKupRYddlrbehMfgRAHwEvxnFG3tWT7vnqbeJu1ZmP0InaqkJT64bljypg77h9b+Wq7XCCtDA+wWDBe4F17iZL3QxfOLPEYoY1GGosXabyae3/t9+zu8nze2c7NHtCZ0Hfej2OYTRLc5QUuHQRbPgHCWGL/+YZ2M9AV4Q0WxmmPVRJ3J6G1xui7IK8eMj1qnwxmbY82F0G3rk91sv8AQRfDY+38zvypgZYntImk7VTz2Aoa7iSv82OX+B7G81mVJC2yNEZpl5jrxeJVSsSxRGGuN4DvQFx9m0K5vojBD8eKvBoEbEtnpP7Tk="
 
 env:
-  - DITA_OT=3.5.1
+  - DITA_OT=3.5.4
 
 before_install:
   - zip -r fox.jason.audiobook.zip . -x *.zip* *.git/* *temp/* *out/*
