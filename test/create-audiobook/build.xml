@@ -6,14 +6,13 @@
 	</description>
 	<target name="unit-test">
 		<exec-transtype transtype="audiobook"/>
-		<condition property="isUnix">
-		  <and>
-		    <os family="unix"/>
-		    <not>
-		      <os family="mac"/>
-		    </not>
-		  </and>
-		</condition>
-		<compare-output if:set="isUnix" suffix=".m4a" result="out/document.m4a"/>
+		<!--compare-output suffix=".m4a" result="out/document.m4a"/-->
+		<fail message="Audiobook missing">
+			<condition>
+				<not>
+					<available file="out/document.m4a"/>
+				</not>
+			</condition>
+		</fail>
 	</target>
 </project>
