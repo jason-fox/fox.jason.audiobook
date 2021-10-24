@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   This file is part of the DITA-OT Audiobook Plug-in project.
   See the accompanying LICENSE file for applicable licenses.
 -->
-<xsl:stylesheet version="2.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
   <xsl:param name="SOURCE" select="'document.ditamap'"/>
   <xsl:param name="OUTEXT" select="'.ssml'"/>
@@ -36,19 +35,31 @@
     <xsl:apply-templates select="." mode="gen-type-metadata"/>
   
     <!-- CONTENT: Title - title -->
-    <xsl:apply-templates select="*[contains(@class,' topic/title ')] |
-                                 self::dita/*[1]/*[contains(@class,' topic/title ')]" mode="gen-metadata"/>
+    <xsl:apply-templates
+      select="*[contains(@class,' topic/title ')] |
+                                 self::dita/*[1]/*[contains(@class,' topic/title ')]"
+      mode="gen-metadata"
+    />
   
     <!-- CONTENT: Description - shortdesc -->
-    <xsl:apply-templates select="*[contains(@class,' topic/shortdesc ')] |
-                                 self::dita/*[1]/*[contains(@class,' topic/shortdesc ')]" mode="gen-metadata"/>
-    <xsl:apply-templates select="*[contains(@class,' topic/abstract ')] |
-                                 self::dita/*[1]/*[contains(@class,' topic/abstract ')]" mode="gen-shortdesc-metadata"/>
+    <xsl:apply-templates
+      select="*[contains(@class,' topic/shortdesc ')] |
+                                 self::dita/*[1]/*[contains(@class,' topic/shortdesc ')]"
+      mode="gen-metadata"
+    />
+    <xsl:apply-templates
+      select="*[contains(@class,' topic/abstract ')] |
+                                 self::dita/*[1]/*[contains(@class,' topic/abstract ')]"
+      mode="gen-shortdesc-metadata"
+    />
  
   
     <!-- CONTENT: Coverage prolog/metadata/category -->
-    <xsl:apply-templates select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/category ')] |
-                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/category ')]" mode="gen-metadata"/>
+    <xsl:apply-templates
+      select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/category ')] |
+                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/category ')]"
+      mode="gen-metadata"
+    />
   
     <!-- CONTENT: Subject - prolog/metadata/keywords -->
     <xsl:apply-templates select="." mode="gen-keywords-metadata"/>
@@ -63,29 +74,47 @@
   
     <!-- INTELLECTUAL PROPERTY: Contributor - prolog/author -->
     <!-- INTELLECTUAL PROPERTY: Creator -->
-    <xsl:apply-templates select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/author ')] |
-                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/author ')]" mode="gen-metadata"/>
+    <xsl:apply-templates
+      select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/author ')] |
+                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/author ')]"
+      mode="gen-metadata"
+    />
   
     <!-- INTELLECTUAL PROPERTY: Publisher - prolog/publisher -->
-    <xsl:apply-templates select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/publisher ')] |
-                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/publisher ')]" mode="gen-metadata"/>
+    <xsl:apply-templates
+      select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/publisher ')] |
+                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/publisher ')]"
+      mode="gen-metadata"
+    />
   
     <!-- INTELLECTUAL PROPERTY: Rights - prolog/copyright -->
     <!-- Put primary first, then secondary, then remainder -->
-    <xsl:apply-templates select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='primary'] |
-                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='primary']" mode="gen-metadata"/>
-    <xsl:apply-templates select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='secondary'] |
-                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='seconday']" mode="gen-metadata"/>
-    <xsl:apply-templates select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][not(@type)] |
-                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][not(@type)]" mode="gen-metadata"/>
+    <xsl:apply-templates
+      select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='primary'] |
+                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='primary']"
+      mode="gen-metadata"
+    />
+    <xsl:apply-templates
+      select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='secondary'] |
+                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='seconday']"
+      mode="gen-metadata"
+    />
+    <xsl:apply-templates
+      select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][not(@type)] |
+                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][not(@type)]"
+      mode="gen-metadata"
+    />
   
   
     <!-- = = = = = = = = = = = INSTANTIATION = = = = = = = = = = = -->
   
   
     <!-- prolog/metadata/othermeta -->
-    <xsl:apply-templates select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/othermeta ')] |
-                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/othermeta ')]" mode="gen-metadata"/>
+    <xsl:apply-templates
+      select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/othermeta ')] |
+                                 self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/othermeta ')]"
+      mode="gen-metadata"
+    />
   
     <!-- INSTANTIATION: Format -->
     <xsl:apply-templates select="." mode="gen-format-metadata"/>
@@ -183,7 +212,10 @@
   
   
   <!-- CONTENT: Coverage prolog/metadata/category -->
-  <xsl:template match="*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/category ')]" mode="gen-metadata">
+  <xsl:template
+    match="*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/category ')]"
+    mode="gen-metadata"
+  >
     <meta name="DC.coverage" content="{normalize-space(.)}"/>
   </xsl:template>
   
@@ -191,7 +223,9 @@
   <xsl:template match="*" mode="gen-keywords-metadata">
     <xsl:variable name="keywords-content">
       <!-- for each item inside keywords (including nested index terms) -->
-      <xsl:for-each select="descendant::*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/keywords ')]/descendant-or-self::*">
+      <xsl:for-each
+        select="descendant::*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/metadata ')]/*[contains(@class,' topic/keywords ')]/descendant-or-self::*"
+      >
         <!-- If this is the first term or keyword with this value -->
         <xsl:if test="generate-id(key('meta-keywords',text()[1])[1])=generate-id(.)">
           <xsl:if test="position()>2"><xsl:text>, </xsl:text></xsl:if>

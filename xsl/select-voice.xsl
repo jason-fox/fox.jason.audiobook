@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   This file is part of the DITA-OT Audiobook Plug-in project.
   See the accompanying LICENSE file for applicable licenses.
 -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 
   <xsl:import href="../cfg/attrs/watson.voice-attr.xsl"/>
   <xsl:import href="../cfg/attrs/bing.voice-attr.xsl"/>
@@ -13,7 +12,7 @@
   <xsl:param name="SERVICE" select="'watson'"/>
   <xsl:param name="GENDER" select="'male'"/>
 	
-  <xsl:output omit-xml-declaration="yes" indent="no"  method="text"/>
+  <xsl:output omit-xml-declaration="yes" indent="no" method="text"/>
 	<xsl:strip-space elements="*"/>
 
   <!--
@@ -114,5 +113,3 @@
     	<xsl:apply-templates mode="meta-only"/>
   	</xsl:template>
 </xsl:stylesheet>
-
-

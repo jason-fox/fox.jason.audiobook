@@ -1,12 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   This file is part of the DITA-OT Audiobook Plug-in project.
   See the accompanying LICENSE file for applicable licenses.
 -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 
-	<xsl:output omit-xml-declaration="yes" indent="no"  method="text"/>
+	<xsl:output omit-xml-declaration="yes" indent="no" method="text"/>
 	<xsl:strip-space elements="*"/>
 
 	<xsl:variable name="newline">
@@ -60,8 +59,7 @@
     <xsl:if test="substring($newhref, string-length($newhref) - string-length('.xml') +1) = '.xml'">
       <xsl:value-of select="concat(substring-before($newhref, '.xml'), '.mp3')"/>
     </xsl:if>
-    <xsl:if
-      test="substring($newhref, string-length($newhref) - string-length('.dita') +1) =
+    <xsl:if test="substring($newhref, string-length($newhref) - string-length('.dita') +1) =
       '.dita'">
       <xsl:value-of select="concat(substring-before($newhref, '.dita'), '.mp3')"/>
     </xsl:if>

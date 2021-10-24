@@ -15,28 +15,68 @@
   </transtype>
 
   <transtype name="mp3" extends="ssml" desc="Create MP3 player audio tracks">
-    <param desc="Specifies the location a cache file holding Text-to-Speech to be reused" name="mp3.cachefile" type="file"/>
-    <param name="ssml.service" desc="Specifies the Text-to-Speech cloud service." type="enum">
+    <param
+      desc="Specifies the location a cache file holding Text-to-Speech to be reused"
+      name="mp3.cachefile"
+      type="file"
+    />
+    <param
+      name="ssml.service"
+      desc="Specifies the Text-to-Speech cloud service."
+      type="enum"
+    >
       <val>bing</val>
       <val>custom</val>
       <val>dummy</val>
       <val default="true">watson</val>
     </param>
 
-    <param name="ssml.authentication.url" type="string" desc="URL for creating an OAuth token if needed"/>
-    <param name="ssml.output.format" type="string" desc="Output format override for the cloud Speech-to-Text service"/>
-    <param name="ssml.apikey" type="string" desc="API key for a cloud Text-to-Speech service"/>
-    <param name="ssml.url" type="string" desc="URL for a cloud Text-to-Speech service"/>
-    <param name="mp3.cachefile" type="file" desc="Specifies the location a cache file holding Text-to-Speech to be reused"/>
-    <param name="mp3.cover.art.add" desc="Specifies whether or not cover art is to be added to a file." type="enum">
+    <param
+      name="ssml.authentication.url"
+      type="string"
+      desc="URL for creating an OAuth token if needed"
+    />
+    <param
+      name="ssml.output.format"
+      type="string"
+      desc="Output format override for the cloud Speech-to-Text service"
+    />
+    <param
+      name="ssml.apikey"
+      type="string"
+      desc="API key for a cloud Text-to-Speech service"
+    />
+    <param
+      name="ssml.url"
+      type="string"
+      desc="URL for a cloud Text-to-Speech service"
+    />
+    <param
+      name="mp3.cachefile"
+      type="file"
+      desc="Specifies the location a cache file holding Text-to-Speech to be reused"
+    />
+    <param
+      name="mp3.cover.art.add"
+      desc="Specifies whether or not cover art is to be added to a file."
+      type="enum"
+    >
       <val>yes</val>
       <val default="true">no</val>
     </param>
-    <param name="mp3.cover.art.image" desc="Specifies the cover art to be used for a file." type="string"/>
+    <param
+      name="mp3.cover.art.image"
+      desc="Specifies the cover art to be used for a file."
+      type="string"
+    />
 
   </transtype>
   <transtype name="audiobook" extends="mp3" desc="A single Audiobook">
-    <param name="audiobook.format" desc="mp4 Output Format (with or without DRM)" type="enum">
+    <param
+      name="audiobook.format"
+      desc="mp4 Output Format (with or without DRM)"
+      type="enum"
+    >
       <val default="true">m4a</val>
       <val>m4b</val>
     </param>

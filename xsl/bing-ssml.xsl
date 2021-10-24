@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   This file is part of the DITA-OT Audiobook Plug-in project.
   See the accompanying LICENSE file for applicable licenses.
 -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    version="2.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0">
 
   <xsl:param name="VOICE" select="'en-US-ZiraRUS'"/>
   <xsl:variable name="LANG" select="substring-before($VOICE, '-')"/>
@@ -15,7 +14,7 @@
     Remove the outermost <speak> element then add an appropriate voice.
   -->
 
-	<xsl:output omit-xml-declaration="yes" indent="no"  method="xml"/>
+	<xsl:output omit-xml-declaration="yes" indent="no" method="xml"/>
 	<!--xsl:strip-space elements="*"/-->
 
 	<xsl:template match="/speak">
