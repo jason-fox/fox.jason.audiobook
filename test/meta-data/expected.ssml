@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><speak xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis11/synthesis.xsd" xml:lang="en"><meta name="DC.type" content="topic"/><meta name="DC.language" content="en"/><meta name="rights" content="© 1994-2006 OASIS"/><meta name="DC.isPartOf" content="A book about one thing"/><meta name="DC.title" content="topic"/><meta name="DC.creator" content="Jane"/><meta name="DC.publisher" content="Example Publishers Austin, TX 1977"/><meta name="DC.format" content="SSML"/><meta name="DC.identifier" content="topic"/>
-   <mark name="topic"/><p>topic </p>
-   
-     <p>
-    Lorem ipsum dolor sit amet consectetur adipiscing, elit porttitor taciti nostra dis potenti donec, fusce gravida primis metus.
-     </p>
-   
- </speak>
