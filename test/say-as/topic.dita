@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="say-as">
+  <title>say-as</title>
+  <body>
+		<p> 
+			Example (This will spell out "HELLO")
+			<ph props="say-as interpret-as(letters)">Hello</ph>
+		</p>
+		<p>
+			digits: This value spells out the digits in a given number within the enclosed tag.
+			Example (This will spell out "123456")
+			<ph props="say-as interpret-as(digits)">123456</ph>
+			vxml:digits: This value performs the same function as the digits value.
+
+			<ph props="say-as interpret-as(vxml:digits)">123456</ph>
+		</p>
+		<p>
+			date This value will speak the date within the enclosed tag, using the format given in the associated format attribute. The format attribute is required for use with the date value of interpret-as, but if format is not present, the engine will still attempt to pronounce the date.
+			Example (This gives a list of dates in all the various formats)
+			<ph props="say-as interpret-as(date) format(mdy)">12/17/2005</ph>
+			<ph props="say-as interpret-as(date) format(ymd)">2005/12/17</ph>
+			<ph props="say-as interpret-as(date) format(dmy)">17/12/2005</ph>
+			<ph props="say-as interpret-as(date) format(ydm)">2005/17/12</ph>
+			<ph props="say-as interpret-as(date) format(my)">12/2005</ph>
+			<ph props="say-as interpret-as(date) format(md)">12/17</ph>
+			<ph props="say-as interpret-as(date) format(ym)">2005/12</ph>
+		</p>
+		<p>
+			ordinal - This value will speak the ordinal value for the given digit within the enclosed tag.
+			Example (This will say "second first")
+			<ph props="say-as interpret-as(ordinal)">2</ph>
+			<ph props="say-as interpret-as(ordinal)">1</ph>
+		</p>
+		<p>
+			cardinal - This value will speak the cardinal number corresponding to the Roman numeral within the enclosed tag.
+			Example (This will say "Super Bowl thirty-nine")
+			Super Bowl <ph props="say-as interpret-as(cardinal)">XXXIX</ph>
+			number - This value is an alternative to using the values given above. Using the format attribute to determine how the number is to be interpreted, you can enter one series of number and have it pronounced several different ways, as in the example. The example also includes two different ways of pronouncing a series of numbers as a telephone number. To have the series pronounced with the punctuation included, you must add the detail attribute.
+			<ph props="say-as interpret-as(number)">123456</ph>
+			<ph props="say-as interpret-as(number) format(ordinal)">123456</ph>
+			<ph props="say-as interpret-as(number) format(cardinal)">123456</ph>
+			<ph props="say-as interpret-as(number) format(telephone)">555-555-5555</ph>
+			<ph props="say-as interpret-as(number) format(telephone) detail(punctuation)">555-555-5555</ph>
+		</p>
+		<p>
+			vxml:boolean - This value will speak yes or no depending on the value given within the enclosed tag.
+			<ph props="say-as interpret-as(vxml:boolean)">true</ph>
+			<ph props="say-as interpret-as(vxml:boolean)">false</ph>
+		</p>
+		<p>
+			vxml:date - This value works like the date value, except that the format is predefined as YYYYMMDD. When a value is not known, or you do not wish it to be displayed, a question mark is used to replace that value, as shown in the example.
+			<ph props="say-as interpret-as(vxml:date)">20050720</ph>
+			<ph props="say-as interpret-as(vxml:date)">????0720</ph>
+			<ph props="say-as interpret-as(vxml:date)">200507??</ph>
+		</p>
+		<p>
+			vxml:currency - This value is used to control the synthesis of monetary quantities. The string must be written in the UUUmm.nn format, where UUU is the three character currency indicator specified by ISO standard 4217, and  mm.nn is the amount.
+			Example (This will say "forty-five dollars and thirty cents"):
+			<ph props="say-as interpret-as(vxml:currency)">USD45.30</ph>
+			If there are more than two decimal places in the number within the enclosed tag, the amount will be synthesized as a decimal number followed by the currency indicator. If the three character currency indicator is not present, the number will be synthesized as a decimal only, with no pronunciation of currency type.
+			Example (This will say "forty-five point three two nine US dollars")
+			<ph props="say-as interpret-as(vxml:currency)">USD45.329</ph>
+		</p>
+		<p>
+			vxml:phone - This value will speak a phone number with both digits and punctuation, similar to the number value used with format(telephone).
+			<ph props="say-as interpret-as(vxml:phone)">555-555-5555</ph>
+		</p>
+  </body>
+</topic>

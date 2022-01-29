@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><speak xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis11/synthesis.xsd" xml:lang="en"><meta name="DC.type" content="topic"/><meta name="DC.language" content="en"/><meta name="rights" content="© 1994-2006 OASIS"/><meta name="DC.isPartOf" content="A book about one thing"/><meta name="DC.title" content="voice"/><meta name="DC.creator" content="Jane"/><meta name="DC.publisher" content="Example Publishers Austin, TX 1977"/><meta name="DC.format" content="SSML"/><meta name="DC.identifier" content="voice"/>
+   <mark name="voice"/><p>voice </p>
+  
+   
+     <p>
+    This tag is used when a change in voice is required. Although all attributes listed are optional, without any attributes defined an error will result. The optional attributes are:
+
+	age Accepted values are positive integers between the ages of 14 and 60 for both male and female.
+	gender Accepted values are male and female.
+	name Accepted values are the installed voices’ names.
+	variant Accepted values are positive integers.
+	Examples:
+
+	 <voice age="60">Sixty year-old's voice. </voice>
+	 <voice gender="female">This is a female voice. </voice>
+	 <voice name="Allison">Use the IBM TTS voice named Allison. </voice>
+	 <voice name="Allison, Andrew, Tyler">Use the first available IBM TTS voice named in the given list. </voice>
+     </p>
+   
+ </speak>
