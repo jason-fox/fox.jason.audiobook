@@ -15,7 +15,8 @@
   -->
   <target name="audiobook.init">
     <taskdef resource="fox/jason/audiobook/antlib.xml"/>
-    <property name="preprocess.copy-image.skip" value="true"/>
+    <property name="build-step.copy-image" value="false"/>
+    <property name="build-step.copy-flag" value="false"/>
     <property name="out.ext" value="ssml"/>
   </target>
 
