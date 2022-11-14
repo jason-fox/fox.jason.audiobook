@@ -4,7 +4,7 @@
 	This file is part of the DITA-OT Audiobook Plug-in project.
 	See the accompanying LICENSE file for applicable licenses.
 -->
-<plugin id="fox.jason.audiobook" version="1.3.1">
+<plugin id="fox.jason.audiobook" version="2.0.0">
   <feature extension="dita.conductor.lib.import" file="lib/audiobook-1.0.jar"/>
   
   <transtype name="ssml" desc="Speech Synthesis Markup Language">
