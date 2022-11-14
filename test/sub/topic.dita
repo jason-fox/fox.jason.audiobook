@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="sub">
+  <title>sub</title>
+  <body>
+    <p>
+   		This tag is used to indicate that the text included in the alias attribute is to replace the text enclosed within the tag when speech is synthesized. The only attribute for this tag is the alias attribute, and it is required.
+
+		<ph props="sub alias(International Business Machines)">IBM</ph>
+    </p>
+  </body>
+</topic>

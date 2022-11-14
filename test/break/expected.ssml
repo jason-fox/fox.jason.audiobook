@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><speak xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis11/synthesis.xsd" xml:lang="en"><meta name="DC.type" content="topic"/><meta name="DC.language" content="en"/><meta name="rights" content="© 1994-2006 OASIS"/><meta name="DC.isPartOf" content="A book about one thing"/><meta name="DC.title" content="break"/><meta name="DC.creator" content="Jane"/><meta name="DC.publisher" content="Example Publishers Austin, TX 1977"/><meta name="DC.format" content="SSML"/><meta name="DC.identifier" content="break"/>
+   <mark name="break"/><p>break </p>
+ 
+   
+     <p>
+    	This tag inserts pauses into the spoken text. It has the following optional attributes:
+
+		strength - This attribute specifies the length of a pause in terms of varying strength values: none, x-weak,  weak, medium, strong, or x-strong.
+		time - This attribute specifies the length of the pause in terms of seconds or milliseconds. The values formats are NNNs for seconds or NNNms for milliseconds.
+		Different sized  <break strength="none"/>pauses.
+		Different sized  <break strength="x-weak"/>pauses.
+		Different sized  <break strength="weak"/>pauses.
+		Different sized  <break strength="medium"/>pauses.
+		Different sized  <break strength="strong"/>pauses.
+		Different sized  <break strength="x-strong"/>pauses.
+		Different sized  <break time="1s"/>pauses.
+		Different sized  <break time="1000ms"/>pauses.
+     </p>
+   
+ </speak>

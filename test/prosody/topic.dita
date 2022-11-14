@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA Topic//EN" "topic.dtd">
+<topic id="prosody">
+  <title>prosody</title>
+ 
+  <body>
+    <p>
+   		This tag controls the pitch, range, speaking rate, and volume of the text. all attributes are optional, but if no attribute is given an error results.
+
+Here is a description of the optional attributes:
+
+pitch - This attribute modifies the baseline pitch for the text enclosed within the tag. Accepted values are either:, a number followed by the Hz designation, a relative change, x-low, low, medium, high, x-high,  default
+
+range This attribute modifies the pitch range for the text enclosed within the tag. Accepted values for this attribute are the same as the accepted values for pitch.
+
+rate - This attribute indicates a change in the speaking rate for contained text. Accepted values are: - a relative change - a positive number, x-slow, slow, medium, fast,  x-fast, default
+The rate is specified in terms of words-per-minute. If the speaking rate is 50 words per minute, then rate=50. If the setting is rate=+10, the speaking rate will be 10 words per minute faster than your current rate setting.
+
+volume - This attribute modifies the volume for the contained text. The range for values is 0.0 to 100.0 or the relative values of : silent, x-soft, soft, medium, loud, x-loud, default
+Examples:
+
+<ph props="prosody pitch(150Hz)"> Modified pitch </ph>
+<ph props="prosody pitch(-20Hz)"> Modified pitch </ph>
+<ph props="prosody pitch(+20Hz)"> Modified pitch </ph>
+<ph props="prosody pitch(-12st)"> Modified pitch </ph>
+<ph props="prosody pitch(+12st)"> Modified pitch </ph>
+<ph props="prosody pitch(x-low)"> Modified pitch </ph>
+<ph props="prosody range(150Hz)"> Modified pitch range</ph>
+<ph props="prosody range(-20Hz)"> Modified pitch range</ph>
+<ph props="prosody range(+20Hz)"> Modified pitch range</ph>
+<ph props="prosody range(-12st)"> Modified pitch range</ph>
+<ph props="prosody range(+12st)"> Modified pitch range</ph>
+<ph props="prosody range(x-high)"> Modified pitch range</ph>
+<ph props="prosody rate(slow)"> Modified speaking rate</ph>
+<ph props="prosody rate(+25)"> Modified speaking rate</ph>
+<ph props="prosody rate(-25)"> Modified speaking rate</ph>
+<ph props="prosody volume(88.9)">Modified volume</ph>
+<ph props="prosody volume(loud)">Modified volume</ph>
+
+
+
+    </p>
+  </body>
+</topic>

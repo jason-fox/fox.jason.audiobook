@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><speak xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.1" xsi:schemaLocation="http://www.w3.org/2001/10/synthesis http://www.w3.org/TR/speech-synthesis11/synthesis.xsd" xml:lang="en"><meta name="DC.type" content="topic"/><meta name="DC.language" content="en"/><meta name="rights" content="© 1994-2006 OASIS"/><meta name="DC.isPartOf" content="A book about one thing"/><meta name="DC.title" content="phoneme"/><meta name="DC.creator" content="Jane"/><meta name="DC.publisher" content="Example Publishers Austin, TX 1977"/><meta name="DC.format" content="SSML"/><meta name="DC.identifier" content="phoneme"/>
+   <mark name="phoneme"/><p>phoneme </p>
+   
+     <p>
+   		The SSML phoneme tag enables users to provide a phonetic pronunciation for the enclosed text. This tag has two attributes:
+	 </p>
+	 <p>
+	alphabet - This attribute specifies the phonology used. The supported alphabets to designate are ipa for the International Phonetic Alphabet, and ibm for the SPR representation.
+
+	ph - This attribute specifies the pronunciation. It is a required attribute. This example shows how a pronunciation for "tomato" is specified using the IPA phonology, where the symbols are given using Unicode:
+
+	 <phoneme alphabet="ipa" ph="təmeiɾou̥">tomato </phoneme>
+	This example shows how a pronunciation for "tomato" is specified using the SPR phonology:
+
+	 <phoneme alphabet="ibm" ph=".0tx.1me.0fo">tomato </phoneme>
+
+     </p>
+   
+ </speak>
