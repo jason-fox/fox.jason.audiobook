@@ -94,11 +94,13 @@
                                  self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='primary']"
       mode="gen-metadata"
     />
+
     <xsl:apply-templates
       select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='secondary'] |
                                  self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][@type='seconday']"
       mode="gen-metadata"
     />
+
     <xsl:apply-templates
       select="*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][not(@type)] |
                                  self::dita/*[1]/*[contains(@class,' topic/prolog ')]/*[contains(@class,' topic/copyright ')][not(@type)]"
@@ -257,7 +259,15 @@
   
   <!-- INTELLECTUAL PROPERTY: Publisher - prolog/publisher -->
   <xsl:template match="*[contains(@class,' topic/publisher ')]" mode="gen-metadata">
-    <meta name="DC.publisher" content="{normalize-space(.)}"/>
+
+    <xsl:variable name="text">
+      <xsl:for-each select="*">
+        <xsl:value-of select="normalize-space(.)"/>
+        <xsl:text> </xsl:text>
+      </xsl:for-each>
+    </xsl:variable>
+
+    <meta name="DC.publisher" content="{normalize-space($text)}"/>
   </xsl:template>
   
   <!--  Rights - prolog/copyright -->

@@ -37,7 +37,9 @@
   <!--
     Generate SSML files containing associated dublin core metadata
   -->
-  <target name="ssml.render">
+  <target 
+    name="ssml.render"
+    description="Create Speech Synthesis Markup Language Files">
     <pipeline message="Convert DITA topics to SSML files" taskname="gen-ssml">
       <xslt
         basedir="${dita.temp.dir}"
@@ -130,7 +132,6 @@
     <condition property="pm3.cover">
       <equals arg1="${mp3.cover.art.add}" arg2="yes"/>
     </condition>
-
     
     <dita-ot-fail id="AUDI002F" if:set="audiobook.watson">
       <condition>
@@ -153,7 +154,9 @@
     the appropriate metadata and track info and add it to each of 
     the MP3 files
   -->
-   <target name="mp3.render" depends="ssml.render">
+   <target name="mp3.render" 
+    depends="ssml.render"
+    description="Create Speech MP3 files for each topic">
     <property name="topic-list.txt" value="${dita.output.dir}/list.txt"/>
     <!-- create track list -->
     <xslt
@@ -202,6 +205,7 @@
       executable="ffmpeg"
       osfamily="unix"
       failonerror="false"
+      failifexecutionfails="false"
       resultproperty="ffmpeg.result"
       outputproperty="ffmpeg.out"
     >
@@ -214,6 +218,7 @@
       executable="cmd"
       osfamily="windows"
       failonerror="false"
+      failifexecutionfails="false"
       resultproperty="ffmpeg.result"
       outputproperty="ffmpeg.out"
     >
@@ -244,7 +249,9 @@
       overall metadata anc chapter info can be re-added into
       an audiobook m4b file (along with a cover image)
   -->
-  <target name="audiobook.render" depends="ssml.render, mp3.render">
+  <target name="audiobook.render" 
+    depends="ssml.render, mp3.render"
+    description="Merge MP3 files into an Audiobook">
     <property name="audiobook.duration" value="0"/>
     <property name="audiobook.format" value="m4a"/>
     <basename
@@ -290,15 +297,15 @@
   -->
   <target
     name="dita2ssml"
-    depends="build-init, ssml.init, preprocess, ssml.render"
+    depends="build-init, ssml.init, preprocess2, ssml.render"
   />
   <target
     name="dita2mp3"
-    depends="build-init, audiobook.services.init, preprocess, mp3.render"
+    depends="build-init, audiobook.services.init, preprocess2, mp3.render"
   />
   <target
     name="dita2audiobook"
-    depends="build-init, audiobook.services.init, preprocess, audiobook.render"
+    depends="build-init, audiobook.services.init, preprocess2, audiobook.render"
   />
 
 </project>
