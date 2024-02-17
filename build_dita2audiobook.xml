@@ -198,7 +198,8 @@
   <!--
     Ensure that ffmpeg is available.
   -->
-  <target name="ffmpeg.init">
+  <target name="ffmpeg.init"
+    description="Ensure that ffmpeg is available">
     <!-- For Unix run the FFmpeg executable-->
     <exec
       taskname="ffmpeg"
